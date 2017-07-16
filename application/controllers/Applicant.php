@@ -580,7 +580,12 @@
             $this->load->view("nav");
             $this->load->view("application_form", $data);
         }
-        
+        public function info() {
+
+        phpinfo();
     }
 
+    }
+
+    
 ?>

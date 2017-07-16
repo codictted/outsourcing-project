@@ -133,11 +133,11 @@
                     // $config['smtp_port']    = '465';
                     // $config['smtp_timeout'] = '7';
                     // $config['smtp_crypto'] = 'ssl';
-                    // $config['smtp_user']    = 'outsourcing.inquire@gmail.com';
-                    // $config['smtp_pass']    = 'outsourcingteam';
+                    // $config['smtp_user']    = '';
+                    // $config['smtp_pass']    = '';
                     // $config['charset']    = 'utf-8';
                     // $config['newline']    = "\r\n";
-                    // $config['mailtype'] = 'text'; // or html
+                    // $config['mailtype'] = 'text';
 
                     // $this->email->initialize($config);
                     // $this->email->from($email, $contact_name);

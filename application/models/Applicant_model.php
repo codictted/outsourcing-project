@@ -21,6 +21,11 @@
 			$this->db->insert("applicant_experience", $data);
 		}
 
+		public function insert_skills($data) {
+
+			$this->db->insert("applicant_skill", $data);
+		}
+
 		public function insert_training($data) {
 
 			$this->db->insert("applicant_seminar", $data);
@@ -41,6 +46,7 @@
 			$this->db->select("applicant.*, job_position.name as jname");
 			$this->db->from("applicant");
 			$this->db->join("job_position", "applicant.job_id = job_position.id");
+			$this->db->order_by("application_date", "DESC");
 			$query = $this->db->get();
 			return $query->result();
 		}
@@ -66,6 +72,16 @@
 		public function get_exp($id) {
 
 			$this->db->from("applicant_experience");
+			$this->db->where("applicant_id", $id);
+			$query = $this->db->get();
+			return $query->result();
+		}
+
+		public function get_skills($id) {
+
+			$this->db->select("applicant_skill.*, skill.name as skname");
+			$this->db->from("applicant_skill");
+			$this->db->join("skill", "applicant_skill.skill_id = skill.id");
 			$this->db->where("applicant_id", $id);
 			$query = $this->db->get();
 			return $query->result();

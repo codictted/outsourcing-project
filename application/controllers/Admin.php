@@ -351,6 +351,30 @@
                     $this->Client_model->get_job_order_req($id),
                     $this->Client_model->get_joborder_details($id)
                 );
+
+                $data['job_id'] = $id;
+                $this->load->helper('captcha');
+                $config = array(
+                'word'          => $this->random_word(),
+                'img_path'      => './captcha/',
+                'img_url'       => base_url().'captcha/',
+                'img_width'     => '250',
+                'img_height'    => 40,
+                'expiration'    => 7200,
+                'word_length'   => 5,
+                'font_size'     => 16,
+                 'colors'        => array(
+                    'background' => array(255, 255, 255),
+                    'border' => array(255, 255, 255),
+                    'text' => array(0, 0, 0),
+                    'grid' => array(255, 40, 40)
+                    )
+                );
+
+                $captcha = create_captcha($config);
+                $this->session->unset_userdata('captchaCode');
+                $this->session->set_userdata('captchaCode',$captcha['word']);
+                $data['captcha_img'] = $captcha['image'];
                 $this->load->view("admin-header", $data);
                 $this->load->view("nav-transaction");
                 $this->load->view("jo_new");
@@ -359,6 +383,12 @@
                 $this->session->set_flashdata("invalid", "Sorry, you are unauthorized to view this page.");
                 redirect(base_url("login"));
             }
+        }
+
+        public function random_word() {
+
+            $this->load->helper("string");
+            return random_string("alpha", 5);
         }
 
         public function process_data($skill, $benefit, $req, $quali) {
@@ -432,6 +462,43 @@
             return $cleaned;
             
         }
+        
+        public function post_ad() {
+
+            $this->form_validation->set_rules("code", "Code", "required");
+            $this->form_validation->set_rules("captcha", "Captcha", "required|matches[code]|strip_tags|xss_clean");
+
+            if($this->form_validation->run() !== FALSE) {
+
+                $show = $this->input->post("on");
+                $data = array(
+                    "order_id" => $this->input->post("jobid"),
+                    "employer" => 1,
+                    "slot" => 1,
+                    "age" => 1,
+                    "education" => 1,
+                    "course" => 1,
+                    "single" => 1,
+                    "height" => 1,
+                    "weight" => 1,
+                    "urgent" => 1,
+                    "skills" => 1,
+                    "benefits" => 1,
+                    "requirements" => 1,
+                    "description" => 1,
+                );
+                foreach($show as $col)
+                    $data[$col] = 0;
+                print_r($data);
+            }
+
+            else {
+
+                echo validation_errors();
+                print_r($code);
+                echo "lol";
+            }
+        }
 
         public function admin_applicant_new($id) {
 
@@ -444,6 +511,7 @@
                 $data['applicant_sem'] = $this->Applicant_model->get_sem($id);
                 $data['applicant_personality'] = $this->Applicant_model->get_personality($id);
                 $data['applicant_essay'] = $this->Applicant_model->get_essay($id);
+                $data['skills'] = $this->Applicant_model->get_skills($id);
                 $this->load->view("admin-header", $data);
                 $this->load->view("nav-transaction");
                 $this->load->view("applist_new");
@@ -570,6 +638,7 @@
                 $data['applicant_sem'] = $this->Applicant_model->get_sem($id);
                 $data['applicant_personality'] = $this->Applicant_model->get_personality($id);
                 $data['applicant_essay'] = $this->Applicant_model->get_essay($id);
+                $data['skills'] = $this->Applicant_model->get_skills($id);
                 $this->load->view("admin-header", $data);
                 $this->load->view("nav-transaction");
                 $this->load->view("applicant_full_details");

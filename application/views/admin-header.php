@@ -9,10 +9,8 @@
         <script src="<?php echo base_url(); ?>assets/js/jquery-ui.min.js"></script>
         <script src="<?php echo base_url(); ?>assets/js/dataTables.min.js"></script>
         <script src="<?php echo base_url(); ?>assets/js/jquery-function.js"></script>
-        <script src="<?php echo base_url(); ?>assets/magicsuggest/magicsuggest-min.js"></script>
 
 
-        <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/magicsuggest/magicsuggest.css">
         <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/sb-admin.css">
         <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/dataTables.min.css">
         <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/bootswatch.css">

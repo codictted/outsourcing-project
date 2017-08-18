@@ -19,6 +19,7 @@
 			$this->db->from("client");
 			$this->db->join("business_nature", "client.business_nature = business_nature.id");
 			$this->db->where("client.status !=", 0);
+			$this->db->order_by("acc_creation_date", "DESC");
 			$query = $this->db->get();
 			return $query->result();
 		}
@@ -55,12 +56,37 @@
 
 		}
 
+		public function add_order($data) {
+
+			$this->db->insert("job_order", $data);
+			$this->db->select_max("order_id");
+			$this->db->from("job_order");
+			$query = $this->db->get();
+			return $query->result();
+		}
+
+		public function insert_jo_skill($data) {
+
+			$this->db->insert("job_order_skill", $data);
+		}
+
+		public function insert_jo_benefit($data) {
+
+			$this->db->insert("job_order_benefit", $data);
+		}
+
+		public function insert_jo_requirement($data) {
+
+			$this->db->insert("job_order_req", $data);
+		}
+
 		public function get_client_order($id) {
 
 			$this->db->select("job_order.*, job_position.name as jname");
 			$this->db->from("job_order");
 			$this->db->join("job_position", "job_order.job_id = job_position.id");
 			$this->db->where("client_id", $id);
+			$this->db->order_by("job_order.order_date", "DESC");
 			$query = $this->db->get();	
 			return $query->result();
 		}
@@ -126,8 +152,14 @@
 			$this->db->join("job_position", "job_order.job_id = job_position.id");
 			$this->db->where("job_order.status !=", 4);
 			$this->db->or_where("job_order.status !=", 5);
+			$this->db->order_by("job_order.order_date", "DESC");
 			$query = $this->db->get();
 			return $query->result();
+		}
+
+		public function post_job_ad($data) {
+
+			$this->db->insert("job_order_post", $data);
 		}
 	}
 ?>

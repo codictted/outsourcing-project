@@ -200,7 +200,11 @@
                     </div>
                     <div class="col-lg-6">
                         <div class="error-form">
-                            <input id="spoken-ms" class="form-control" name="" placeholder="Spoken Languages">
+                            <select class="form-control" id="spoken-multip" multiple name="spoken_lang[]">
+                                <?php foreach($spoken as $sp) { ?>
+                                <option value="<?php echo $sp->id; ?>"><?php echo $sp->language?></option>
+                                <?php } ?>
+                            </select>
                         </div>
                         <span class="small col-lg-1"><text class="required">*</text>&nbsp;Spoken&nbsp;Languages</span>
                     </div>
@@ -248,10 +252,9 @@
                         <div class="error-form">
                             <select class="form-control" name="education" id="education" required>
                                 <option selected disabled>--</option>
-                                <option value="1">Elementary</option>
-                                <option value="2">High School</option>
-                                <option value="3">Vocational</option>
-                                <option value="4">College</option>
+                                <?php foreach($education as $educ) { ?>
+                                <option value="<?php echo $educ->id; ?>"><?php echo $educ->education; ?></option>
+                                <?php } ?>
                             </select>
                         </div>
                         <span class="help-block"><text class="required">*</text>&nbsp;Highest Attainment</span>
@@ -448,8 +451,7 @@
                         </select>
                     </div>
                     <div class="col-lg-5">
-                        <!-- <input id="skill-ms" class="form-control" placeholder="Choose your skills"> -->
-                        <select class="form-control" id="skill-ms" disabled>
+                        <select class="form-control" id="skill-multi" multiple name="skills[]">
                         </select>
                     </div>
                 </div>
@@ -787,7 +789,40 @@
 
 
 <script type="text/javascript">
+
+$("#spoken-multip").select2({
+    placeholder: "Spoken Languages"
+});
+
+$("#skill-multi").select2({
+    placeholder: "Select Skills"
+});
+
 $(function() {
+
+    $("#skill_set").change(function() {
+
+        var id = $(this).val();
+        var url = "<?php echo base_url(); ?>applicant/get_skill_list/";
+        $.ajax({
+
+            dataType: "JSON",
+            type: "GET",
+            url: url + id,
+            success: function(data) {
+
+                var list = [];
+                $.each(data, function(ctr, val) {
+
+                    list.push('<option value="' + val.id + '">' + val.name +'</option>');
+                });
+
+                $("#skill-multi").html(list.join(''));
+
+            }
+        });
+    });
+
     $("#job_cat").change(function() {
         
         var id = $(this).val();

@@ -52,6 +52,14 @@
 			return $query->result();
 		}
 
+		public function get_education() {
+
+			$this->db->from("education");
+			$this->db->where("status", 0);
+			$query = $this->db->get();
+			return $query->result();
+		}
+
 		public function get_course_list() {
 
 			$this->db->from("course");
@@ -69,5 +77,28 @@
 			return $query->result();
 		}
 
+		public function get_benefit() {
+
+			$this->db->from("benefits");
+			$this->db->where("status", 0);
+			$query = $this->db->get();
+			return $query->result();
+		}
+
+		public function get_requirement() {
+
+			$this->db->from("requirement");
+			$this->db->where("status", 0);
+			$query = $this->db->get();
+			return $query->result();
+		}
+
+		public function get_spoken_lang() {
+
+			$this->db->from("spoken_languages");
+			$this->db->where("status", 0);
+			$query = $this->db->get();
+			return $query->result();
+		}
 	}
 ?>

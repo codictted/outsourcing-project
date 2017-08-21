@@ -231,6 +231,7 @@
         $("#sub").click(function() {
             var id = $("#client").val();
             var url = "<?php echo base_url()?>admin/update_client/";
+          
             $.ajax({
 
                 dataType: "JSON",

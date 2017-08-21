@@ -5,133 +5,74 @@
                 <div class="col-lg-12">
                     <div class="alert alert-info alert-dismissable small">
                         <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-                        <i class="glyphicon glyphicon-info-sign"></i><b>REMINDER:</b> <p class="alert-p">You can always filter the list by your own specifications.</p>
+                        <i class="glyphicon glyphicon-info-sign"></i><b>REMINDER:</b> <p class="alert-p">Creation of Job might not be the same but the same responsibilities.</p>
+                    </div>
                 </div>
+
+                <?php if($this->session->flashdata('success_notification')): ?>
+                    <div class="col-lg-12">
+                        <div class="alert alert-success alert-dismissable small">
+                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                            <strong><i class="glyphicon glyphicon-thumbs-up"></i>Well done!</strong>
+                            <p class="alert-p"><?php echo $this->session->flashdata('success_notification'); ?></p>
+                        </div>
+                    </div>
+                <?php endif; ?>
+
+                <?php if($this->session->flashdata("access_error_notification")): ?>
+                    <div class="col-lg-12">
+                        <div class="alert alert-danger alert-dismissable small">
+                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                            <strong><i class="glyphicon glyphicon-warning-sign"></i>Oppss!</strong>
+                            <p class="alert-p"><?php echo $this->session->flashdata('access_error_notification'); ?></p>
+                        </div>
+                    </div>
+                <?php endif; ?>
+
             </fieldset>
         </form>
         <hr>
         <div class="col-lg-12">
-            <button type="button" class="btn btn-primary col-lg-2 pull-right" onclick="window.location.href='create_client'"><span class="glyphicon glyphicon-plus"></span>Add Job Position
+            <button type="button" class="btn btn-primary col-lg-2 pull-right" onclick="window.location.href='<?php echo base_url();?>maintenance/add_job_position_form/'"><span class="glyphicon glyphicon-plus"></span>Add Job Position
             </button><br><br><br>
         </div>
         <div class="col-lg-12">
             <table id="job-table" class="custom-table-large table-hover">
                 <thead>
-                    <th>Status</th>
-                    <th>Type</th>
-                    <th>Company Name/ Contact Person</th>
-                    <th>Nature of Business</th>
-                    <th>Date Activated</th>
-                    <th>Action</th>
+                    <th><center>Status</center></th>
+                    <th><center>Job Category</center></th>
+                    <th><center>Job Name</center></th>
+                    <th><center>Service Fee</center></th>
+                    <th><center>Action</center></th>
                 </thead>
                 <tbody>
-                    <tr class="tr_click_client">
-                        <td>Active</td>
-                        <td>Company/Institution/Organization</td>
-                        <td>Puregold/ Arlene Mariano</td>
-                        <td>Retail/ Sales</td>
-                        <td>2017-07-03 5:45PM</td>
-                        <td><button class="btn btn-default btn-sm table-btn" onclick="window.location.href='applist_new'"><span class="glyphicon glyphicon-list"></span></button></td>
-                    </tr>
-                    <!-- <tr class="tr_click">
-                        <td>Job Matched</td>
-                        <td>Ryoma Echizen</td>
-                        <td>Tennis Player</td>
-                        <td>17/Male</td>
-                        <td>Japanese</td>
-                        <td>2017-07-03 5:45PM</td>
-                        <td><button class="btn btn-default btn-sm" onclick="window.location.href='applist_matched'"><span class="glyphicon glyphicon-list"></span></button></td>
-                    </tr>
-                    <tr class="tr_click">
-                        <td>For Interview</td>
-                        <td>Izahaya Orihara</td>
-                        <td>Company Driver</td>
-                        <td>39/Male</td>
-                        <td>Japanese</td>
-                        <td>2017-07-03 5:45PM</td>
-                        <td><button class="btn btn-default btn-sm" onclick="window.location.href='applist_interview'"><span class="glyphicon glyphicon-list"></span></button></td>
-                    </tr>
-                    <tr class="tr_click">
-                        <td>Failed Interview</td>
-                        <td>Len Tsukimori</td>
-                        <td>Janitor</td>
-                        <td>19/Male</td>
-                        <td>Pinoy</td>
-                        <td>2017-07-03 5:45PM</td>
-                        <td><button class="btn btn-default btn-sm" onclick="window.location.href='applist_finterview'"><span class="glyphicon glyphicon-list"></span></button></td>
-                    </tr>
-                    <tr class="tr_click">
-                        <td>Ready to Short List</td>
-                        <td>Hino Kahoko</td>
-                        <td>Violinist</td>
-                        <td>19/Female</td>
-                        <td>Japanese</td>
-                        <td>2017-07-03 5:45PM</td>
-                        <td><button class="btn btn-default btn-sm" onclick="window.location.href='applist_shortlist'"><span class="glyphicon glyphicon-list"></span></button></td>
-                    </tr>
-                    <tr class="tr_click">
-                        <td>Shortlisted (Rejected)</td>
-                        <td>Naruto Uzumaki</td>
-                        <td>Hokage</td>
-                        <td>18/Male</td>
-                        <td>Japanese</td>
-                        <td>2017-07-03 5:45PM</td>
-                        <td><button class="btn btn-default btn-sm" onclick="window.location.href='applist_short_rejected'"><span class="glyphicon glyphicon-list"></span></button></td>
-                    </tr>
-                    <tr class="tr_click">
-                        <td>Shortlisted (Selected)</td>
-                        <td>Jeremy Santos</td>
-                        <td>Kitchen Staff</td>
-                        <td>28/Male</td>
-                        <td>Filipino/Bicol</td>
-                        <td>2017-07-03 5:45PM</td>
-                        <td><button class="btn btn-default btn-sm" onclick="window.location.href='applist_joboffer'"><span class="glyphicon glyphicon-list"></span></button></td>
-                    </tr>
-                    <tr class="tr_click">
-                        <td>Job Offered</td>
-                        <td>Jeremy Santos</td>
-                        <td>Kitchen Staff</td>
-                        <td>28/Male</td>
-                        <td>Filipino/Bicol</td>
-                        <td>2017-07-03 5:45PM</td>
-                        <td><button class="btn btn-default btn-sm" onclick="alert('Accepted or Not')"><span class="glyphicon glyphicon-list"></span></button></td>
-                    </tr>
-                    <tr class="tr_click">
-                        <td>Job Offered (Rejected)</td>
-                        <td>Jeremy Santos</td>
-                        <td>Kitchen Staff</td>
-                        <td>28/Male</td>
-                        <td>Filipino/Bicol</td>
-                        <td>2017-07-03 5:45PM</td>
-                        <td><button class="btn btn-default btn-sm" onclick="alert('Accepted or Not')"><span class="glyphicon glyphicon-list"></span></button></td>
-                    </tr>
-                    <tr class="tr_click">
-                        <td>Passing of Requirements</td>
-                        <td>Jeremy Santos</td>
-                        <td>Kitchen Staff</td>
-                        <td>28/Male</td>
-                        <td>Filipino/Bicol</td>
-                        <td>2017-07-03 5:45PM</td>
-                        <td><button class="btn btn-default btn-sm" onclick="window.location.href='applist_requirements'"><span class="glyphicon glyphicon-list"></span></button></td>
-                    </tr>
-                    <tr class="tr_click">
-                        <td>For Endorsement</td>
-                        <td>Jeremy Santos</td>
-                        <td>Kitchen Staff</td>
-                        <td>28/Male</td>
-                        <td>Filipino/Bicol</td>
-                        <td>2017-07-03 5:45PM</td>
-                        <td><button class="btn btn-default btn-sm" onclick="alert('Accepted or Not')"><span class="glyphicon glyphicon-list"></span></button></td>
-                    </tr>
-                    <tr class="tr_click">
-                        <td>Deployed</td>
-                        <td>Jeremy Santos</td>
-                        <td>Kitchen Staff</td>
-                        <td>28/Male</td>
-                        <td>Filipino/Bicol</td>
-                        <td>2017-07-03 5:45PM</td>
-                        <td><button class="btn btn-default btn-sm" onclick="alert('Accepted or Not')"><span class="glyphicon glyphicon-list"></span></button></td>
-                    </tr> -->
+                    <?php foreach($job as $j) { ?>
+                        <tr id="<?php echo $j->id ?>" onclick="view_jl(this.id)">
+                            <?php 
+                                if($j->status == 0){
+                                    $status = "Active"; 
+                                    echo "<script>
+                                            $(function(){
+                                                      $('input[name=my_checkbox_$j->id]').bootstrapSwitch('state', true, true);
+                                            });  
+                                        </script>";
+                                }
+                                else{
+                                    $status = "Inactive"; 
+                                }
+                            ?>
+                            <td><center><div id='changeState_<?php echo $j->id ?>'><?php echo $status; ?></div>
+                            </center></td>
+                            <td><center><?php echo $j->JCName; ?></center></td>
+                            <td><center><?php echo $j->name; ?></center></td>
+                            <td><center><?php echo $j->service_fee; ?></center></td>
+                            <td><center>
+                                <button class="btn btn-success btn-sm table-btn" onclick="edit_jp(<?php echo $j->id ?>)"><span class="glyphicon glyphicon-edit"></span></button>
+                                <input id='switch-state' name='my_checkbox_<?php echo $j->id ?>' type='checkbox' value='<?php echo $j->id ?>' >
+                                <button class="btn btn-danger btn-sm table-btn" onclick="delete_jp(<?php echo $j->id ?>)"><span class="glyphicon glyphicon-trash"></span></button>
+                            </center></td>
+                        </tr>
+                    <?php } ?>
                 </tbody>
             </table>
         </div>
@@ -144,4 +85,36 @@
     $(document).ready (function () {
       $("#job-table").dataTable();
     });
+
+    $('input[id="switch-state"]').on('switchChange.bootstrapSwitch', function(event, state) {
+        var ID = $(this).val();
+        var value = state ? value = 0 : value = 1;
+        var url = "<?php echo base_url()?>maintenance/status_job/";
+        var dataString = "job_id=" + ID + "&";
+            dataString += "job_status=" + value;
+
+            state ? $('#changeState_'+ ID).html("Active"): $('#changeState_'+ ID).html("Inactive");
+
+            $.ajax({
+                dataType: "JSON",
+                url: url,
+                type: "POST",
+                data: dataString,
+                success: function(data) {
+                }    
+            }); 
+    });
+
+    function edit_jp(id) {
+        window.location.href="<?php echo base_url();?>maintenance/edit_job_position_form/" + id;
+    }  
+
+    function delete_jp(id) {
+        window.location.href="<?php echo base_url();?>maintenance/delete_job_position_form/" + id;
+    }
+
+    function view_jl(id) {
+        window.location.href="<?php echo base_url();?>maintenance/view_job_position_form/" + id;
+    }
+
 </script>

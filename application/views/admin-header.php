@@ -10,13 +10,16 @@
         <script src="<?php echo base_url(); ?>assets/js/dataTables.min.js"></script>
         <script src="<?php echo base_url(); ?>assets/js/jquery-function.js"></script>
         <script src="<?php echo base_url(); ?>assets/magicsuggest/magicsuggest-min.js"></script>
+        <script src="<?php echo base_url(); ?>assets/select2-4.0.3/dist/js/select2.min.js"></script>    
 
-
-        <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/magicsuggest/magicsuggest.css">
+        <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/select2-4.0.3/dist/css/select2.min.css">   
+       <!--  <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/magicsuggest/magdisicsuggest.css"> -->
         <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/sb-admin.css">
         <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/dataTables.min.css">
         <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/bootswatch.css">
         <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/style.css">  
+        
+
     </head>
     <body>
         <div class="navbar navbar-default navbar-fixed-top">
@@ -44,7 +47,7 @@
                     <li class="horizontal horizontal-margin-left"><a href="<?php echo base_url(); ?>dashboard/"><span class="glyphicon glyphicon-globe"></span>Dashboard</a></li>
                     <li class="horizontal"><a href="<?php echo base_url(); ?>maintenance/"><span class="glyphicon glyphicon-wrench"></span>Maintenance</a></li>
                     <li class="horizontal"><a href="<?php echo base_url(); ?>admin/admin_client_list"><span class="glyphicon glyphicon-briefcase"></span>Transaction</a></li>
-                    <li class="horizontal"><a href="#"><span class="glyphicon glyphicon-book"></span>Reports</a></li>
+                    <li class="horizontal"><a href="<?php echo base_url(); ?>reports/"><span class="glyphicon glyphicon-book"></span>Reports</a></li>
                     <li class="horizontal"><a href="<?php echo base_url()?>query/"><span class="glyphicon glyphicon-th-list"></span> Queries</a></li>
                     <li class="horizontal"><a href="#"><span class="glyphicon glyphicon-random"></span>Utilities</a></li>
                 </ul>

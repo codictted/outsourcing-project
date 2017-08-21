@@ -15,7 +15,7 @@
         	if ($user == 'admin' && $pass == 'admin') {
 
                 $this->session->set_userdata("usertype" ,"1");
-                redirect(base_url('dashboard'));
+                redirect(base_url('dashboard/'));
             }
             else {
                 $this->load->model("Client_model");

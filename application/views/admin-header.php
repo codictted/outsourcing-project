@@ -11,11 +11,28 @@
         <script src="<?php echo base_url(); ?>assets/js/jquery-function.js"></script>
         <script src="<?php echo base_url(); ?>assets/select2/dist/js/select2.min.js"></script>    
 
+       <!--  <script src="<?php echo base_url(); ?>assets/flot/jquery.flot.pie.js"></script>
+
+        <script src="<?php echo base_url(); ?>assets/flot/excanvas.min.js"></script>
+        <script src="<?php echo base_url(); ?>assets/flot/jquery.flot.js"></script>
+
+        <script src="<?php echo base_url(); ?>assets/flot/jquery.flot.pie.js"></script>
+        <script src="<?php echo base_url(); ?>assets/flot/jquery.flot.resize.js"></script>
+
+        <script src="<?php echo base_url(); ?>assets/flot/jquery.flot.time.js"></script>
+        <script src="<?php echo base_url(); ?>assets/flot-tooltip/jquery.flot.tooltip.min.js"></script>
+        <script src="<?php echo base_url(); ?>assets/morrisjs/morris.js"></script>
+        <script src="<?php echo base_url(); ?>assets/raphael/raphael.js"></script> -->
+
+
         <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/select2/dist/css/select2.min.css">  
         <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/sb-admin.css">
         <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/dataTables.min.css">
         <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/bootswatch.css">
         <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/style.css">  
+
+
+        <!-- <link href="<?php echo base_url(); ?>assets/morrisjs/morris.css" rel="stylesheet"> -->
         
 
     </head>

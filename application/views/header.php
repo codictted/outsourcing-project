@@ -7,12 +7,13 @@
         <script src="<?php echo base_url(); ?>assets/js/jquery.validate.min.js"></script>
         <script src="<?php echo base_url(); ?>assets/js/jquery-ui.min.js"></script>
         <script src="<?php echo base_url(); ?>assets/js/jquery-function.js"></script>
-        <script src="<?php echo base_url(); ?>assets/magicsuggest/magicsuggest-min.js"></script>
         <script src="<?php echo base_url(); ?>assets/js/jquery-application.js"></script>
+        <script src="<?php echo base_url(); ?>assets/select2/dist/js/select2.full.min.js"></script>
 
-        <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/magicsuggest/magicsuggest.css">
+
         <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/bootswatch.css">
         <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/style.css">
+        <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/select2/dist/css/select2.css">
     </head>
     <body>
         <div class="navbar navbar-default navbar-fixed-top">

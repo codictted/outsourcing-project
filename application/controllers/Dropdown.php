@@ -13,5 +13,11 @@
 			$data = $this->Dropdown_model->get_skill_list($id);
 			return json_encode($data)
 		}
+
+		public function get_benefit_list() {
+
+			$data = $this->Dropdown_model->get_benefit();
+			return json_encode($data);
+		}
 	} 
 ?>

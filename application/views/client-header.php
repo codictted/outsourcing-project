@@ -10,16 +10,14 @@
         <script src="<?php echo base_url(); ?>assets/js/dataTables.min.js"></script>
         <script src="<?php echo base_url(); ?>assets/js/jquery-function.js"></script>
         <script src="<?php echo base_url(); ?>assets/jquery-weekly-scheduler/src/index.js"></script>
-        <script src="<?php echo base_url(); ?>assets/magicsuggest/magicsuggest-min.js"></script>
-        <script src="<?php echo base_url(); ?>assets/fastselect-master/dist/fastselect.js"></script>
+        <script src="<?php echo base_url(); ?>assets/select2/dist/js/select2.full.min.js"></script>
 
 
-        <link rel="stylesheet" href="<?php echo base_url(); ?>assets/fastselect-master/dist/fastselect.min.css">
-        <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/magicsuggest/magicsuggest.css">
         <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/sb-admin.css">
         <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/dataTables.min.css">
         <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/bootswatch.css">
-        <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/style.css">  
+        <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/style.css">
+        <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/select2/dist/css/select2.css">
     </head>
     <body>
     <?php if($this->session->userdata('name')): ?>

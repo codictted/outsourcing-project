@@ -27,7 +27,9 @@
 
             $data["job_cat"] = $this->get_job_cat();
             $data["set"] = $this->get_skill_set();
+            $data['education'] = $this->Dropdown_model->get_education();
             $data["course"] = $this->get_course();
+            $data["spoken"] = $this->Dropdown_model->get_spoken_lang();
             $data["title"] = "Application Form";
             $this->load->view("header", $data);
             $this->load->view("nav");
@@ -462,6 +464,22 @@
                     }
                 }
 
+                //insert skills
+                $skill = $this->input->post("skills");
+                $count = count($skill);
+                if($count > 0) {
+
+                    for($i = 0; $i < $count; $i++) {
+
+                        $data = array(
+                            "applicant_id" => $app_id,
+                            "skill_id" => $skill[$i]
+                        );
+
+                        $this->Applicant_model->insert_skills($data);
+                    }
+                }
+
                 //insert seminar/training
                 $training_title = $this->input->post("training_title");
                 $training_org = $this->input->post("training_org");
@@ -571,7 +589,7 @@
                 redirect(base_url()."applicant/");
 
              }
-             $this->session->set_flashdata("fail_notification_application", "Sorry, there were some errors encountered in your application. Please review your form or try again later.");
+            $this->session->set_flashdata("fail_notification_application", "Sorry, there were some errors encountered in your application. Please review your form or try again later.");
 
             $data["job_cat"] = $this->get_job_cat();
             $data["set"] = $this->get_skill_set();

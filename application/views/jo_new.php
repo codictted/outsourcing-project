@@ -108,10 +108,119 @@
         </div>
         <div class="form-group">
             <div class="col-lg-10 col-lg-offset-2">
-                <button type="button" class="btn btn-primary pull-right" onclick="window.location.href='order_confirm'">Post Job</button>
+                <button type="button" class="btn btn-primary pull-right" data-toggle="modal" data-target="#edit_ad">Post Job</button>
                 <button type="reset" class="btn btn-default pull-right">Reject</button>
             </div>
         </div>
     </div>
 </body>
 </html>
+
+<div class="modal" role="dialog" id="edit_ad">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Edit Job Advertisement</h4>
+            </div>
+            <form action="<?php echo base_url('admin/post_ad'); ?>" method="post" id="job_capt">
+                <div class="modal-body">
+                    <label class="sub-label"><b><?php echo $order_details->jname; ?></b></label><br><br>
+                    <table class="details">
+                        <thead>
+                            <th class="small" colspan="4">Show in Job Ad</th>
+                            <th></th>
+                            <th></th>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><center><input type="checkbox" name="on[]" value="employer" checked></center></td>
+                                <td><b>Employer: </b></td>
+                                <td><?php echo $processed_data['name']; ?></td>
+                            </tr>
+                            <tr>
+                                <td><center><input type="checkbox" name="on[]" value="slot"></center></td>
+                                <td><b>Total Slot: </b></td>
+                                <td><?php echo $processed_data['total']; ?></td>
+                            </tr>
+                            <tr>
+                                <td><center><input type="checkbox" name="on[]" value="age" checked></center></td>
+                                <td><b>Age: </b></td>
+                                <td><?php echo $processed_data['age']; ?></td>
+                            </tr>
+                            <tr>
+                                <td><center><input type="checkbox" name="on[]" value="education" checked></center></td>
+                                <td><b>Education: </b></td>
+                                <td><?php echo $processed_data['education']; ?></td>
+                            </tr>
+                            <tr>
+                                <td><center><input type="checkbox" name="on[]" value="course" checked></center></td>
+                                <td><b>Course: </b></td>
+                                <td><?php echo $processed_data['course']; ?></td>
+                            </tr>
+                            <tr>
+                                <td><center><input type="checkbox" name="on[]" value="single" checked></center></td>
+                                <td><b>Must be Single: </b></td>
+                                <td><?php echo $processed_data['single']; ?></td>
+                            </tr>
+                            <tr>
+                                <td><center><input type="checkbox" name="on[]" value="height" checked></center></td>
+                                <td><b>Height: </b></td>
+                                <td><?php echo $processed_data['height']; ?></td>
+                            </tr>
+                            <tr>
+                                <td><center><input type="checkbox" name="on[]" value="weight" checked></center></td>
+                                <td><b>Weight: </b></td>
+                                <td><?php echo $processed_data['weight']; ?></td>
+                            </tr>
+                            <tr>
+                                <td><center><input type="checkbox" name="on[]" value="urgent" checked></center></td>
+                                <td><b>Urgent: </b></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td><center><input type="checkbox" name="on[]" value="skills" checked></center></td>
+                                <td><b>Skills: </b></td>
+                                <td><?php echo $processed_data['skills']; ?></td>
+                            </tr>
+                            <tr>
+                                <td><center><input type="checkbox" name="on[]" value="benefits" checked></center></td>
+                                <td><b>Benefits: </b></td>
+                                <td><?php echo $processed_data['benefits']; ?></td>
+                            </tr>
+                            <tr>
+                                <td><center><input type="checkbox" name="on[]" value="requirements"></center></td>
+                                <td><b>Additional Requirement: </b></td>
+                                <td><?php echo $processed_data['requirements']; ?></td>
+                            </tr>
+                            <tr>
+                                <td><center><input type="checkbox" name="on[]" value="description" checked></center></td>
+                                <td><b>Description: </b></td>
+                                <td><?php echo $order_details->description; ?></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <br>
+                    <p>Submit the word you see below to proceed:</p>
+                    <div class="form-group">
+                        <div class="col-lg-6">
+                            <p id="captImg"><?php echo $captcha_img; ?></p>
+                        </div>
+                        <div class="error-form col-lg-6">
+                            <input type="hidden" name="code" value="<?php echo $this->session->userdata('captchaCode'); ?>">
+                            <input type="hidden" name="jobid" value="<?php echo $job_id; ?>">
+                            <input type="text" name="captcha" id="captcha" required class="form-control" placeholder="Type captcha here">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Post</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+</script>

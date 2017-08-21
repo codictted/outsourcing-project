@@ -173,7 +173,10 @@
                                 <tr><td><b>----</b></td></tr>
                                 <tr>
                                     <td><b>Skills:</b></td>
-                                    <td><i>PHP, RDBMS, Codeigniter, Exceptional logic</i></td>
+                                    <td><i>
+                                        <?php foreach($skills as $sk) {
+                                        echo $sk->skname .", "; } ?>
+                                    </i></td>
                                 </tr>
                             </table>
                         </div>

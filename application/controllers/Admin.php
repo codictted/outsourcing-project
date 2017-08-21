@@ -8,6 +8,7 @@
             $this->load->model("Client_model");
             $this->load->model("Applicant_model");
             $this->load->model("Dropdown_model");
+            $this->load->model("Admin_model");
         }
 
         public function get_client() {
@@ -522,6 +523,17 @@
             }
         }
 
+        public function process_client_name($data) {
+
+            $clean_client_name = array();
+            foreach($data as $d) {
+
+                is_null($d->comp_name) ?
+                array_push($clean_client_name, $d->full_name) : 
+                array_push($clean_client_name, $d->comp_name);
+            }
+            return $clean_client_name;
+        }
          public function applist_new($id) {
 
             if($this->session->userdata("usertype") == "1") {
@@ -533,6 +545,8 @@
                 $data['applicant_sem'] = $this->Applicant_model->get_sem($id);
                 $data['applicant_personality'] = $this->Applicant_model->get_personality($id);
                 $data['applicant_essay'] = $this->Applicant_model->get_essay($id);
+                $data['client_list'] = $this->Admin_model->client_list_matching($data['applicant_det']->job_id);
+                $data['client_name'] = $this->process_client_name($data['client_list']);
                 $this->load->view("admin-header", $data);
                 $this->load->view("nav-transaction");
                 $this->load->view("applist_new");
@@ -543,10 +557,156 @@
             }
         }
 
-        public function applist_matched() {
+        public function compute_job_match($job_order, $applicant) {
+
+            $match_result = array();
+            //get applicant skill list
+            $app_skill = $this->Applicant_model->get_skills($applicant->id);
+            $askill = array();
+            foreach($app_skill as $sk) {
+
+                array_push($askill, $sk->skill_id);
+            }
+
+            //get each job_order's details and required skills/qualification to match against applicant's
+            foreach($job_order as $jo) {
+
+                $index = 0;
+                $no_items = 0;
+                $no_match = 0;
+
+                $jo_details = $this->Client_model->get_jdetails($jo->order_id);
+                $jo_skills = $this->Client_model->get_job_order_skills($jo->order_id);
+                //get skill id of a specific job order
+                $jskills = array();
+                foreach($jo_skills as $sk) {
+
+                    array_push($jskills, $sk->skill);
+                    $no_items++;
+                }
+
+                //get client name
+                $cname = is_null($jo->comp_name) ? $jo->full_name : $jo->comp_name;
+                $index == 0 ?
+                array_push($match_result, array("client_name" => $cname)) :
+                array_push($match_result[$index], array("client_name" => $cname));
+                $match_skill = array();
+                $nonmatch_skill = array();
+                $match_quali = array();
+                $nonmatch_quali = array();
+                //compare job order skill and applicant skill
+                foreach($jskills as $jsk) {
+
+                    if(in_array($jsk, $askill)) {
+
+                        $name = $this->Dropdown_model->get_skill_name($jsk);
+                        array_push($match_skill, $name[0]->name);
+                        $no_match++;
+                        $no_items++;
+                    }
+                    else {
+
+                        $name = $this->Dropdown_model->get_skill_name($jsk);
+                        array_push($nonmatch_skill, $name[0]->name);
+                        $no_items++;
+                    }
+                }
+                array_push($match_result[$index], array("matched_skill" => $match_skill));
+                array_push($match_result[$index], array("nonmatch_skill" => $nonmatch_skill));
+
+                //match education
+                if(!(is_null($jo_details[0]->education))) {
+
+                    $no_items++;
+                    $name = $this->Dropdown_model->get_education_name($jo_details[0]->education);
+                    if($applicant->education == $jo_details[0]->education) {
+
+                        array_push($match_quali, array("education" => $name));
+                        $no_match++;
+                    }
+                    else
+                        array_push($nonmatch_quali, array("education" => $name));
+                }
+
+                //match course
+                if(!(is_null($jo_details[0]->course))) {
+
+                    $no_items++;
+                    $name = $this->Dropdown_model->get_course_name($jo_details[0]->course);
+                    if($jo_details[0]->course == $applicant->course) {
+
+                        array_push($match_quali, array("course" => $name));
+                            $no_match++;
+                    }
+
+                    else
+                        array_push($nonmatch_quali, array("course" => $name));
+                }
+
+                //match weight
+                if(!(is_null($jo_details[0]->weight))) {
+
+                    $no_items++;
+                    if($jo_details[0]->weight == $applicant->weight) {
+
+                        array_push($match_quali, array("weight" => $jo_details[0]->weight." kg"));
+                        $no_match++;
+                    }
+                    else
+                        array_push($nonmatch_quali, array("weight" => $jo_details[0]->weight." kg"));
+
+                }
+
+                //match height
+                if(!(is_null($jo_details[0]->height))) {
+
+                    $no_items++;
+                    if($jo_details[0]->height == $applicant->height) {
+
+                        array_push($match_quali, array("height" => $jo_details[0]->height));
+                        $no_match++;
+                    }
+                    else
+                        array_push($nonmatch_quali, array("height" => $jo_details[0]->height));
+                }
+
+                //match gender
+                //$gender = $jo_details[0]->gender == 1 ? "Male" : "Female";
+
+                //saka na yung gender, medyo complicated hehhehe
+
+                //match single
+                if($jo_details[0]->single == 1) {
+
+                    $no_items++;
+                    if($applicant->civil_status == 1) {
+
+                        array_push($match_quali, array("civil_status" => "Must be single"));
+                        $no_match++;
+                    }
+
+                    else
+                        array_push($nonmatch_quali, array("civil_status" => "Must be single"));
+                }
+
+                //match age
+                
+
+                $index++;
+            }
+
+            var_dump($match_result);
+            die();
+        }
+
+        public function applist_matched($id) {
 
             if($this->session->userdata("usertype") == "1") {
                 $data['title'] = "Applicant Job Match Result";
+                $data['applicant_det'] = $this->Applicant_model->get_details($id);
+                $data['applicant_skills'] = $this->Applicant_model->get_skills($id);
+                $data['client_list'] = $this->Admin_model->client_list_matching($data['applicant_det']->job_id);
+                $data['match_result'] = $this->compute_job_match($data['client_list'], $data['applicant_det']);
                 $this->load->view("admin-header", $data);
                 $this->load->view("nav-transaction");
                 $this->load->view("applist_matched");

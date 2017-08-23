@@ -69,6 +69,14 @@
                         </div>
                     </div>
                 </div>
+                <?php if($this->session->flashdata("success_notification")): ?>
+                <div class="col-lg-12">
+                    <div class="alert alert-success alert-dismissable small">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                        <i class="glyphicon glyphicon-info-sign"></i><b>Well Done!</b> <p class="alert-p"><?php echo $this->session->flashdata("success_notification"); ?></p>
+                    </div>
+                </div>
+                <?php endif; ?>
                 <div class="form-group col-lg-12">
                     <label class="form-label col-lg-1">Filter:</label>
                     <div class="col-lg-3">
@@ -112,16 +120,86 @@
                 <tbody>
                     <?php
                         foreach ($applicant as $app) { 
-                        $stat = $app->status == 0 ? "New" : "Something else";
-                        $gen = $app->gender == 1 ? "Male" : "Female"; ?>
+                            $status = "";
+                            $url = "";
+                            $page = 1; // triggers new page; 2 if modal
+                            switch ($app->status) {
+                                case '0':
+                                    $status = "New";
+                                    $url = base_url()."admin/applist_new/";
+                                    break;
+
+                                case '1':
+                                    $status = "Job Matched";
+                                    $url = base_url()."admin/applist_matched/";
+                                    break;
+
+                                case '2':
+                                    $status = "For Interview";
+                                    $url = "interview_modal";
+                                    $page = 2;
+                                    break;
+                                
+                                case '3':
+                                    $status = "For Interview(Default)";
+                                    break;
+
+                                case '4':
+                                    $status = "Failed Interview";
+                                    break;
+
+                                case '5':
+                                    $status = "Ready to Shortlist";
+                                    break;
+
+                                case '6':
+                                    $status = "Shortlisted";
+                                    break;
+                                
+                                case '7':
+                                    $status = "Shortlisted - Rejected";
+                                    break;
+
+                                case '8':
+                                    $status = "Shortlisted - Selected";
+                                    break;
+
+                                case '9':
+                                    $status = "Job Offered";
+                                    break;
+
+                                case '10':
+                                    $status = "Job Offere - Rejected";
+                                    break;
+                                
+                                case '11':
+                                    $status = "Passing of Requirements";
+                                    break;
+
+                                case '12':
+                                    $status = "For Endorsement";
+                                    break;
+                                
+                                case '13':
+                                    $status = "Deployed";
+                                    break;
+                            }
+                            $gen = $app->gender == 1 ? "Male" : "Female"; ?>
                     <tr id="<?php echo $app->id; ?>" onclick="get_app(this.id)">
-                        <td><?php echo $stat; ?></td>
+                        <td><?php echo $status; ?></td>
                         <td><?php echo $app->first_name.' '.$app->last_name; ?></td>
                         <td><?php echo $app->jname; ?></td>
                         <td><?php echo $gen; ?></td>
                         <td>Filipino/Visayan</td>
                         <td><?php echo $app->application_date; ?></td>
-                        <td><button class="btn btn-default btn-sm table-btn" id="<?php echo $app->id; ?>" onclick="window.location.href='<?php echo base_url()?>admin/applist_new/'+this.id"><span class="glyphicon glyphicon-list"></span></button></td>
+                        <td>
+                            <?php if($page == 1) { ?>
+                                <button class="btn btn-default btn-sm table-btn" id="<?php echo $app->id; ?>" onclick="window.location.href='<?php echo $url; ?>'+this.id"><span class="glyphicon glyphicon-list"></span>
+                            <?php } else { ?>
+                                <button type="button" class="btn btn-default btn-sm modal-btn" id="<?php echo $app->id."-".$url; ?>"><span class="glyphicon glyphicon-list"></span>
+                                </button>
+                            <?php } ?>
+                        </td>
                     </tr>
                     <?php } ?>
                     <!-- <tr class="tr_click">
@@ -229,6 +307,49 @@
     </div>
 </body>
 </html>
+
+<div class="modal" role="dialog" id="interview_modal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Interview Result</h4>
+            </div>
+            <div class="modal-body">
+                <form action="<?php echo base_url('admin/update_applicant_interview'); ?>" method="post" class="form-horizontal" id="update_interview_form">
+                <div class="form-group">
+                    <label class="col-lg-3 control-label form-label">
+                        Result:
+                    </label>
+                    <div class="col-lg-7">
+                        <div class="error-form">
+                            <input type="hidden" name="app_id" id="applicant_id">
+                            <select class="form-control" name="result" id="result">
+                                <option value="1">Passed</option>
+                                <option value="2">Failed</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-lg-3 control-label form-label">
+                        Remarks:
+                    </label>
+                    <div class="col-lg-7">
+                        <div class="error-form">
+                            <textarea rows="2" name="remarks" id="remarks" class="form-control"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <button type="submit" class="btn btn-primary">Save</button>
+            </div>
+            </form>
+        </div>
+    </div>
+</div>
 
 <script type="text/javascript">
     

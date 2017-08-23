@@ -1,6 +1,4 @@
     <?php
-        if($applicant_det->status == 0)
-            $stat = "NEW";
         $middle = is_null($applicant_det->middle_name) || $applicant_det->middle_name == "" ?
                     "" : $applicant_det->middle_name;
         $gender = $applicant_det->gender == 1 ? "Male" : "Female";
@@ -17,7 +15,7 @@
         <form>
             <fieldset>
                 <legend>Application Form</legend>
-                <label><a><?php echo $stat; ?></a></label>
+                <label><a><?php echo $status; ?></a></label>
             </fieldset>
         </form>
         <div class="col-lg-12">
@@ -270,10 +268,9 @@
                 <text>
                     Arlene Mariano will be match to the following client's job order:<br>
                     <ul>
-                        <li>Accenture</li>
-                        <li>Accenture</li>
-                        <li>Accenture</li>
-                        <li>Accenture</li>
+                        <?php foreach($client_list as $cl) { ?>
+                        <li><?php echo $cl; ?></li>
+                        <?php } ?>
                     </ul>
                 </text>
             </div>

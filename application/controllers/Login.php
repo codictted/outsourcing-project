@@ -43,46 +43,6 @@
             redirect(base_url());
         }
 
-        public function captcha() {
-            $this->load->helper('captcha');
-            $config = array(
-            'word'          => $this->random_word(),
-            'img_path'      => './captcha/',
-            'img_url'       => base_url().'captcha/',
-            'img_width'     => '150',
-            'img_height'    => 30,
-            'expiration'    => 7200,
-            'word_length'   => 8,
-            'font_size'     => 16,
-             'colors'        => array(
-                'background' => array(255, 255, 255),
-                'border' => array(255, 255, 255),
-                'text' => array(0, 0, 0),
-                'grid' => array(255, 40, 40)
-                )
-            );
-
-            $captcha = create_captcha($config);
-            $this->session->unset_userdata('captchaCode');
-            $this->session->set_userdata('captchaCode',$captcha['word']);
-            $data['captcha_img'] = $captcha['image'];
-            $this->load->view("captcha", $data);
-        }
-
-        public function random_word() {
-
-            $this->load->helper("string");
-            return random_string("alpha", 4);
-        }
-
-        public function check() {
-
-            $user = $this->input->post("captcha");
-            var_dump($this->session->userdata("captchaCode"));
-            var_dump($user);
-            die();
-        }
-
         public function refresh(){
             // Captcha configuration
             $config = array(

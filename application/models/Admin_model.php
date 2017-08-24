@@ -97,5 +97,36 @@
 
 			return $this->db->affected_rows();
 		}
+
+		public function get_client_active_job_orders() {
+
+			$query = $this->db->query("SELECT DISTINCT c.id, c.comp_name, c.full_name, jo.job_id, jpos.name from client as c JOIN job_order as jo ON c.id = jo.client_id JOIN job_position as jpos ON jpos.id=jo.job_id WHERE jo.status = 0 OR jo.status = 2");
+
+			return $query->result();
+		}
+
+		public function get_job_order($id) {
+
+			$this->db->select("job_order.order_id, job_order.job_id, job_position.name");
+			$this->db->from("job_order");
+			$this->db->join("job_position", "job_order.job_id=job_position.id");
+			$this->db->where("client_id", $id);
+			$this->db->where("job_order.status", 0);
+			$this->db->or_where("job_order.status", 1);
+			$query = $this->db->get();
+
+			return $query->result();
+		}
+
+		public function get_applicant_shortlist($id) {
+
+			$this->db->select("first_name, last_name, gender");
+			$this->db->from("applicant");
+			$this->db->where("status", 5);
+			$this->db->where("job_id", $id);
+			$query = $this->db->get();
+
+			return $query->result();
+		}
 	}
 ?>

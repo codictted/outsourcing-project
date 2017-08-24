@@ -253,6 +253,7 @@
 
             if($this->session->userdata("usertype") == "1") {
                 $data['title'] = "Create a Shortlist";
+                $data['client'] = $this->Admin_model->get_client_active_job_orders();
                 $this->load->view("admin-header", $data);
                 $this->load->view("nav-transaction");
                 $this->load->view("create_shortlist");
@@ -784,7 +785,7 @@
                 $date = $this->input->post("interview_date");
                 $app_id = $this->input->post("app_id");
                 $date_time = "".$date."".$time;
-                
+                $message = $message." ".$date_time;
                 $mark = TRUE;
                 while($mark) {
 
@@ -817,7 +818,8 @@
                     redirect(base_url("admin/admin_applicant_list"));
                 }
                 else {
-                    echo "Error Num ". $result . " was encountered!";
+                    $this->session->set_flashdata("fail_notification", "Maximum number of messages sent reached.");
+                    redirect(base_url("admin/admin_applicant_list"));
                 }
             }
         }
@@ -1040,5 +1042,22 @@
             }
         }
 
+        public function get_job_order($id) {
+
+            $data = $this->Admin_model->get_job_order($id);
+            echo json_encode($data);
+        }
+
+        public function get_job_order_details($id) {
+
+            $data = $this->Client_model->get_joborder_details($id);
+            echo json_encode($data);
+        }
+
+        public function get_applicant_shortlist($id) {
+
+            $data = $this->Admin_model->get_applicant_shortlist($id);
+            echo json_encode($data);
+        }
 	}
 ?>

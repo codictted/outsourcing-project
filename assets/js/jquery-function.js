@@ -435,6 +435,16 @@ $(function () {
   $(".table-btn").click(function(event) {
     event.stopPropagation();
   });
+
+
+  $(".modal-btn").click(function(event) {
+    event.stopPropagation();
+    var id = this.id;
+    var a_id = id.split("-")[0];
+    var mod = id.split("-")[1];
+    $("#applicant_id").val(a_id);
+    $("#" + mod).modal("show");
+  });
 });
 
 $(function (){
@@ -447,29 +457,3 @@ $(function (){
     }, 3000);
   });
 });
-
-
-//dashboard animation
-// $(document).load(function(){
-//     $(".dash1").animate({left: '250px'});
-// }); 
-// $(function() {
-
-//     //application form -skills
-//     // $('#skill-ms').magicSuggest({
-//     // });
-
-//     //job order form -skills
-//     $('#job-order-skill-ms').magicSuggest({
-//     });
-//     //job order form -qualification
-//     $('#job-order-quali-ms').magicSuggest({
-//     });
-//     //job order form -benefits
-//     $('#job-order-benefit-ms').magicSuggest({
-//     });
-//     //job order form -additional req
-//     $('#job-order-req-ms').magicSuggest({
-//     });
-// });
-//   

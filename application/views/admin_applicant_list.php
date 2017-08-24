@@ -77,6 +77,15 @@
                     </div>
                 </div>
                 <?php endif; ?>
+                <?php if($this->session->flashdata("fail_notification")): ?>
+                    <div class="col-lg-12">
+                        <div class="alert alert-danger alert-dismissable small">
+                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                            <strong>Oh snap!</strong>
+                            <p class="alert-p"><?php echo $this->session->flashdata('fail_notification_contact_us'); ?></p>
+                        </div>
+                    </div>
+                <?php endif; ?>
                 <div class="form-group col-lg-12">
                     <label class="form-label col-lg-1">Filter:</label>
                     <div class="col-lg-3">
@@ -190,7 +199,7 @@
                         <td><?php echo $app->first_name.' '.$app->last_name; ?></td>
                         <td><?php echo $app->jname; ?></td>
                         <td><?php echo $gen; ?></td>
-                        <td>Filipino/Visayan</td>
+                        <td>Filipino</td>
                         <td><?php echo $app->application_date; ?></td>
                         <td>
                             <?php if($page == 1) { ?>

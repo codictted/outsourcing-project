@@ -892,14 +892,6 @@ $(function() {
                     list.push('<option value="' + id.id + '">' + name.name + '</option>');
                 });
                 $("#skill-ms").html(list.join('')).prop("disabled", false);
-
-                 $("#skill-ms").magicSuggest({
-                    // data: url + id,
-                    // valueField: "id",
-                    // displayField: "name"
-
-                    // alert(id);
-                });
             }
         });
     });

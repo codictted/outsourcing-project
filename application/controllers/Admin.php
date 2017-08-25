@@ -27,6 +27,28 @@
             if($this->session->userdata("usertype") == "1") {
                 $data['title'] = "List of Client";
                 $data['client'] = $this->get_client();
+                $this->load->helper('captcha');
+                $config = array(
+                'word'          => $this->random_word(),
+                'img_path'      => './captcha/',
+                'img_url'       => base_url().'captcha/',
+                'img_width'     => '130',
+                'img_height'    => 40,
+                'expiration'    => 7200,
+                'word_length'   => 5,
+                'font_size'     => 16,
+                 'colors'        => array(
+                    'background' => array(255, 255, 255),
+                    'border' => array(255, 255, 255),
+                    'text' => array(0, 0, 0),
+                    'grid' => array(255, 40, 40)
+                    )
+                );
+
+                $captcha = create_captcha($config);
+                $this->session->unset_userdata('captchaCode');
+                $this->session->set_userdata('captchaCode',$captcha['word']);
+                $data['captcha_img'] = $captcha['image'];
                 $this->load->view("admin-header", $data);
                 $this->load->view("nav-transaction");
                 $this->load->view("admin_client_list");
@@ -783,7 +805,7 @@
                 $message = $this->input->post("message");
                 $time = $this->input->post("interview_time");
                 $date = $this->input->post("interview_date");
-                $app_id = $this->input->post("app_id");
+                $app_id = $this->input->post("applicant_id");
                 $date_time = "".$date."".$time;
                 $message = $message." ".$date_time;
                 $mark = TRUE;
@@ -895,9 +917,11 @@
 
             if($this->form_validation->run() !== FALSE) {
 
-                $id = $this->input->post("app_id");
+                $id = $this->input->post("applicant_id");
+                $res = $this->input->post("result");
                 $remarks = $this->input->post("remarks");
-                $this->Admin_model->update_applicant_status($id, 5);
+                $stat = $res == 1 ? 5 : 4;
+                $this->Admin_model->update_applicant_status($id, $stat);
                 $this->Admin_model->add_remarks($id, $remarks);
                 $this->session->set_flashdata("success_notification", "You have successfully updated the applicant's status.");
                 redirect(base_url("admin/admin_applicant_list"));
@@ -1058,6 +1082,91 @@
 
             $data = $this->Admin_model->get_applicant_shortlist($id);
             echo json_encode($data);
+        }
+
+        public function get_applicant_det($id) {
+
+            $data = $this->Applicant_model->get_details($id);
+            echo json_encode($data);
+        }
+
+        public function send_job_offer() {
+
+            $this->form_validation->set_rules("app_number", "Mobile Number", "required|numeric|exact_length[11]|strip_tags|xss_clean");
+            $this->form_validation->set_rules("message", "Message", "required|strip_tags|xss_clean");
+            $this->form_validation->set_rules("applicant_id", "Applicant ID", "required");
+
+            if($this->form_validation->run() !== FALSE) {
+
+                $num = $this->input->post("app_number");
+                $mes = $this->input->post("message");
+                // $result = $this->itexmo($num, $mes, "TR-PRINC971683_DKJI3");
+                // if ($result == ""){
+                //     echo "iTexMo: No response from server!!!
+                //     Please check the METHOD used (CURL or CURL-LESS). If you are using CURL then try CURL-LESS and vice versa.  
+                //     Please CONTACT US for help. ";  
+                // }
+                // else if ($result == 0){
+
+                    $app_id = $this->input->post("applicant_id");
+                    $this->Admin_model->update_applicant_status($app_id, 9);
+                    $this->session->set_flashdata("success_notification", "You have successfully sent the message!");
+                    redirect(base_url("admin/admin_applicant_list"));
+                // }
+                // else {
+                //     $this->session->set_flashdata("fail_notification", "Maximum number of messages sent reached.");
+                //     redirect(base_url("admin/admin_applicant_list"));
+                // }
+            }
+            else
+                echo validation_errors();
+        }
+
+        public function terminate_client() {
+
+
+            $this->form_validation->set_rules("code", "Code", "required");
+            $this->form_validation->set_rules("captcha", "Captcha", "required|matches[code]|strip_tags|xss_clean");
+
+            if($this->form_validation->run() !== FALSE) {
+
+                $cid = $this->input->post("client_id");
+                $reason = $this->input->post("reason");
+                $this->Admin_model->update_client_status($cid, $reason);
+                $this->session->set_flashdata("success_notification", "You have successfully terminated the client.");
+                redirect(base_url('admin/admin_client_list'));
+            }
+            else {
+
+                $data['title'] = "List of Client";
+                $data['client'] = $this->get_client();
+                $this->load->helper('captcha');
+                $config = array(
+                'word'          => $this->random_word(),
+                'img_path'      => './captcha/',
+                'img_url'       => base_url().'captcha/',
+                'img_width'     => '130',
+                'img_height'    => 40,
+                'expiration'    => 7200,
+                'word_length'   => 5,
+                'font_size'     => 16,
+                 'colors'        => array(
+                    'background' => array(255, 255, 255),
+                    'border' => array(255, 255, 255),
+                    'text' => array(0, 0, 0),
+                    'grid' => array(255, 40, 40)
+                    )
+                );
+
+                $captcha = create_captcha($config);
+                $this->session->unset_userdata('captchaCode');
+                $this->session->set_userdata('captchaCode',$captcha['word']);
+                $data['captcha_img'] = $captcha['image'];
+                $this->load->view("admin-header", $data);
+                $this->load->view("nav-transaction");
+                $this->load->view("admin_client_list");
+                
+            }
         }
 	}
 ?>

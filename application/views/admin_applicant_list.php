@@ -171,6 +171,8 @@
 
                                 case '8':
                                     $status = "Shortlisted - Selected";
+                                    $url = "job_offer_modal";
+                                    $page = 2;
                                     break;
 
                                 case '9':
@@ -211,105 +213,6 @@
                         </td>
                     </tr>
                     <?php } ?>
-                    <!-- <tr class="tr_click">
-                        <td>Job Matched</td>
-                        <td>Ryoma Echizen</td>
-                        <td>Tennis Player</td>
-                        <td>17/Male</td>
-                        <td>Japanese</td>
-                        <td>2017-07-03 5:45PM</td>
-                        <td><button class="btn btn-default btn-sm table-btn" onclick="window.location.href='applist_matched'"><span class="glyphicon glyphicon-list"></span></button></td>
-                    </tr>
-                    <tr class="tr_click">
-                        <td>For Interview</td>
-                        <td>Izahaya Orihara</td>
-                        <td>Company Driver</td>
-                        <td>39/Male</td>
-                        <td>Japanese</td>
-                        <td>2017-07-03 5:45PM</td>
-                        <td><button class="btn btn-default btn-sm table-btn" onclick="window.location.href='applist_interview'"><span class="glyphicon glyphicon-list"></span></button></td>
-                    </tr>
-                    <tr class="tr_click">
-                        <td>Failed Interview</td>
-                        <td>Len Tsukimori</td>
-                        <td>Janitor</td>
-                        <td>19/Male</td>
-                        <td>Pinoy</td>
-                        <td>2017-07-03 5:45PM</td>
-                        <td><button class="btn btn-default btn-sm table-btn" onclick="window.location.href='applist_finterview'"><span class="glyphicon glyphicon-list"></span></button></td>
-                    </tr>
-                    <tr class="tr_click">
-                        <td>Ready to Short List</td>
-                        <td>Hino Kahoko</td>
-                        <td>Violinist</td>
-                        <td>19/Female</td>
-                        <td>Japanese</td>
-                        <td>2017-07-03 5:45PM</td>
-                        <td><button class="btn btn-default btn-sm table-btn" onclick="window.location.href='applist_shortlist'"><span class="glyphicon glyphicon-list"></span></button></td>
-                    </tr>
-                    <tr class="tr_click">
-                        <td>Shortlisted (Rejected)</td>
-                        <td>Naruto Uzumaki</td>
-                        <td>Hokage</td>
-                        <td>18/Male</td>
-                        <td>Japanese</td>
-                        <td>2017-07-03 5:45PM</td>
-                        <td><button class="btn btn-default btn-sm table-btn" onclick="window.location.href='applist_short_rejected'"><span class="glyphicon glyphicon-list"></span></button></td>
-                    </tr>
-                    <tr class="tr_click">
-                        <td>Shortlisted (Selected)</td>
-                        <td>Jeremy Santos</td>
-                        <td>Kitchen Staff</td>
-                        <td>28/Male</td>
-                        <td>Filipino/Bicol</td>
-                        <td>2017-07-03 5:45PM</td>
-                        <td><button class="btn btn-default btn-sm table-btn" onclick="window.location.href='applist_joboffer'"><span class="glyphicon glyphicon-list"></span></button></td>
-                    </tr>
-                    <tr class="tr_click">
-                        <td>Job Offered</td>
-                        <td>Jeremy Santos</td>
-                        <td>Kitchen Staff</td>
-                        <td>28/Male</td>
-                        <td>Filipino/Bicol</td>
-                        <td>2017-07-03 5:45PM</td>
-                        <td><button class="btn btn-default btn-sm table-btn" onclick="alert('Accepted or Not')"><span class="glyphicon glyphicon-list"></span></button></td>
-                    </tr>
-                    <tr class="tr_click">
-                        <td>Job Offered (Rejected)</td>
-                        <td>Jeremy Santos</td>
-                        <td>Kitchen Staff</td>
-                        <td>28/Male</td>
-                        <td>Filipino/Bicol</td>
-                        <td>2017-07-03 5:45PM</td>
-                        <td><button class="btn btn-default btn-sm table-btn" onclick="alert('Accepted or Not')"><span class="glyphicon glyphicon-list"></span></button></td>
-                    </tr>
-                    <tr class="tr_click">
-                        <td>Passing of Requirements</td>
-                        <td>Jeremy Santos</td>
-                        <td>Kitchen Staff</td>
-                        <td>28/Male</td>
-                        <td>Filipino/Bicol</td>
-                        <td>2017-07-03 5:45PM</td>
-                        <td><button class="btn btn-default btn-sm table-btn" onclick="window.location.href='applist_requirements'"><span class="glyphicon glyphicon-list"></span></button></td>
-                    </tr>
-                    <tr class="tr_click">
-                        <td>For Endorsement</td>
-                        <td>Jeremy Santos</td>
-                        <td>Kitchen Staff</td>
-                        <td>28/Male</td>
-                        <td>Filipino/Bicol</td>
-                        <td>2017-07-03 5:45PM</td>
-                        <td><button class="btn btn-default btn-sm table-btn" onclick="alert('Accepted or Not')"><span class="glyphicon glyphicon-list"></span></button></td>
-                    </tr>
-                    <tr class="tr_click">
-                        <td>Deployed</td>
-                        <td>Jeremy Santos</td>
-                        <td>Kitchen Staff</td>
-                        <td>28/Male</td>
-                        <td>Filipino/Bicol</td>
-                        <td>2017-07-03 5:45PM</td>
-                        <td><button class="btn btn-default btn-sm table-btn" onclick="alert('Accepted or Not')"><span class="glyphicon glyphicon-list"></span></button></td>
-                    </tr> -->
                 </tbody>
             </table>
         </div>
@@ -328,11 +231,11 @@
                 <form action="<?php echo base_url('admin/update_applicant_interview'); ?>" method="post" class="form-horizontal" id="update_interview_form">
                 <div class="form-group">
                     <label class="col-lg-3 control-label form-label">
-                        Result:
+                        <text class="required">*</text> Result:
                     </label>
                     <div class="col-lg-7">
                         <div class="error-form">
-                            <input type="hidden" name="app_id" id="applicant_id">
+                            <input type="hidden" name="applicant_id">
                             <select class="form-control" name="result" id="result">
                                 <option value="1">Passed</option>
                                 <option value="2">Failed</option>
@@ -354,6 +257,46 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
                 <button type="submit" class="btn btn-primary">Save</button>
+            </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal" role="dialog" id="job_offer_modal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Send a Job Offer to <text id="app_name"></text> through SMS</h4>
+            </div>
+            <div class="modal-body">
+                <form action="<?php echo base_url('admin/send_job_offer'); ?>" method="post" class="form-horizontal" id="update_interview_form">
+                <div class="form-group">
+                    <label class="col-lg-3 control-label form-label">
+                        Mobile No:
+                    </label>
+                    <div class="col-lg-7">
+                        <div class="error-form">
+                            <input type="text" name="app_number" id="app_number" class="form-control">
+                            <input type="hidden" name="applicant_id">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-lg-3 control-label form-label">
+                        Message:
+                    </label>
+                    <div class="col-lg-7">
+                        <div class="error-form">
+                            <textarea rows="3" name="message" id="message" class="form-control"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <button type="submit" class="btn btn-primary">Send</button>
             </div>
             </form>
         </div>

@@ -399,37 +399,12 @@ $(function() {
         }
   });
 });
-//initiate draggable
-$(function () {
-  $("#left_shortlist .drag_tr tr, #right_shortlist .drag_tr tr").draggable({
-        helper: 'clone',
-        revert: 'invalid',
-        start: function (event, ui) {
-            $(this).css('opacity', '.5');
-               },
-        stop: function (event, ui) {
-            $(this).css('opacity', '1');
-            //some ajax function
-         }
-  });
 
-  $("#left_shortlist .drag_tr, #right_shortlist .drag_tr").droppable({
-      drop: function (event, ui) {
-      $(ui.draggable).appendTo(this);
-      }
-  });
-});
-
-//make table rows clickable
 $(function () {
+  
   $(".tr_click").click(function (){
     window.location.href='applicant_full_details';
   });
-
-  // $(".tr_click_client").click(function (){
-  //   alert($(this).val());
-  //   //window.location.href='client_full_details';
-  // });
 
 
   $(".table-btn").click(function(event) {
@@ -444,6 +419,45 @@ $(function () {
     var mod = id.split("-")[1];
     $("#applicant_id").val(a_id);
     $("#" + mod).modal("show");
+
+    var url = "http://localhost/outsourcing/admin/get_applicant_det/";
+    $.ajax({
+      dataType: "JSON",
+      url: url + a_id,
+      type: "GET",
+      success: function(data) {
+
+        $("#app_name").html(data.first_name);
+        $("#job_pos").html(data.jname);
+        $("#app_number").val(data.mobile);
+        $("[name='applicant_id']").val(a_id);
+      }
+    });
+  });
+
+  $(".modal-btn-client").click(function(event) {
+    event.stopPropagation();
+    var id = this.id;
+    var c_id = id.split("-")[0];
+    var mod = id.split("-")[1];
+    var c_name = id.split("-")[2];
+    $("#client_id").val(c_id);
+    $("[name='client-name']").html(c_name);
+    $("#" + mod).modal("show");
+
+    // var url = "http://localhost/outsourcing/admin/get_applicant_det/";
+    // $.ajax({
+    //   dataType: "JSON",
+    //   url: url + a_id,
+    //   type: "GET",
+    //   success: function(data) {
+
+    //     $("#app_name").html(data.first_name);
+    //     $("#job_pos").html(data.jname);
+    //     $("#app_number").val(data.mobile);
+    //     $("[name='applicant_id']").val(a_id);
+    //   }
+    // });
   });
 });
 

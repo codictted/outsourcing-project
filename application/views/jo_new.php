@@ -106,12 +106,14 @@
                 </div>
             </div>
         </div>
-        <div class="form-group">
-            <div class="col-lg-10 col-lg-offset-2">
-                <button type="button" class="btn btn-primary pull-right" data-toggle="modal" data-target="#edit_ad">Post Job</button>
-                <button type="reset" class="btn btn-default pull-right">Reject</button>
+        <form class="form-horizontal">
+            <div class="form-group">
+                <div class="col-lg-10 col-lg-offset-2">
+                    <button type="button" class="btn btn-primary pull-right" data-toggle="modal" data-target="#edit_ad">Post Job</button>
+                    <button type="reset" class="btn btn-default pull-right">Reject</button>
+                </div>
             </div>
-        </div>
+        </form>
     </div>
 </body>
 </html>

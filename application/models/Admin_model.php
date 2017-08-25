@@ -128,5 +128,12 @@
 
 			return $query->result();
 		}
+
+		public function update_client_status($id, $stat) {
+
+			$this->db->where("id", $id);
+			$this->db->set("status", $stat);
+			$this->db->update("client");
+		}
 	}
 ?>

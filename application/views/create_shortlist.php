@@ -60,7 +60,7 @@
                     <legend class="custom-legend">Ready for Shortlisting Applicants</legend>
                 </fieldset>
             </form>
-            <table id="choose_shortlist" class="drag_tr table-hover">
+            <table id="choose_shortlist" class="table-hover">
                 <thead>
                     <th>Name</th>
                     <th>Gender</th>
@@ -71,29 +71,19 @@
             </table>
         </div>
         
-        <div id="right_shortlist" class="col-lg-6" class="behind">
+        <div id="right_shortlist" class="col-lg-6">
             <form>
                 <fieldset>
                     <legend class="custom-legend">Selected Applicants</legend>
                 </fieldset>
             </form>
-            <table id="send_shortlist" class="drag_tr table-hover">
+            <table id="send_shortlist" class="table-hover">
                 <thead>
                     <th>Name</th>
                     <th>Gender</th>
                     <th>Match Result</th>
                 </thead>
                 <tbody>
-                <tr>
-                        <td>Arlene Mariano</td>
-                        <td>Female</td>
-                        <td>Hyaku Parsento</td>
-                    </tr>                    
-                    <tr>
-                        <td>Edward Elrick</td>
-                        <td>Male</td>
-                        <td>Hyaku Parsento</td>
-                    </tr>
                 </tbody>
             </table>
             <hr>
@@ -126,10 +116,9 @@
                 success: function(data) {
 
                     var list = [];
+                    list.push("<option>Choose</option>")
                     $.each(data, function(index, value) {
 
-                        if(index == 0)                            
-                            $("#job_name").html(value.name);
                         list.push('<option value="' + value.order_id + '-' + value.job_id + '">' + value.name + '</option>');
                     });
                     $("#job_order_list").html(list.join('')).prop("disabled", false);
@@ -163,25 +152,53 @@
             type: "GET",
             success: function(data) {
 
-                var populate = [];
-                var string_tr;
-                $.each(data, function(index, value) {
+                if(data.length == null || data.length == 0) {
 
-                    var gen = value.gender == 1 ? "Male" : "Female";
-                    string_tr = "<tr>";
-                    string_tr += "<td>";
-                    string_tr += value.first_name + " " + value.last_name;
-                    string_tr += "</td>";
-                    string_tr += "<td>";
-                    string_tr += gen;
-                    string_tr += "</td>";
-                    string_tr += "<td>";
-                    string_tr += "lol";
-                    populate.push(string_tr);
-                });
+                    var empty = [];
+                    var string_tbody = "<tr><td colspan='3'><center>No applicant(s) found</center></td></tr>";
+                    empty.push(string_tbody);
+                    $("#pop_left").html(empty.join(''));
+                }
+                else {
 
+                    var populate = [];
+                    var string_tr = "";
+                    $.each(data, function(index, value) {
 
-                $("#pop_left").html(populate.join(''));
+                        var gen = value.gender == 1 ? "Male" : "Female";
+                        string_tr = "<tr>";
+                        string_tr += "<td>";
+                        string_tr += value.first_name + " " + value.last_name;
+                        string_tr += "</td>";
+                        string_tr += "<td>";
+                        string_tr += gen;
+                        string_tr += "</td>";
+                        string_tr += "<td>";
+                        string_tr += "lol";
+                        populate.push(string_tr);
+                    });
+
+                    $("#pop_left").html(populate.join(''));
+
+                    $("tbody").addClass("drag_tr");
+                    $(".drag_tr tr").draggable({
+                        helper: 'clone',
+                        revert: 'invalid',
+                        start: function (event, ui) {
+                            $(this).css('opacity', '.5');
+                               },
+                        stop: function (event, ui) {
+                            $(this).css('opacity', '1');
+                            //some ajax function
+                         }
+                  });
+
+                    $("#left_shortlist .drag_tr, #right_shortlist .drag_tr").droppable({
+                      drop: function (event, ui) {
+                      $(ui.draggable).appendTo(this);
+                      }
+                  });
+                }
             }
         });
 

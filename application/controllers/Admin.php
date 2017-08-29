@@ -238,7 +238,7 @@
 
             if($this->session->userdata("usertype") == "1") {
                 $data['title'] = "List of Staff";
-                //$data['staff'] = $this->Staff_model->get_all();
+                $data['staff'] = $this->Staff_model->get_all();
                 $this->load->view("admin-header", $data);
                 $this->load->view("nav-transaction");
                 $this->load->view("admin_staff_list"); 
@@ -495,8 +495,10 @@
             if($this->form_validation->run() !== FALSE) {
 
                 $show = $this->input->post("on");
+                $id = $this->input->post("jobid");
+                $now = new DateTime(NULL, new DateTimeZone("Asia/Manila"));
                 $data = array(
-                    "order_id" => $this->input->post("jobid"),
+                    "order_id" => $id,
                     "employer" => 1,
                     "slot" => 1,
                     "age" => 1,
@@ -510,10 +512,15 @@
                     "benefits" => 1,
                     "requirements" => 1,
                     "description" => 1,
+                    "date_posted" => $now->format("Y-m-d H:i:s"),
+                    "ad_status" => 1
                 );
                 foreach($show as $col)
                     $data[$col] = 0;
-                print_r($data);
+                $this->Admin_model->post_job_order($data);
+                $this->Admin_model->update_joborder_status($id, 1);
+                $this->session->set_flashdata("success_notification_post_joborder", "You have successfully posted the client's job order!");
+                    redirect(base_url("admin/admin_order_list"));
             }
 
             else {
@@ -1133,7 +1140,7 @@
                 $cid = $this->input->post("client_id");
                 $reason = $this->input->post("reason");
                 $this->Admin_model->update_client_status($cid, $reason);
-                $this->session->set_flashdata("success_notification", "You have successfully terminated the client.");
+                $this->session->set_flashdata("success_notification_client_terminate", "You have successfully terminated the client.");
                 redirect(base_url('admin/admin_client_list'));
             }
             else {
@@ -1162,11 +1169,67 @@
                 $this->session->unset_userdata('captchaCode');
                 $this->session->set_userdata('captchaCode',$captcha['word']);
                 $data['captcha_img'] = $captcha['image'];
+
+
+                $this->session->set_flashdata("fail_notification_client_terminate", "There were errors encountered.".validation_errors());
                 $this->load->view("admin-header", $data);
                 $this->load->view("nav-transaction");
                 $this->load->view("admin_client_list");
-                
             }
+        }
+
+        public function job_offer_response() {
+
+            $id = $this->input->post("applicant_id");
+            $res = $this->input->post("result");
+            $stat = $res == 1 ? 11 : 10;
+            $this->Admin_model->update_applicant_status($id, $stat);
+            $this->session->set_flashdata("success_notification", "You have successfully updated the applicant's status.");
+            redirect(base_url('admin/admin_applicant_list'));
+        }
+
+        public function get_applicant_require($id) {
+
+            $data = $this->Admin_model->get_applicant_require($id);
+            echo json_encode($data);
+        }
+
+        public function save_applicant_require() {
+
+            $id = $this->input->post("applicant_id");
+            $checked = $this->input->post("passed");
+            var_dump($checked);
+            die();
+        }
+
+        public function save_shortlist() {
+
+            $app_id = $this->input->post("applist");
+            $cl_id = $this->input->post("client_id");
+            $o_id = $this->input->post("order_id");
+            $now = new DateTime(NULL, new DateTimeZone("Asia/Manila"));
+            foreach($app_id as $aid) {
+
+                $data = array(
+                    "order_id" =>  $o_id,
+                    "client_id" => $cl_id,
+                    "applicant_id" => $aid,
+                    "date_shortlist" => $now->format("Y-m-d H:i:s"),
+                    "status" => 0
+                );
+
+                $this->Admin_model->insert_shortlist($data);
+                $this->Admin_model->update_applicant_status($aid, 6);
+            }
+
+            $this->session->set_flashdata("success_notification", "You have successfully sent the shortlist to the client!");
+            redirect(base_url("admin/admin_applicant_list"));
+        }
+
+        public function get_shortlist_det($id) {
+
+            $data = $this->Admin_model->get_shortlist_det($id);
+            echo json_encode($data);
         }
 	}
 ?>

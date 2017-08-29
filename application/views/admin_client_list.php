@@ -8,13 +8,22 @@
                         <i class="glyphicon glyphicon-info-sign"></i><b>REMINDER:</b> <p class="alert-p">You can always filter the list by your own specifications.</p>
                     </div>
                 </div>
-                <?php if($this->session->flashdata("success_notification")): ?>
+                <?php if($this->session->flashdata("success_notification_client_terminate")): ?>
                 <div class="col-lg-12">
                     <div class="alert alert-success alert-dismissable small">
                         <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
                         <i class="glyphicon glyphicon-info-sign"></i><b>Well Done!</b> <p class="alert-p"><?php echo $this->session->flashdata("success_notification"); ?></p>
                     </div>
                 </div>
+                <?php endif; ?>
+                <?php if($this->session->flashdata("fail_notification_client_terminate")): ?>
+                    <div class="col-lg-12">
+                        <div class="alert alert-danger alert-dismissable small">
+                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                            <strong>Oh snap!</strong>
+                            <p class="alert-p"><?php echo $this->session->flashdata('fail_notification'); ?></p>
+                        </div>
+                    </div>
                 <?php endif; ?>
                 <div class="form-group col-lg-12">
                     <label class="form-label col-lg-1">Filter:</label>
@@ -159,7 +168,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                <button type="submit" class="btn btn-primary">Continue</button>
+                <button type="button" onclick="confirm()" class="btn btn-primary">Continue</button>
             </div>
         </div>
     </div>
@@ -180,5 +189,25 @@
 
     function get_nature(id) {
         alert(id);
+    }
+
+    function confirm() {
+
+        bootbox.confirm({
+        message: "This is a confirm with custom button text and color! Do you like it?",
+        buttons: {
+            confirm: {
+                label: 'Yes',
+                className: 'btn-success'
+            },
+            cancel: {
+                label: 'No',
+                className: 'btn-danger'
+            }
+        },
+        callback: function (result) {
+            console.log('This was logged in the callback: ' + result);
+        }
+    });
     }
 </script>

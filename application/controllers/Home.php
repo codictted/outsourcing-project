@@ -7,6 +7,8 @@
     		parent::__construct();
     		$this->load->library("session");
     		$this->load->helper("url");
+            $this->load->model("Admin_model");
+            $this->load->model("Client_model");
     	}
 
         public function index() {
@@ -160,6 +162,22 @@
             $data['title'] = "Your best Outsourcing Management";
             $this->load->view('header', $data);
             $this->load->view('home');
+        }
+
+        public function open_jobs_list() {
+
+            $data['title'] = "List of Job Openings";
+            $data['order_det'] = $this->Admin_model->get_all_job_post();
+            $this->load->view('header', $data);
+            $this->load->view('open_jobs_list');
+        }
+
+        public function job_ad_full($id) {
+
+            $data['title'] = "Full Details of Job Advertisement";
+            $details = $this->Admin_model->get_job_post($id);
+            var_dump($details);
+            
         }
     }
 ?>

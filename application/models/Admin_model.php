@@ -100,27 +100,20 @@
 
 		public function get_client_active_job_orders() {
 
-			$query = $this->db->query("SELECT DISTINCT c.id, c.comp_name, c.full_name, jo.job_id, jpos.name from client as c JOIN job_order as jo ON c.id = jo.client_id JOIN job_position as jpos ON jpos.id=jo.job_id WHERE jo.status = 0 OR jo.status = 2");
+			$query = $this->db->query("SELECT DISTINCT c.id, c.comp_name, c.full_name, jo.job_id, jpos.name from client as c left JOIN job_order as jo ON c.id = jo.client_id JOIN job_position as jpos ON jpos.id=jo.job_id WHERE jo.status = 0 OR jo.status = 1");
 
 			return $query->result();
 		}
 
 		public function get_job_order($id) {
 
-			$this->db->select("job_order.order_id, job_order.job_id, job_position.name");
-			$this->db->from("job_order");
-			$this->db->join("job_position", "job_order.job_id=job_position.id");
-			$this->db->where("client_id", $id);
-			$this->db->where("job_order.status", 0);
-			$this->db->or_where("job_order.status", 1);
-			$query = $this->db->get();
-
+			$query = $this->db->query("SELECT jo.client_id, jo.order_id, jo.job_id, jpos.name FROM job_order as jo JOIN job_position as jpos ON jo.job_id = jpos.id WHERE jo.client_id = $id AND "."(jo.status = 0 OR jo.status = 1)");
 			return $query->result();
 		}
 
 		public function get_applicant_shortlist($id) {
 
-			$this->db->select("first_name, last_name, gender");
+			$this->db->select("id, first_name, last_name, gender");
 			$this->db->from("applicant");
 			$this->db->where("status", 5);
 			$this->db->where("job_id", $id);
@@ -134,6 +127,116 @@
 			$this->db->where("id", $id);
 			$this->db->set("status", $stat);
 			$this->db->update("client");
+		}
+
+		public function post_job_order($data) {
+
+			$this->db->insert("job_order_post", $data);
+		}
+
+		public function update_joborder_status($id, $stat) {
+
+			$this->db->where("order_id", $id);
+			$this->db->set("status", $stat);
+			$this->db->update("job_order");	
+		}
+
+		public function get_all_job_post() {
+
+			$this->db->select("job_order.order_id, job_order.description, job_position.name as jname");
+			$this->db->from("job_order");
+			$this->db->join("job_position", "job_order.job_id = job_position.id", "left");
+			$this->db->where("job_order.status", 1);
+			$query = $this->db->get();
+
+			return $query->result();
+		}
+
+		public function get_job_post($id) {
+
+			$sk = FALSE; $bn = FALSE; $rq = FALSE;
+			$query_str = "SELECT ";
+			$fields = array("employer", "slot", "age", "education", "course", "single",
+				"height", "weight", "urgent", "skills", "benefits", "requirements", "description");
+			
+			foreach($fields as $field) {
+
+				switch($field) {
+					case "employer":
+						$query_str .= "client_id, ";
+						break;
+					case "slot":
+						$query_str .= "total_openings, num_male, num_female, ";
+						break;
+					case "age":
+						$query_str .= "min_age, max_age, ";
+						break;
+					case "skills":
+						$sk = TRUE;
+						break;
+					case "benefits":
+						$bn = TRUE;
+						break;
+					case "requirements":
+						$rq = TRUE;
+						break;
+					default:
+						$query = $this->db->query("SELECT ".$field." FROM job_order_post WHERE order_id = $id");
+						$qa = $query->result();
+						if($qa[0]->$field == 0);
+						$query_str .= $field.", ";
+						break;
+				}
+			}
+			$query_str = substr($query_str, 0, strlen($query_str)-2);
+			$query_str .= " FROM job_order WHERE order_id = $id";
+			$query = $this->db->query($query_str);
+			$query = $query->result();
+			if($sk){
+
+				$this->db->from("job_order_skill");
+				$this->db->where("job_order_id", $id);
+				$raw = $this->db->get();
+				array_push($query, $raw->result());
+			}
+
+			if($bn){
+
+				$this->db->from("job_order_benefit");
+				$this->db->where("job_order_id", $id);
+				$raw = $this->db->get();
+				array_push($query, $raw->result());
+			}
+
+			if($rq){
+
+				$this->db->from("job_order_req");
+				$this->db->where("job_order_id", $id);
+				$raw = $this->db->get();
+				array_push($query, $raw->result());
+			}
+			
+			return $query;
+		}
+
+		public function get_applicant_require($id) {
+
+			$this->db->select("applicant_requirement.status as is_submitted, requirement.*");
+			$this->db->from("applicant_requirement");
+			$this->db->join("requirement", "applicant_requirement.requirement_id = requirement.id");
+			$this->db->where("applicant_requirement.applicant_id", $id);
+			$query = $this->db->get();
+			return $query->result();
+		}
+
+		public function insert_shortlist($data) {
+
+			$this->db->insert("shortlist", $data);
+		}
+
+		public function get_shortlist_det($id) {
+
+			$query = $this->db->query("");
 		}
 	}
 ?>

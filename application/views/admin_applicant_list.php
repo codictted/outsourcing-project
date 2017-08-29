@@ -163,6 +163,8 @@
 
                                 case '6':
                                     $status = "Shortlisted";
+                                    $url = "shortlisted_modal";
+                                    $page = 2;
                                     break;
                                 
                                 case '7':
@@ -177,14 +179,18 @@
 
                                 case '9':
                                     $status = "Job Offered";
+                                    $url = "job_offer_response";
+                                    $page = 2;
                                     break;
 
                                 case '10':
-                                    $status = "Job Offere - Rejected";
+                                    $status = "Job Offered - Rejected";
                                     break;
                                 
                                 case '11':
                                     $status = "Passing of Requirements";
+                                    $url = "requirements_modal";
+                                    $page = 2;
                                     break;
 
                                 case '12':
@@ -206,6 +212,7 @@
                         <td>
                             <?php if($page == 1) { ?>
                                 <button class="btn btn-default btn-sm table-btn" id="<?php echo $app->id; ?>" onclick="window.location.href='<?php echo $url; ?>'+this.id"><span class="glyphicon glyphicon-list"></span>
+                                </button>
                             <?php } else { ?>
                                 <button type="button" class="btn btn-default btn-sm modal-btn" id="<?php echo $app->id."-".$url; ?>"><span class="glyphicon glyphicon-list"></span>
                                 </button>
@@ -268,7 +275,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Send a Job Offer to <text id="app_name"></text> through SMS</h4>
+                <h4 class="modal-title">Send a Job Offer to <text name="app_name"></text> through SMS</h4>
             </div>
             <div class="modal-body">
                 <form action="<?php echo base_url('admin/send_job_offer'); ?>" method="post" class="form-horizontal" id="update_interview_form">
@@ -297,6 +304,117 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
                 <button type="submit" class="btn btn-primary">Send</button>
+            </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal" role="dialog" id="job_offer_response">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Update applicant's response</h4>
+            </div>
+            <div class="modal-body">
+                <form action="<?php echo base_url('admin/job_offer_response'); ?>" method="post" class="form-horizontal">
+                <div class="form-group">
+                    <label class="col-lg-3 control-label form-label">
+                        <text class="required">*</text> Result:
+                    </label>
+                    <div class="col-lg-7">
+                        <div class="error-form">
+                            <input type="hidden" name="applicant_id">
+                            <select class="form-control" name="result">
+                                <option value="1">Accepted</option>
+                                <option value="2">Rejected</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <button type="submit" class="btn btn-primary">Save</button>
+            </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal" role="dialog" id="shortlisted_modal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Shortlist Details</h4>
+            </div>
+            <div class="modal-body">
+                <form action="<?php echo base_url('admin/job_offer_response'); ?>" method="post" class="form-horizontal">
+                <div class="form-group">
+                    <label class="col-lg-3 control-label form-label">
+                        Client:
+                    </label>
+                    <div class="col-lg-7">
+                        <div class="error-form">
+                            <text class="larger-label" id="cname"></text>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-lg-3 control-label form-label">
+                        Position:
+                    </label>
+                    <div class="col-lg-7">
+                        <div class="error-form">
+                            <text class="larger-label" id="pos"></text>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-lg-3 control-label form-label">
+                        Date shortlisted:
+                    </label>
+                    <div class="col-lg-7">
+                        <div class="error-form">
+                            <text class="larger-label" id="shor_date"></text>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <button type="submit" class="btn btn-primary">Save</button>
+            </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal" role="dialog" id="requirements_modal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Requirements Tracking for <text name="app_name"></text></h4>
+            </div>
+            <div class="modal-body">
+                <form action="<?php echo base_url('admin/save_applicant_require'); ?>" method="post" class="form-horizontal">
+                <input type="hidden" name="applicant_id">
+                <table class=" table custom-table-large">
+                    <thead>
+                        <th><center>Submitted</center></th>
+                        <th><center>Required Document</center></th>
+                        <th><center>Date Submitted</center></th>
+                    </thead>
+                    <tbody id="req_table">
+                        
+                    </tbody>
+                </table>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <button type="submit" class="btn btn-primary">Save</button>
             </div>
             </form>
         </div>

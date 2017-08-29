@@ -5,7 +5,7 @@
                 <div class="col-lg-12">
                     <div class="alert alert-info alert-dismissable small">
                         <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-                        <i class="glyphicon glyphicon-info-sign"></i><b>IMPORTANT:</b> <p class="alert-p">Please take note of the fileds with (<text class="required">*</text>), for they are required fields.</p>
+                        <i class="glyphicon glyphicon-info-sign"></i><b>IMPORTANT:</b> <p class="alert-p">Please take note of the fields with (<text class="required">*</text>), for they are required fields.</p>
                     </div>
                 </div>
 

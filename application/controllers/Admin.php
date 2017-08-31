@@ -9,6 +9,7 @@
             $this->load->model("Applicant_model");
             $this->load->model("Dropdown_model");
             $this->load->model("Admin_model");
+            $this->load->model("Staff_model");
         }
 
         public function get_client() {
@@ -816,25 +817,25 @@
                 $date_time = "".$date."".$time;
                 $message = $message." ".$date_time;
                 $mark = TRUE;
-                while($mark) {
+                // while($mark) {
 
-                    $sub = $message;
-                    if(strlen($sub) > 100) {
+                //     $sub = $message;
+                //     if(strlen($sub) > 100) {
 
-                        $sub = substr($message, 0, 100);
-                        $result = $this->itexmo($num, $sub, "TR-PRINC971683_DKJI3");
-                        $sub = substr($sub, 100);
-                    }
+                //         $sub = substr($message, 0, 100);
+                //         $result = $this->itexmo($num, $sub, "TR-PRINC971683_DKJI3");
+                //         $sub = substr($sub, 100);
+                //     }
 
-                    if(strlen($sub) <= 0)
-                        $mark = FALSE;
-                }
-                if ($result == ""){
-                    echo "iTexMo: No response from server!!!
-                    Please check the METHOD used (CURL or CURL-LESS). If you are using CURL then try CURL-LESS and vice versa.  
-                    Please CONTACT US for help. ";  
-                }
-                else if ($result == 0){
+                //     if(strlen($sub) <= 0)
+                //         $mark = FALSE;
+                // }
+                // if ($result == ""){
+                //     echo "iTexMo: No response from server!!!
+                //     Please check the METHOD used (CURL or CURL-LESS). If you are using CURL then try CURL-LESS and vice versa.  
+                //     Please CONTACT US for help. ";  
+                // }
+                // else if ($result == 0){
 
                     $data = array(
                         "applicant_id" => $app_id,
@@ -845,11 +846,11 @@
                     $this->Admin_model->update_applicant_status($app_id, 2);
                     $this->session->set_flashdata("success_notification", "You have successfully sent the message!");
                     redirect(base_url("admin/admin_applicant_list"));
-                }
-                else {
-                    $this->session->set_flashdata("fail_notification", "Maximum number of messages sent reached.");
-                    redirect(base_url("admin/admin_applicant_list"));
-                }
+                //}
+                //else {
+                //     $this->session->set_flashdata("fail_notification", "Maximum number of messages sent reached.");
+                //     redirect(base_url("admin/admin_applicant_list"));
+                // }
             }
         }
 

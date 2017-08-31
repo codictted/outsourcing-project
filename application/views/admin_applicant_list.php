@@ -351,43 +351,42 @@
                 <h4 class="modal-title">Shortlist Details</h4>
             </div>
             <div class="modal-body">
-                <form action="<?php echo base_url('admin/job_offer_response'); ?>" method="post" class="form-horizontal">
+                <form class="form-horizontal">
                 <div class="form-group">
-                    <label class="col-lg-3 control-label form-label">
+                    <label class="col-lg-4 control-label form-label">
                         Client:
                     </label>
-                    <div class="col-lg-7">
+                    <div class="col-lg-6">
                         <div class="error-form">
                             <text class="larger-label" id="cname"></text>
                         </div>
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-lg-3 control-label form-label">
+                    <label class="col-lg-4 control-label form-label">
                         Position:
                     </label>
-                    <div class="col-lg-7">
+                    <div class="col-lg-6">
                         <div class="error-form">
                             <text class="larger-label" id="pos"></text>
                         </div>
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-lg-3 control-label form-label">
+                    <label class="col-lg-4 control-label form-label">
                         Date shortlisted:
                     </label>
-                    <div class="col-lg-7">
+                    <div class="col-lg-6">
                         <div class="error-form">
                             <text class="larger-label" id="shor_date"></text>
                         </div>
                     </div>
                 </div>
+                </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                <button type="submit" class="btn btn-primary">Save</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Ok</button>
             </div>
-            </form>
         </div>
     </div>
 </div>

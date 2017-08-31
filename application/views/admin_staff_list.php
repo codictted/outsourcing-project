@@ -49,15 +49,32 @@
                     <th>Action</th>
                 </thead>
                 <tbody>
-                    <tr class="tr_click">
-                        <td>Active</td>
-                        <td>Ryoma Echizen</td>
-                        <td>Tennis Player</td>
-                        <td>17/Male</td>
-                        <td>Japanese</td>
-                        <td>2017-07-03 5:45PM</td>
+                    <?php foreach($staff as $st) {
+
+                        switch ($st->status) {
+                            case 0:
+                                $stat = "Active";
+                                break;
+                            
+                            case 1:
+                                $stat = "fasdf";
+                                break;
+                        }
+                        $gen = $st->gender == 1 ? "Male" : "Female";
+                        $client = is_null($st->comp_name) ? $st->full_name : $st->comp_name;
+
+                    ?>
+
+                    <tr id="<?php echo $st->applicant_id; ?>" onclick="get_app(this.id)">
+                        <td><?php echo $stat; ?></td>
+                        <td><?php echo $st->first_name." ".$st->last_name; ?></td>
+                        <td><?php echo $st->jname; ?></td>
+                        <td><?php echo $gen; ?></td>
+                        <td><?php echo $client; ?></td>
+                        <td><?php echo $st->deployment_date; ?></td>
                         <td><button class="btn btn-default btn-sm table-btn" onclick="window.location.href='applist_matched'"><span class="glyphicon glyphicon-list"></span></button></td>
                     </tr>
+                    <?php } ?>
                 </tbody>
             </table>
         </div>

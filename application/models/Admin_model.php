@@ -236,7 +236,8 @@
 
 		public function get_shortlist_det($id) {
 
-			$query = $this->db->query("");
+			$query = $this->db->query("SELECT sh.*, cl.comp_name, cl.full_name, jpos.name as jname FROM shortlist as sh JOIN job_order as jo ON jo.order_id = sh.order_id JOIN job_position as jpos ON jpos.id = jo.job_id JOIN client as cl ON cl.id = sh.client_id WHERE sh.applicant_id = $id AND sh.status = 0");
+			return $query->result();
 		}
 	}
 ?>

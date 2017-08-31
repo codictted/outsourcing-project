@@ -233,8 +233,4 @@ $('#application-form').validate({
         }
   });
 
-
-  $("#spoken-ms").magicSuggest({
-    
-  });
 });

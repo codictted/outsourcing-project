@@ -10,7 +10,12 @@
         <script src="<?php echo base_url(); ?>assets/js/dataTables.min.js"></script>
         <script src="<?php echo base_url(); ?>assets/js/jquery-function.js"></script>
         <script src="<?php echo base_url(); ?>assets/select2/dist/js/select2.min.js"></script>
+<<<<<<< HEAD
         <script src="<?php echo base_url(); ?>assets/js/bootbox.min.js"></script>
+=======
+        <script src="<?php echo base_url(); ?>assets/js/jquery-maintenance.js"></script>
+        <script src="<?php echo base_url(); ?>assets/js/jquery-utilities.js"></script>
+>>>>>>> abe4490a35a14f18d5ef4bee66c886b13107a238
 
 
         <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/select2/dist/css/select2.min.css">  
@@ -49,7 +54,7 @@
                     <li class="horizontal"><a href="<?php echo base_url(); ?>admin/admin_client_list"><span class="glyphicon glyphicon-briefcase"></span>Transaction</a></li>
                     <li class="horizontal"><a href="<?php echo base_url(); ?>reports/"><span class="glyphicon glyphicon-book"></span>Reports</a></li>
                     <li class="horizontal"><a href="<?php echo base_url()?>query/"><span class="glyphicon glyphicon-th-list"></span> Queries</a></li>
-                    <li class="horizontal"><a href="#"><span class="glyphicon glyphicon-random"></span>Utilities</a></li>
+                    <li class="horizontal"><a href="<?php echo base_url()?>utilities/"><span class="glyphicon glyphicon-cog"></span>Utilities</a></li>
                 </ul>
             </div>
         </div>

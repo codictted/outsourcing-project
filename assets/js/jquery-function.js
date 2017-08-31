@@ -488,7 +488,10 @@ $(function () {
         type: "GET",
         success: function(data) {
 
-          
+          var comp = data[0].comp_name == null ? data[0].full_name : data[0].comp_name;
+          $("#cname").html(comp);
+          $("#pos").html(data[0].jname);
+          $("#shor_date").html(data[0].date_shortlist);
         }
       });//AJAX
     }//else if

@@ -2,39 +2,6 @@
 	class Reports_model extends CI_Model {
 
 		//get
-		public function get_job_position_select() {
-			
-			$this->db->select("*");
-			$this->db->from("job_position");
-			$this->db->where("status = 0"); 
-			$get_job_position = $this->db->get();
-			return $get_job_position->result();
-		}
-
-		public function get_print_app_date_detail_count($minDate, $maxDate) {
-			
-				$this->db->select("concat(first_name, ' ' , (case when middle_name IS NULL then '' else middle_name end), ' ', last_name) as full_name, (case when gender = 1 then 'Male' when gender = 2 then 'Female' end) as gender, DATE_FORMAT(application_date, '%Y-%M-%d') as app_date");
-				$this->db->from("applicant");
-				$this->db->where("status < 4"); 
-				$this->db->where("application_date BETWEEN '$minDate' AND '$maxDate'");
-				$this->db->order_by("application_date");
-				$this->db->group_by("full_name"); 
-				$get_app_gender_count = $this->db->get();
-
-				return $get_app_gender_count->result();
-		}
-
-		public function get_print_app_date_sum_count($minDate, $maxDate) {
-			
-				$this->db->select("count(CASE when gender = '1' then 1 end) as appMale, count(CASE when gender = '2' then 1 end) as appFemale, count(gender) as appTotal");
-				$this->db->from("applicant");
-				$this->db->where("status < 4"); 
-				$this->db->where("application_date BETWEEN '$minDate' AND '$maxDate'");
-				$get_app_gender_count = $this->db->get();
-
-				return $get_app_gender_count->result();
-		}
-
 		public function get_print_client_cjo_date_detail_count($minDate, $maxDate) {
 				$this->db->select("count(jo.client_id) as countClient, (case when c.comp_name IS NULL then c.full_name else c.comp_name end) as clientName, DATE_FORMAT(jo.order_date, '%M %d, %Y') as clientDate");
 				$this->db->from("job_order jo");

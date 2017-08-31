@@ -190,11 +190,10 @@
                      <div class="col-lg-2">
                         <div class="error-form">
                             <span class="indiv-error"><?php echo form_error("religion"); ?></span>
-                            <select class="form-control" name="religion" id="religion" required>
-                                <option selected disabled>* Religion</option>
-                                <option>Roman Catholic</option>
-                                <option>Muslim</option>
-                                <option>Iglesia ni Cristo</option>
+                            <select class="form-control" multiple name="religion" id="religion" required>
+                                <?php foreach($religion as $r) { ?>
+                                <option value="<?php echo $r->name; ?>"><?php echo $r->name?></option>
+                                <?php } ?>
                             </select>
                         </div>
                     </div>
@@ -797,6 +796,48 @@ $("#spoken-multip").select2({
 $("#skill-multi").select2({
     placeholder: "Select Skills"
 });
+
+$("[name='spoken_lang[]']").select2({
+        tags: true,
+        placeholder: '    Select spoken language',
+        allowClear: true,
+        createTag: function (params) {
+            var term = $.trim(params.term);
+           
+            if (term.match(/^[!@#$%^&*()]+$/g)) {
+              return null;
+            }
+        
+            return {
+              id: term,
+              text: term,
+              newTag: true // add additional parameters
+            }
+        }
+});
+
+
+$("[name='religion']").select2({
+        maximumSelectionLength: 1,
+        tags: true,
+        placeholder: '    Select religion',
+        allowClear: true,
+        createTag: function (params) {
+            var term = $.trim(params.term);
+           
+            if (term.match(/^[!@#$%^&*()]+$/g)) {
+              return null;
+            }
+        
+            return {
+              id: term,
+              text: term,
+              newTag: true // add additional parameters
+            }
+        }
+});
+
+
 
 $(function() {
 

@@ -131,7 +131,7 @@
             $this->form_validation->set_rules(
                 "zip",
                 "Zip Code",
-                "required|numeric|exact_length[4]|strip_tags|xss_clean"
+                "numeric|exact_length[4]|strip_tags|xss_clean"
             );
 
             $this->form_validation->set_rules(
@@ -172,7 +172,7 @@
             $this->form_validation->set_rules(
                 "bzip",
                 "Zip Code",
-                "required|numeric|exact_length[4]|strip_tags|xss_clean"
+                "numeric|exact_length[4]|strip_tags|xss_clean"
             );
 
             $this->form_validation->set_rules(

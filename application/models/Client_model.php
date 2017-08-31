@@ -161,5 +161,26 @@
 
 			$this->db->insert("job_order_post", $data);
 		}
+
+		public function get_shortlist($id) {
+
+			$query = $this->db->query("SELECT DISTINCT sh.order_id, sh.*, jo.job_id, jpos.name as jname FROM shortlist as sh JOIN job_order as jo ON sh.order_id = jo.order_id JOIN job_position as jpos ON jo.job_id = jpos.id WHERE sh.status = 0 AND sh.client_id = $id GROUP BY sh.order_id");
+
+			return $query->result();
+		}
+
+		public function get_shortlist_details($cid, $oid) {
+
+			$query = $this->db->query("SELECT sh.*, app.*, jo.*, jpos.name AS jname FROM shortlist AS sh JOIN job_order AS jo ON sh.order_id = jo.order_id JOIN applicant as app ON app.id = sh.applicant_id JOIN job_position AS jpos ON jpos.id = jo.job_id WHERE sh.status = 0 AND sh.client_id = $cid AND sh.order_id = $oid");
+
+			return $query->result();
+		}
+
+		public function get_staff_list($id) {
+
+			$query = $this->db->query("SELECT st.*, app.first_name, app.last_name, app.birthdate, app.gender, jpos.name AS jname, st.*, cl.comp_name, cl.full_name FROM staff AS st JOIN applicant AS app ON st.applicant_id = app.id JOIN client AS cl ON cl.id = st.client_id JOIN job_position AS jpos ON app.job_id = jpos.id WHERE st.client_id = $id");
+
+			return $query->result();
+		}
 	}
 ?>

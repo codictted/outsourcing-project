@@ -106,12 +106,14 @@
                 </div>
             </div>
         </div>
-        <div class="form-group">
-            <div class="col-lg-10 col-lg-offset-2">
-                <button type="button" class="btn btn-primary pull-right" data-toggle="modal" data-target="#edit_ad">Post Job</button>
-                <button type="reset" class="btn btn-default pull-right">Reject</button>
+        <form class="form-horizontal">
+            <div class="form-group">
+                <div class="col-lg-10 col-lg-offset-2">
+                    <button type="button" class="btn btn-primary pull-right" data-toggle="modal" data-target="#edit_ad">Post Job</button>
+                    <button type="reset" class="btn btn-default pull-right">Reject</button>
+                </div>
             </div>
-        </div>
+        </form>
     </div>
 </body>
 </html>
@@ -123,7 +125,7 @@
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
                 <h4 class="modal-title">Edit Job Advertisement</h4>
             </div>
-            <form action="<?php echo base_url('admin/post_ad'); ?>" method="post" id="job_capt">
+            <form class="form-horizontal" action="<?php echo base_url('admin/post_ad'); ?>" method="post" id="job_capt">
                 <div class="modal-body">
                     <label class="sub-label"><b><?php echo $order_details->jname; ?></b></label><br><br>
                     <table class="details">

@@ -90,8 +90,6 @@ $('#application-form').validate({
         regex: /^[a-zA-Z\s'-\.]+$/
       },
       zip: {
-        required: true,
-        nowhitespace: true,
         digits: true,
         exactlength: 4
       },
@@ -109,8 +107,6 @@ $('#application-form').validate({
         regex: /^[a-zA-Z\s'-\.]+$/
       },
       bzip: {
-        required: true,
-        nowhitespace: true,
         digits: true,
         exactlength: 4
       },
@@ -163,7 +159,7 @@ $('#application-form').validate({
         required: "Please enter province",
       },
       zip: {
-        required: "Please enter zip code",
+        // required: "Please enter zip code",
         digits: "Invalid character"
       },
       bstreet: {
@@ -176,12 +172,12 @@ $('#application-form').validate({
         required: "Please enter province",
       },
       bzip: {
-        required: "Please enter zip code",
+        //required: "Please enter zip code",
         digits: "Invalid character"
       },
-      religion: {
-        required: "Please choose your religion"
-      },
+      // religion: {
+      //   required: "Please choose your religion"
+      // },
       education: {
         required: "Please choose your highest educational attainment"
       },
@@ -233,6 +229,9 @@ $('#application-form').validate({
         }
   });
 
+<<<<<<< HEAD
 
   
+=======
+>>>>>>> a47c7710fdd4f4c9b4b31be1724f9ab009fcc906
 });

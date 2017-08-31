@@ -8,6 +8,8 @@
             $this->load->model("Client_model");
             $this->load->model("Applicant_model");
             $this->load->model("Dropdown_model");
+            $this->load->model("Admin_model");
+            $this->load->model("Staff_model");
         }
 
         public function get_client() {
@@ -26,6 +28,28 @@
             if($this->session->userdata("usertype") == "1") {
                 $data['title'] = "List of Client";
                 $data['client'] = $this->get_client();
+                $this->load->helper('captcha');
+                $config = array(
+                'word'          => $this->random_word(),
+                'img_path'      => './captcha/',
+                'img_url'       => base_url().'captcha/',
+                'img_width'     => '130',
+                'img_height'    => 40,
+                'expiration'    => 7200,
+                'word_length'   => 5,
+                'font_size'     => 16,
+                 'colors'        => array(
+                    'background' => array(255, 255, 255),
+                    'border' => array(255, 255, 255),
+                    'text' => array(0, 0, 0),
+                    'grid' => array(255, 40, 40)
+                    )
+                );
+
+                $captcha = create_captcha($config);
+                $this->session->unset_userdata('captchaCode');
+                $this->session->set_userdata('captchaCode',$captcha['word']);
+                $data['captcha_img'] = $captcha['image'];
                 $this->load->view("admin-header", $data);
                 $this->load->view("nav-transaction");
                 $this->load->view("admin_client_list");
@@ -215,7 +239,7 @@
 
             if($this->session->userdata("usertype") == "1") {
                 $data['title'] = "List of Staff";
-                //$data['staff'] = $this->Staff_model->get_all();
+                $data['staff'] = $this->Staff_model->get_all();
                 $this->load->view("admin-header", $data);
                 $this->load->view("nav-transaction");
                 $this->load->view("admin_staff_list"); 
@@ -252,6 +276,7 @@
 
             if($this->session->userdata("usertype") == "1") {
                 $data['title'] = "Create a Shortlist";
+                $data['client'] = $this->Admin_model->get_client_active_job_orders();
                 $this->load->view("admin-header", $data);
                 $this->load->view("nav-transaction");
                 $this->load->view("create_shortlist");
@@ -471,8 +496,10 @@
             if($this->form_validation->run() !== FALSE) {
 
                 $show = $this->input->post("on");
+                $id = $this->input->post("jobid");
+                $now = new DateTime(NULL, new DateTimeZone("Asia/Manila"));
                 $data = array(
-                    "order_id" => $this->input->post("jobid"),
+                    "order_id" => $id,
                     "employer" => 1,
                     "slot" => 1,
                     "age" => 1,
@@ -486,10 +513,15 @@
                     "benefits" => 1,
                     "requirements" => 1,
                     "description" => 1,
+                    "date_posted" => $now->format("Y-m-d H:i:s"),
+                    "ad_status" => 1
                 );
                 foreach($show as $col)
                     $data[$col] = 0;
-                print_r($data);
+                $this->Admin_model->post_job_order($data);
+                $this->Admin_model->update_joborder_status($id, 1);
+                $this->session->set_flashdata("success_notification_post_joborder", "You have successfully posted the client's job order!");
+                    redirect(base_url("admin/admin_order_list"));
             }
 
             else {
@@ -528,11 +560,14 @@
 
                 $data['title'] = "Applicant Details";
                 $data['applicant_det'] = $this->Applicant_model->get_details($id);
+                $data['status'] = $this->process_applicant_status($data['applicant_det']->status);
                 $data['applicant_family'] = $this->Applicant_model->get_family($id);
                 $data['applicant_exp'] = $this->Applicant_model->get_exp($id);
                 $data['applicant_sem'] = $this->Applicant_model->get_sem($id);
                 $data['applicant_personality'] = $this->Applicant_model->get_personality($id);
                 $data['applicant_essay'] = $this->Applicant_model->get_essay($id);
+                $client = $this->Admin_model->get_client_list($data['applicant_det']->job_id);
+                $data['client_list'] = $this->get_cname($client);
                 $this->load->view("admin-header", $data);
                 $this->load->view("nav-transaction");
                 $this->load->view("applist_new");
@@ -543,10 +578,29 @@
             }
         }
 
-        public function applist_matched() {
+        public function get_cname($data) {
 
+            $extracted_data = array();
+            foreach($data as $d) {
+
+                $name = is_null($d->comp_name) ? $d->full_name : $d->comp_name;
+                array_push($extracted_data, $name);
+            }
+
+            return $extracted_data;
+        }
+
+        public function applist_matched($id) {
+
+            $this->Admin_model->update_applicant_status($id, 1);
             if($this->session->userdata("usertype") == "1") {
+
                 $data['title'] = "Applicant Job Match Result";
+                $data['applicant_det'] = $this->Applicant_model->get_details($id);
+                $data['jname'] = $this->Admin_model->get_job_name($data['applicant_det']->job_id);
+                $jo_details = $this->Admin_model->get_client_list($data['applicant_det']->job_id);
+                $data['job_match'] = $this->compute_job_match($jo_details, $data['applicant_det']);
+                $data['sms'] = $this->Admin_model->get_sms_message();
                 $this->load->view("admin-header", $data);
                 $this->load->view("nav-transaction");
                 $this->load->view("applist_matched");
@@ -554,6 +608,331 @@
             else {
                 $this->session->set_flashdata("invalid", "Sorry, you are unauthorized to view this page.");
                 redirect(base_url("login"));
+            }
+        }
+
+        public function compute_job_match($job_order_list, $applicant) {
+
+            $app_skill = $this->Applicant_model->get_app_skills($applicant->id);
+            $birthdate = new DateTime($applicant->birthdate);
+            $today = new DateTime('today');
+            $app_age = $birthdate->diff($today)->y;
+            $askill = array();
+
+            foreach($app_skill as $sk) {
+
+                array_push($askill, $sk->id);
+            }
+
+            $match_result = array();
+            $index = 0;
+            foreach($job_order_list as $j) {
+
+                $name = is_null($j->comp_name) ? $j->full_name : $j->comp_name;
+                array_push($match_result, array("client" => $name));
+
+                $order_det = $this->Admin_model->get_job_order_details($j->order_id);
+                $order_skills = $this->Admin_model->get_job_order_skills($j->order_id);
+
+                $no_items = 0;
+                $no_matched = 0;
+
+                $match_skill = array();
+                $nonmatch_skill = array();
+                $match_quali = array();
+                $nonmatch_quali = array();
+
+                //compare needed skills from job order to applicant's
+                foreach($order_skills as $sk) {
+
+                    $name = $this->Admin_model->get_skill_name($sk->skill);
+                    if(in_array($sk->skill, $askill)) {
+
+                        array_push($match_skill, $name[0]->name);
+                        $no_matched++;
+                    }
+                    else
+                        array_push($nonmatch_skill, $name[0]->name);
+
+                    $no_items++;
+                }
+
+                // array_push($match_result[$index], array("match_skill" => $match_skill));
+                // array_push($match_result[$index], array("nonmatch_skill" => $nonmatch_skill));
+                $match_result[$index]['match_skill'] = $match_skill;
+                $match_result[$index]['nonmatch_skill'] = $nonmatch_skill;
+
+                if(!(is_null($order_det[0]->weight)) OR !($order_det[0]->weight == 0.00) OR !($order_det[0]->weight == "")) {
+
+                    $no_items++;
+                    if($order_det[0]->weight == $applicant->weight) {
+
+                        $no_matched++;
+                        // array_push($match_quali, array("weight" => $order_det[0]->weight));
+                        $match_quali['weight'] = $order_det[0]->weight;
+                    }
+                    else
+                        // array_push($nonmatch_quali, array("weight" => $order_det[0]->weight));
+                        $nonmatch_quali['weight'] = $order_det[0]->weight;
+                }
+
+                if(!(is_null($order_det[0]->height)) OR !($order_det[0]->height == 0.00) OR !($order_det[0]->height == "")) {
+
+                    $no_items++;
+                    if($order_det[0]->height == $applicant->height) {
+
+                        $no_matched++;
+                        // array_push($match_quali, array("height" => $order_det[0]->height));
+                        $match_quali['height'] = $order_det[0]->height;
+                    }
+                    else
+                        // array_push($nonmatch_quali, array("height" => $order_det[0]->height));
+                        $nonmatch_quali['height'] = $order_det[0]->height;
+                }
+
+                if(!(is_null($order_det[0]->education)) OR !($order_det[0]->education == "")) {
+
+                    $no_items++;
+                    $name = $this->Admin_model->get_education_name($order_det[0]->education);
+                    if($order_det[0]->education == $applicant->education) {
+
+                        $no_matched++;
+                        // array_push($match_quali, array("education" => $name[0]->education));
+                        $match_quali['education'] = $name[0]->education;
+                    }
+                    else
+                        // array_push($nonmatch_quali, array("education" => $name[0]->education));
+                        $nonmatch_quali['education'] = $name[0]->education;
+                }
+
+                if(!(is_null($order_det[0]->course)) OR !($order_det[0]->course == "")) {
+
+                    $no_items++;
+                    $name = $this->Admin_model->get_course_name($order_det[0]->course);
+                    if($order_det[0]->course == $applicant->course) {
+
+                        $no_matched++;
+                        // array_push($match_quali, array("course" => $name[0]->name));
+                        $match_quali['course'] = $name[0]->name;
+                    }
+                    else
+                        // array_push($nonmatch_quali, array("course" => $name[0]->name));
+                        $nonmatch_quali['course'] = $name[0]->name;
+                }
+
+                if($order_det[0]->single == 1) {
+
+                    $no_items++;
+                    if($applicant->civil_status == 1) {
+
+                        $no_matched++;
+                        // array_push($match_quali, array("civil_status" => "Must be single"));
+                        $match_quali['civil_status'] = "Must be single";
+                    }
+                    else
+                        // array_push($match_quali, array("civil_status" => "Must be single"));
+                        $nonmatch_quali['civil_status'] = "Must be single";
+                }
+
+                if((!(is_null($order_det[0]->min_age)) OR !($order_det[0]->min_age == 0) OR !($order_det[0]->min_age == "")) AND (!(is_null($order_det[0]->max_age)) OR !($order_det[0]->max_age == 0) OR !($order_det[0]->max_age == ""))) {
+
+                    $no_items++;
+                    $min = $order_det[0]->min_age;
+                    $max = $order_det[0]->max_age;
+
+                    if($app_age >= $min AND $app_age <= $max) {
+
+                        $no_matched++;
+                        // array_push($match_quali, array("age" => "From ".$min." to ".$max." years old"));
+                        $match_quali['age'] = "From ".$min." to ".$max." years old";
+                    }
+                    else
+                    //     array_push($nonmatch_quali, array("age" => "From ".$min." to ".$max." years old"));
+                        $nonmatch_quali['age'] = "From ".$min." to ".$max." years old";
+
+                }
+                else if((!(is_null($order_det[0]->min_age)) OR !($order_det[0]->min_age == 0) OR !($order_det[0]->min_age == "")) AND ((is_null($order_det[0]->max_age)) OR ($order_det[0]->max_age == 0) OR ($order_det[0]->max_age == ""))) {
+
+                    $no_items++;
+                    $min = $order_det[0]->min_age;
+                    if($app_age >= $min) {
+
+                        $no_matched++;
+                        // array_push($match_quali, array("age" => "From ".$min." years old"));
+                        $match_quali['age'] = "From ".$min." years old";
+                    }
+                    else
+                        // array_push($nonmatch_quali, array("age" => "From ".$min." years old"));
+                        $nonmatch_quali['age'] = "From ".$min." years old";
+                }
+                if(((is_null($order_det[0]->min_age)) OR ($order_det[0]->min_age == 0) OR ($order_det[0]->min_age == "")) AND (!(is_null($order_det[0]->max_age)) OR !($order_det[0]->max_age == 0) OR !($order_det[0]->max_age == ""))) {
+
+                    $no_items++;
+                    $max = $order_det[0]->max_age;
+                    if($app_age <= $max) {
+
+                        $no_matched++;
+                        // array_push($match_quali, array("age" => "Up to ".$max." years old"));
+                        $match_quali['age'] = "Up to ".$max." years old";
+                    }
+                    else
+                        // array_push($nonmatch_quali, array("age" => "Up to ".$max." years old"));
+                        $nonmatch_quali['age'] = "Up to ".$max." years old";
+                }
+
+                $match_result[$index]['match_quali'] = $match_quali;
+                $match_result[$index]['nonmatch_quali'] = $nonmatch_quali;
+                $match_result[$index]['total'] = $no_items;
+                $match_result[$index]['matched'] = $no_matched;
+
+                $index++;
+            }
+            return $match_result;
+        }
+
+        public function itexmo($number,$message,$apicode){
+            $url = 'https://www.itexmo.com/php_api/api.php';
+            $itexmo = array('1' => $number, '2' => $message, '3' => $apicode);
+            $param = array(
+                'http' => array(
+                    'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
+                    'method'  => 'POST',
+                    'content' => http_build_query($itexmo),
+                ),
+            );
+            $context  = stream_context_create($param);
+            return file_get_contents($url, false, $context);
+       
+        }
+
+        public function send_interview_message() {
+
+            $this->form_validation->set_rules("message", "Message", "required|strip_tags|xss_clean");
+            if($this->form_validation->run() !== FALSE) {
+                $num = "09264678950";
+                $message = $this->input->post("message");
+                $time = $this->input->post("interview_time");
+                $date = $this->input->post("interview_date");
+                $app_id = $this->input->post("applicant_id");
+                $date_time = "".$date."".$time;
+                $message = $message." ".$date_time;
+                $mark = TRUE;
+                // while($mark) {
+
+                //     $sub = $message;
+                //     if(strlen($sub) > 100) {
+
+                //         $sub = substr($message, 0, 100);
+                //         $result = $this->itexmo($num, $sub, "TR-PRINC971683_DKJI3");
+                //         $sub = substr($sub, 100);
+                //     }
+
+                //     if(strlen($sub) <= 0)
+                //         $mark = FALSE;
+                // }
+                // if ($result == ""){
+                //     echo "iTexMo: No response from server!!!
+                //     Please check the METHOD used (CURL or CURL-LESS). If you are using CURL then try CURL-LESS and vice versa.  
+                //     Please CONTACT US for help. ";  
+                // }
+                // else if ($result == 0){
+
+                    $data = array(
+                        "applicant_id" => $app_id,
+                        "date" => $date_time,
+                        "status" => 0
+                    );
+                    $this->Admin_model->insert_interview($data);
+                    $this->Admin_model->update_applicant_status($app_id, 2);
+                    $this->session->set_flashdata("success_notification", "You have successfully sent the message!");
+                    redirect(base_url("admin/admin_applicant_list"));
+                //}
+                //else {
+                //     $this->session->set_flashdata("fail_notification", "Maximum number of messages sent reached.");
+                //     redirect(base_url("admin/admin_applicant_list"));
+                // }
+            }
+        }
+
+        public function process_applicant_status($stat) {
+
+            $status = "";
+
+            switch ($stat) {
+                case '0':
+                    $status = "New";
+                    break;
+
+                case '1':
+                    $status = "Job Matched";
+                    break;
+
+                case '2':
+                    $status = "For Interview";
+                    break;
+                
+                case '3':
+                    $status = "For Interview(Default)";
+                    break;
+
+                case '4':
+                    $status = "Failed Interview";
+                    break;
+
+                case '5':
+                    $status = "Ready to Shortlist";
+                    break;
+
+                case '6':
+                    $status = "Shortlisted";
+                    break;
+                
+                case '7':
+                    $status = "Shortlisted - Rejected";
+                    break;
+
+                case '8':
+                    $status = "Shortlisted - Selected";
+                    break;
+
+                case '9':
+                    $status = "Job Offered";
+                    break;
+
+                case '10':
+                    $status = "Job Offered - Rejected";
+                    break;
+                
+                case '11':
+                    $status = "Passing of Requirements";
+                    break;
+
+                case '12':
+                    $status = "For Endorsement";
+                    break;
+                
+                case '13':
+                    $status = "Deployed";
+                    break;
+            }
+            return $status;
+        }
+
+        public function update_applicant_interview() {
+
+            $this->form_validation->set_rules("result", "Interview Result", "required");
+            $this->form_validation->set_rules("remarks", "Remarks", "strip_tags|xss_clean");
+
+            if($this->form_validation->run() !== FALSE) {
+
+                $id = $this->input->post("applicant_id");
+                $res = $this->input->post("result");
+                $remarks = $this->input->post("remarks");
+                $stat = $res == 1 ? 5 : 4;
+                $this->Admin_model->update_applicant_status($id, $stat);
+                $this->Admin_model->add_remarks($id, $remarks);
+                $this->session->set_flashdata("success_notification", "You have successfully updated the applicant's status.");
+                redirect(base_url("admin/admin_applicant_list"));
             }
         }
 
@@ -633,6 +1012,7 @@
             if($this->session->userdata("usertype") == "1") {
                 $data['title'] = "List of Applicant";
                 $data['applicant_det'] = $this->Applicant_model->get_details($id);
+                $data['status'] = $this->process_applicant_status($data['applicant_det']->status);
                 $data['applicant_family'] = $this->Applicant_model->get_family($id);
                 $data['applicant_exp'] = $this->Applicant_model->get_exp($id);
                 $data['applicant_sem'] = $this->Applicant_model->get_sem($id);
@@ -694,5 +1074,163 @@
             }
         }
 
+        public function get_job_order($id) {
+
+            $data = $this->Admin_model->get_job_order($id);
+            echo json_encode($data);
+        }
+
+        public function get_job_order_details($id) {
+
+            $data = $this->Client_model->get_joborder_details($id);
+            echo json_encode($data);
+        }
+
+        public function get_applicant_shortlist($id) {
+
+            $data = $this->Admin_model->get_applicant_shortlist($id);
+            echo json_encode($data);
+        }
+
+        public function get_applicant_det($id) {
+
+            $data = $this->Applicant_model->get_details($id);
+            echo json_encode($data);
+        }
+
+        public function send_job_offer() {
+
+            $this->form_validation->set_rules("app_number", "Mobile Number", "required|numeric|exact_length[11]|strip_tags|xss_clean");
+            $this->form_validation->set_rules("message", "Message", "required|strip_tags|xss_clean");
+            $this->form_validation->set_rules("applicant_id", "Applicant ID", "required");
+
+            if($this->form_validation->run() !== FALSE) {
+
+                $num = $this->input->post("app_number");
+                $mes = $this->input->post("message");
+                // $result = $this->itexmo($num, $mes, "TR-PRINC971683_DKJI3");
+                // if ($result == ""){
+                //     echo "iTexMo: No response from server!!!
+                //     Please check the METHOD used (CURL or CURL-LESS). If you are using CURL then try CURL-LESS and vice versa.  
+                //     Please CONTACT US for help. ";  
+                // }
+                // else if ($result == 0){
+
+                    $app_id = $this->input->post("applicant_id");
+                    $this->Admin_model->update_applicant_status($app_id, 9);
+                    $this->session->set_flashdata("success_notification", "You have successfully sent the message!");
+                    redirect(base_url("admin/admin_applicant_list"));
+                // }
+                // else {
+                //     $this->session->set_flashdata("fail_notification", "Maximum number of messages sent reached.");
+                //     redirect(base_url("admin/admin_applicant_list"));
+                // }
+            }
+            else
+                echo validation_errors();
+        }
+
+        public function terminate_client() {
+
+
+            $this->form_validation->set_rules("code", "Code", "required");
+            $this->form_validation->set_rules("captcha", "Captcha", "required|matches[code]|strip_tags|xss_clean");
+
+            if($this->form_validation->run() !== FALSE) {
+
+                $cid = $this->input->post("client_id");
+                $reason = $this->input->post("reason");
+                $this->Admin_model->update_client_status($cid, $reason);
+                $this->session->set_flashdata("success_notification_client_terminate", "You have successfully terminated the client.");
+                redirect(base_url('admin/admin_client_list'));
+            }
+            else {
+
+                $data['title'] = "List of Client";
+                $data['client'] = $this->get_client();
+                $this->load->helper('captcha');
+                $config = array(
+                'word'          => $this->random_word(),
+                'img_path'      => './captcha/',
+                'img_url'       => base_url().'captcha/',
+                'img_width'     => '130',
+                'img_height'    => 40,
+                'expiration'    => 7200,
+                'word_length'   => 5,
+                'font_size'     => 16,
+                 'colors'        => array(
+                    'background' => array(255, 255, 255),
+                    'border' => array(255, 255, 255),
+                    'text' => array(0, 0, 0),
+                    'grid' => array(255, 40, 40)
+                    )
+                );
+
+                $captcha = create_captcha($config);
+                $this->session->unset_userdata('captchaCode');
+                $this->session->set_userdata('captchaCode',$captcha['word']);
+                $data['captcha_img'] = $captcha['image'];
+
+
+                $this->session->set_flashdata("fail_notification_client_terminate", "There were errors encountered.".validation_errors());
+                $this->load->view("admin-header", $data);
+                $this->load->view("nav-transaction");
+                $this->load->view("admin_client_list");
+            }
+        }
+
+        public function job_offer_response() {
+
+            $id = $this->input->post("applicant_id");
+            $res = $this->input->post("result");
+            $stat = $res == 1 ? 11 : 10;
+            $this->Admin_model->update_applicant_status($id, $stat);
+            $this->session->set_flashdata("success_notification", "You have successfully updated the applicant's status.");
+            redirect(base_url('admin/admin_applicant_list'));
+        }
+
+        public function get_applicant_require($id) {
+
+            $data = $this->Admin_model->get_applicant_require($id);
+            echo json_encode($data);
+        }
+
+        public function save_applicant_require() {
+
+            $id = $this->input->post("applicant_id");
+            $checked = $this->input->post("passed");
+            var_dump($checked);
+            die();
+        }
+
+        public function save_shortlist() {
+
+            $app_id = $this->input->post("applist");
+            $cl_id = $this->input->post("client_id");
+            $o_id = $this->input->post("order_id");
+            $now = new DateTime(NULL, new DateTimeZone("Asia/Manila"));
+            foreach($app_id as $aid) {
+
+                $data = array(
+                    "order_id" =>  $o_id,
+                    "client_id" => $cl_id,
+                    "applicant_id" => $aid,
+                    "date_shortlist" => $now->format("Y-m-d H:i:s"),
+                    "status" => 0
+                );
+
+                $this->Admin_model->insert_shortlist($data);
+                $this->Admin_model->update_applicant_status($aid, 6);
+            }
+
+            $this->session->set_flashdata("success_notification", "You have successfully sent the shortlist to the client!");
+            redirect(base_url("admin/admin_applicant_list"));
+        }
+
+        public function get_shortlist_det($id) {
+
+            $data = $this->Admin_model->get_shortlist_det($id);
+            echo json_encode($data);
+        }
 	}
 ?>

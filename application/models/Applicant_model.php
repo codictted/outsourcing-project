@@ -115,5 +115,17 @@
 			return $query->result();
 		}
 
+		public function get_app_skills($id) {
+
+			$this->db->select("skill.id");
+			$this->db->from("applicant");
+			$this->db->join("applicant_skill", "applicant.id = applicant_skill.applicant_id");
+			$this->db->join("skill", "applicant_skill.skill_id = skill.id");
+			$this->db->where("applicant.id", $id);
+			$query = $this->db->get();
+
+			return $query->result();
+		}
+
 	}
 ?>

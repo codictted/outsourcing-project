@@ -43,46 +43,6 @@
             redirect(base_url());
         }
 
-        public function captcha() {
-            $this->load->helper('captcha');
-            $config = array(
-            'word'          => $this->random_word(),
-            'img_path'      => './captcha/',
-            'img_url'       => base_url().'captcha/',
-            'img_width'     => '150',
-            'img_height'    => 30,
-            'expiration'    => 7200,
-            'word_length'   => 8,
-            'font_size'     => 16,
-             'colors'        => array(
-                'background' => array(255, 255, 255),
-                'border' => array(255, 255, 255),
-                'text' => array(0, 0, 0),
-                'grid' => array(255, 40, 40)
-                )
-            );
-
-            $captcha = create_captcha($config);
-            $this->session->unset_userdata('captchaCode');
-            $this->session->set_userdata('captchaCode',$captcha['word']);
-            $data['captcha_img'] = $captcha['image'];
-            $this->load->view("captcha", $data);
-        }
-
-        public function random_word() {
-
-            $this->load->helper("string");
-            return random_string("alpha", 4);
-        }
-
-        public function check() {
-
-            $user = $this->input->post("captcha");
-            var_dump($this->session->userdata("captchaCode"));
-            var_dump($user);
-            die();
-        }
-
         public function refresh(){
             // Captcha configuration
             $config = array(
@@ -101,39 +61,6 @@
             
             // Display captcha image
             echo $captcha['image'];
-        }
-
-        public function itexmo($number,$message,$apicode){
-            $url = 'https://www.itexmo.com/php_api/api.php';
-            $itexmo = array('1' => $number, '2' => $message, '3' => $apicode);
-            $param = array(
-                'http' => array(
-                    'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
-                    'method'  => 'POST',
-                    'content' => http_build_query($itexmo),
-                ),
-            );
-            $context  = stream_context_create($param);
-            return file_get_contents($url, false, $context);
-	   
-        }
-
-        public function text_try() {
-
-            $num = "09264678950";
-            $message = "This is to inform you that we would like to schedule an interview for you tomorrow 4pm.";
-            $result = $this->itexmo($num, $message, "TR-ARLEN678950_M2BY3");
-            if ($result == ""){
-                echo "iTexMo: No response from server!!!
-                Please check the METHOD used (CURL or CURL-LESS). If you are using CURL then try CURL-LESS and vice versa.  
-                Please CONTACT US for help. ";  
-            }
-            else if ($result == 0){
-                echo "Message Sent!";
-            }
-            else {
-                echo "Error Num ". $result . " was encountered!";
-            }
         }
     }
 

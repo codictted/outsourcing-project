@@ -319,3 +319,12 @@ footer {
 
     padding: 20px;
 }
+
+.upper {
+
+    text-transform: uppercase;
+}
+.checkb {
+    width: 30px;
+    height: 30px;
+}

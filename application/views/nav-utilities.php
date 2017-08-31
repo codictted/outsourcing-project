@@ -10,7 +10,15 @@
         </li>
         <li>
             <a href="<?php echo base_url(); ?>utilities/utilities_agency_email/">
-            <span class="glyphicon glyphicon-pencil small"></span>Agency's Email</a>
+            <span class="glyphicon glyphicon-user small"></span>Agency's Email</a>
+        </li>
+        <li>
+            <a href="<?php echo base_url(); ?>utilities/utilities_text_message/">
+            <span class="glyphicon glyphicon-envelope small"></span>Text Messages</a>
+        </li>
+        <li>
+            <a href="<?php echo base_url(); ?>utilities/utilities_essay_questions/">
+            <span class="glyphicon glyphicon-pencil small"></span>Essay Questions</a>
         </li>
     </ul>
 </div>

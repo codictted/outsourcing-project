@@ -427,12 +427,71 @@ $(function () {
       type: "GET",
       success: function(data) {
 
-        $("#app_name").html(data.first_name);
+        $("[name='app_name']").html(data.first_name);
         $("#job_pos").html(data.jname);
         $("#app_number").val(data.mobile);
         $("[name='applicant_id']").val(a_id);
       }
     });
+
+    if(mod=="requirements_modal") {
+
+      url = "http://localhost/outsourcing/admin/get_applicant_require/";
+      $.ajax({
+      dataType: "JSON",
+      url: url + a_id,
+      type: "GET",
+      success: function(data) {
+
+        var populate = [];
+        var string_tr = "";
+        var date;
+        var check;
+        $.each(data, function(index, value) {
+
+          date = value.is_submitted == 1 ? "N/A" : value.date_submitted; 
+          check = value.is_submitted == 1 ?
+          "<input type='checkbox' class='checkb' name='passed'>" :
+          "<input type='checkbox' class='checkb' checked name='passed'>";
+          string_tr = "<tr>";
+          string_tr += "<td class='sub-label'>";
+          string_tr += "<center>";
+          string_tr += check;
+          string_tr += "</center>";
+          string_tr += "</td>";
+          string_tr += "<td class='sub-label'>";
+          string_tr += "<center>";
+          string_tr += value.requirement;
+          string_tr += "</center>";
+          string_tr += "</td>";
+          string_tr += "<td>";
+          string_tr += "<center>";
+          string_tr += date;
+          string_tr += "</center>";
+          string_tr += "</td>";
+          string_tr += "</tr>";
+          populate.push(string_tr);
+        });//EACH
+
+
+        $("#req_table").html(populate.join(''));
+      }
+    });//AJAX
+    }//IF
+
+    else if(mod=="shortlisted_modal") {
+
+      url = "http://localhost/outsourcing/admin/get_shortlist_det/";
+      $.ajax({
+        dataType: "JSON",
+        url: url + a_id,
+        type: "GET",
+        success: function(data) {
+
+          
+        }
+      });//AJAX
+    }//else if
   });
 
   $(".modal-btn-client").click(function(event) {

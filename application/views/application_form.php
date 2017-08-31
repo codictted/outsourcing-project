@@ -57,7 +57,7 @@
                     <div class="col-lg-3">
                         <div class="error-form">
                             <span class="indiv-error"><?php echo form_error("fname"); ?></span>
-                            <input type="text" name="fname" id="fname" class="form-control" placeholder="First Name">
+                            <input type="text" name="fname" id="fname" class="form-control" placeholder="First Name" required>
                         </div>
                     </div>
                     <div class="col-lg-3">
@@ -68,7 +68,7 @@
                     <div class="col-lg-3">
                         <div class="error-form">
                             <span class="indiv-error"><?php echo form_error("lname"); ?></span>
-                            <input type="text" name="lname" id="lname" class="form-control" placeholder="Last Name">
+                            <input type="text" name="lname" id="lname" class="form-control" placeholder="Last Name" required>
                         </div>
                     </div>
                     <div class="col-lg-1">
@@ -121,7 +121,7 @@
                         <span class="medium"><text class="required">*</text> Gender:</span><br>
                         <div class="error-form">
                             <span class="indiv-error"><?php echo form_error("gender"); ?></span>
-                            <input type="radio" name="gender" value="1"><text class="small"> Male</text>
+                            <input type="radio" name="gender" value="1"><text class="small" required> Male</text>
                             &nbsp;&nbsp;&nbsp;
                             <input type="radio" name="gender" value="2"><text class="small"> Female</text>
                         </div>
@@ -134,7 +134,7 @@
                     <div class="col-lg-5">
                         <div class="error-form">
                             <span class="indiv-error"><?php echo form_error("cnum"); ?></span>
-                            <input type="text" name="cnum" id="cnum" class="form-control" placeholder="Mobile Number">
+                            <input type="text" name="cnum" id="cnum" class="form-control" placeholder="Mobile Number" required>
                         </div>
                     </div>
                     <div class="col-lg-5">
@@ -151,7 +151,7 @@
                     <div class="col-lg-10">
                         <div class="error-form">
                             <span class="indiv-error"><?php echo form_error("street"); ?></span>
-                            <input type="text" name="street" id="street" class="form-control" placeholder="Street Address">
+                            <input type="text" name="street" id="street" class="form-control" placeholder="Street Address" required>
                         </div>
                     </div>
                 </div>
@@ -161,18 +161,17 @@
                     <div class="col-lg-4">
                         <div class="error-form">
                             <span class="indiv-error"><?php echo form_error("city"); ?></span>
-                            <input type="text" name="city" id="city" class="form-control" placeholder="City">
+                            <input type="text" name="city" id="city" class="form-control" placeholder="City" required>
                         </div>
                     </div>
                     <div class="col-lg-4">
                         <div class="error-form">
                             <span class="indiv-error"><?php echo form_error("province"); ?></span>
-                            <input type="text" name="province" id="province" class="form-control" placeholder="Province">
+                            <input type="text" name="province" id="province" class="form-control" placeholder="Province" required>
                         </div>
                     </div>
                     <div class="col-lg-2">
                         <div class="error-form">
-                            <span class="indiv-error"><?php echo form_error("zip"); ?></span>
                             <input type="text" name="zip" id="zip" class="form-control" placeholder="Zip Code">
                         </div>
                     </div>
@@ -190,8 +189,8 @@
                      <div class="col-lg-2">
                         <div class="error-form">
                             <span class="indiv-error"><?php echo form_error("religion"); ?></span>
-                            <select class="form-control" name="religion" id="religion" required>
-                                <option selected disabled>* Religion</option>
+                            <select class="form-control" name="religion" id="religion">
+                                <option selected disabled>Religion</option>
                                 <option>Roman Catholic</option>
                                 <option>Muslim</option>
                                 <option>Iglesia ni Cristo</option>

@@ -6,8 +6,9 @@
 			$this->load->database();
 		}
 
+		//JOB MATCH PASS RATE
 		public function get_rate() {
-		    $query = $this->db->select('jobmatch_rate')->from('jobmatch_rate')->where('flag', 1)->get();
+		    $query = $this->db->select('jobmatch_rate')->from('jobmatch_rate')->where('flag ', 1)->get();
 		    return $query->row()->jobmatch_rate;
 		}
 
@@ -16,6 +17,7 @@
 			$this->db->update("jobmatch_rate");    
 		}
 
+		//EDUC ATTAIN
 		public function get_educ_attain() {
 			$this->db->select("*");
 			$this->db->from("educ_attainment");
@@ -25,15 +27,13 @@
 			return $query->result();
 		}
 
-		//status
-		public function status_educ_attain($id, $data) {
+		public function status_educ_attain($id, $data) {//status
 			$this->db->where("educ_attainment_id", $id);
 			$this->db->update("educ_attainment", $data);
 			return $this->db->affected_rows();
 		}
 
-		//converter
-		public function educ_attain_col_status_converter($educ_attain) {
+		public function educ_attain_col_status_converter($educ_attain) {//converter
 			
 	        $this->db->select("*");
 		    $this->db->from("educ_attainment");
@@ -60,25 +60,17 @@
 			return 0;
 		}
 
-		//insert
-		public function insert_educ_attain($data) {
+		public function insert_educ_attain($data) {//insert
 			$this->db->insert("educ_attainment", $data);
 		}
 
-		//update
-		public function update_educ_attain($id, $data) {
+		public function update_educ_attain($id, $data) {//update
 			$this->db->where("educ_attainment_id", $id);
 			$this->db->update("educ_attainment", $data);
 			return $this->db->affected_rows();
 		}
 
-		//delete
-		public function delete_educ_attain($id) {
-			$this->db->where("educ_attainment_id", $id);
-			$this->db->set("flag", 3);
-			$this->db->update("educ_attainment");
-		}
-
+		//AGENCY's EMAIL
 		public function get_agency_email() {
 		    $this->db->select("*");
 			$this->db->from("agency_default_email");
@@ -90,6 +82,72 @@
 			$this->db->set("agency_email", $email);
 			$this->db->set("agency_pword", $pword);
 			$this->db->update("agency_default_email");
+		}
+
+		//TEXT MESSAGES
+		public function get_text_message() {
+		    $this->db->select("*");
+			$this->db->from("text_message");
+			$query = $this->db->get();
+			return $query->result();
+		}
+
+		public function update_text_message($ji_text_mess, $jo_text_mess) {
+			$this->db->set("job_interview_text", $ji_text_mess);
+			$this->db->set("job_offer_text", $jo_text_mess);
+			$this->db->update("text_message");
+		}
+
+		//ESSAY QUESTIONS
+		public function get_essay_question() {
+			$this->db->select("*");
+			$this->db->from("essay_questions");
+			$query = $this->db->get();
+
+			return $query->result();
+		}
+
+		public function status_essay_question($id, $data) {//status
+			$this->db->where("essay_question_id", $id);
+			$this->db->update("essay_questions", $data);
+			return $this->db->affected_rows();
+		}
+
+		public function essay_question_col_status_converter($question) {//converter
+			
+	        $this->db->select("*");
+		    $this->db->from("essay_questions");
+		    $this->db->where("essay_question", $question);
+		    $getFlag = $this->db->get();
+		    $count = $getFlag->num_rows(); 
+
+		        foreach ($getFlag->result() as $row){
+				    if($count > 0){
+				    	if($row->flag == 3){
+				    		$id = $row->essay_question_id;
+					    	$data = array(
+				                'flag' => 0
+				            );
+				            $this->db->where("essay_question_id", $id);
+							$this->db->update("essay_question", $data);
+							return $count;
+				    	}
+				    	else{
+				    		return 0;
+				    	}
+				    }
+				}
+			return 0;
+		}
+
+		public function insert_essay_question($data) {//insert
+			$this->db->insert("essay_questions", $data);
+		}
+
+		public function update_essay_question($id, $data) {//update
+			$this->db->where("essay_question_id", $id);
+			$this->db->update("essay_questions", $data);
+			return $this->db->affected_rows();
 		}
 	}
 ?>

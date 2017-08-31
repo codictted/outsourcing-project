@@ -20,7 +20,7 @@
                 redirect(base_url("login"));
             }
         }
-
+        //JOB MATCH PASS RATE
         public function update_rate() {
             $newrate = $this->input->post("jobmatch_passrate");
             $this->Utilities_model->update_rate($newrate);
@@ -28,6 +28,7 @@
             redirect(base_url("utilities"));
         }
 
+        //EDUC ATTAIN
         public function utilities_educ_attain() {
             $data["title"] = "Educational Attainment";
             $data['edat'] = $this->Utilities_model->get_educ_attain();
@@ -107,12 +108,7 @@
             // redirect(base_url("utilities/utilities_educ_attain"));
         }
 
-        public function delete_educ_attain($id) {
-            $this->Utilities_model->delete_educ_attain($id);
-            $this->session->set_flashdata("success_notification", "You have successfully deleted a record.");
-            redirect(base_url("utilities/utilities_educ_attain"));
-        } 
-
+        //AGENCY EMAIL
         public function utilities_agency_email() {
             $data["title"] = "Agency's Default Email";
             $data['agem'] = $this->Utilities_model->get_agency_email();
@@ -129,6 +125,62 @@
             $this->Utilities_model->update_agency_email($email, $pword);
             $this->session->set_flashdata("success_notification", "Congratulations! You have successfully updated the Agency's Email and Password.");
             redirect(base_url("utilities/utilities_agency_email/"));
+        }
+
+
+        //TEXT MESSAGES
+        public function utilities_text_message() {
+            $data["title"] = "Text Messages";
+            $data['teme'] = $this->Utilities_model->get_text_message();
+            $this->load->view("admin-header", $data);
+            $this->load->view("admin-header-switch");
+            $this->load->view("nav-utilities");
+            $this->load->view("utilities_text_message", $data);
+        }
+
+        public function update_text_message() {
+            $ji_text_mess = $this->input->post("ji_text_mess");
+            $jo_text_mess = $this->input->post("jo_text_mess");
+            $this->Utilities_model->update_text_message($ji_text_mess, $jo_text_mess);
+            $this->session->set_flashdata("success_notification", "Congratulations! You have successfully updated the text messages.");
+            redirect(base_url("utilities/utilities_text_message/"));
+        }
+
+        //ESSAY QUESTION
+        public function utilities_essay_questions() {
+            $data["title"] = "Essay Questions";
+            $data['essayq'] = $this->Utilities_model->get_essay_question();
+            $this->load->view("admin-header", $data);
+            $this->load->view("admin-header-switch");
+            $this->load->view("nav-utilities");
+            $this->load->view("utilities_essay_questions", $data);
+        }
+
+        public function status_essay_question() {
+
+            $this->form_validation->set_rules("essay_id", "Essay ID", "required|alpha_dash");
+            $this->form_validation->set_rules("essay_status", "Essay Status", "required|alpha_dash");
+
+            if($this->form_validation->run() !== FALSE) {
+                $id = $this->input->post("essay_id");
+                $data = array("flag" => $this->input->post("essay_status"));
+                $this->Utilities_model->status_essay_question($id, $data); 
+            }
+        }
+
+        public function insert_essay_question() {
+            $data = array("essay_question" => $this->input->post("add_essay_question"));
+            $this->Utilities_model->insert_essay_question($data);
+            $this->session->set_flashdata("success_notification", "Congratulations! You have successfully added a new record.");
+            redirect(base_url("utilities/utilities_essay_questions"));
+        }
+
+        public function update_essay_question() {
+            $id = $this->input->post("edit_eq");
+            $data = array("essay_question" => $this->input->post("edit_essay_question"));
+            $this->Utilities_model->update_essay_question($id, $data);
+            $this->session->set_flashdata("success_notification", "Congratulations! You have successfully updated a record.");
+            redirect(base_url("utilities/utilities_essay_questions"));
         }
                
     }

@@ -2,6 +2,15 @@
     <form action="<?php echo base_url('utilities/update_rate') ?>" method="POST" class="form-horizontal fade-effect" id="jobmatch_passrate_form">
         <fieldset>
             <legend>Job Match Passing Rate</legend>
+
+            <div class="col-lg-12">
+                <div class="alert alert-info alert-dismissable small">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                    <i class="glyphicon glyphicon-info-sign"></i><b>REMINDER:</b>
+                    <p class="alert-p">This sets the passing rate used in job matching.</p>
+                </div>
+            </div>
+
             <?php if($this->session->flashdata('success_notification')): ?>
                 <div class="col-lg-12">
                     <div class="alert alert-success alert-dismissable small">
@@ -32,7 +41,6 @@
                         </div>
                         <div class="col-lg-12">
                             <div class="error-form">
-                                <!-- <span class="indiv-error"><?php //echo form_error("contact_name"); ?></span> -->
                                 <input type="number" id="jobmatch_passrate" value="<?php echo $rate; ?>" name="jobmatch_passrate" class="form-control" min="1" max="100">
                             </div>
                         </div>

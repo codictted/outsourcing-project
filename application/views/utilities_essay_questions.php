@@ -3,13 +3,13 @@
     <form class="form-horizontal">
 
         <fieldset>
-            <legend>Educational Attainment</legend>
+            <legend>Essay Questions</legend>
 
             <div class="col-lg-12">
                 <div class="alert alert-info alert-dismissable small">
                     <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
                     <i class="glyphicon glyphicon-info-sign"></i><b>REMINDER:</b>
-                    <p class="alert-p">This sets the selection of educational attainment used in application form and job order.</p>
+                    <p class="alert-p">This sets the essay questions to be answered by the applicants.</p>
                 </div>
             </div>
 
@@ -46,21 +46,21 @@
     </form>
 
     <div class="col-lg-8">
-        <table id="educ-attain-table" class="custom-table-large table-hover">
+        <table id="essay-question-table" class="custom-table-large table-hover">
             <thead>
                 <th><center>Status</center></th>
-                <th><center>Educational Attainment</center></th>
+                <th><center>Essay Question</center></th>
                 <th><center>Action</center></th>
             </thead>
             <tbody>
-                <?php foreach($edat as $c) { ?>
-                    <tr id="<?php echo $c->educ_attainment_id ?>">
+                <?php foreach($essayq as $c) { ?>
+                    <tr id="<?php echo $c->essay_question_id ?>">
                         <?php 
                             if($c->flag == 0){
                                 $status = "Active"; 
                                 echo "<script>
                                         $(function(){
-                                                  $('input[name=my_checkbox_$c->educ_attainment_id]').bootstrapSwitch('state', true, true);
+                                                  $('input[name=my_checkbox_$c->essay_question_id]').bootstrapSwitch('state', true, true);
                                         });  
                                     </script>";
                             }
@@ -70,23 +70,23 @@
                         ?>
                         <td>
                             <center>
-                                <div id='changeState_<?php echo $c->educ_attainment_id ?>'><?php echo $status; ?>
+                                <div id='changeState_<?php echo $c->essay_question_id ?>'><?php echo $status; ?>
                                 </div>
                             </center>
                         </td>
 
                         <td>
-                            <center><?php echo $c->educ_attainment; ?></center>
+                            <center><?php echo $c->essay_question; ?></center>
                         </td>
 
                         <td>
                             <center>
-                                <button id="<?php echo $c->educ_attainment_id ?>" class="btn btn-success btn-sm edit_ea_button">
+                                <button id="<?php echo $c->essay_question_id ?>" class="btn btn-success btn-sm edit_eq_button">
                                     <span class="glyphicon glyphicon-edit"></span>
-                                    <input type="hidden" id="<?php echo $c->educ_attainment_id.'edit_educ_attain'; ?>" value="<?php echo $c->educ_attainment; ?>">
+                                    <input type="hidden" id="<?php echo $c->essay_question_id.'edit_essayq'; ?>" value="<?php echo $c->essay_question; ?>">
                                 </button>
 
-                                <input id='switch-state' name='my_checkbox_<?php echo $c->educ_attainment_id ?>' type='checkbox' value='<?php echo $c->educ_attainment_id; ?>' >
+                                <input id='switch-state' name='my_checkbox_<?php echo $c->essay_question_id ?>' type='checkbox' value='<?php echo $c->essay_question_id; ?>' >
                             </center>
                         </td>
                     </tr>
@@ -95,24 +95,24 @@
         </table>
     </div>
 
-    <div class="col-lg-4" id="add_ea_panel">
+    <div class="col-lg-4" id="add_eq_panel">
     	<div class="panel panel-success">
             <div class="panel-heading">
-                <h4 class="panel-title" id="panel-title">ADD EDUCATIONAL ATTAINMENT</h4>
+                <h4 class="panel-title" id="panel-title">ADD ESSAY QUESTION</h4>
             </div>
 
             <div class="panel-body">
                 <div class="col-lg-12">
-                    <form action="<?php echo base_url('utilities/insert_educ_attain') ?>" method="POST" class="form-horizontal fade-effect" id="add_ea-form">
+                    <form action="<?php echo base_url('utilities/insert_essay_question') ?>" method="POST" class="form-horizontal fade-effect" id="add_eq-form">
     	        		<div class="form-group">
-    	        			<h5>*Educational Attainment:</h5>
+    	        			<h5>*Essay Question:</h5>
                             <span class="indiv-error"><?php echo form_error("add_educ_attainment"); ?></span>
-                            <input type="text" class="form-control" placeholder="Enter Educational Attainment" name="add_educ_attainment">
+                            <textarea class="form-control" placeholder="Enter Essay Question" name="add_essay_question" maxlength="100"></textarea>
                         </div>
                         <hr>
                         <div class="form-group">
                             <div class="col-lg-6">
-                                <button type="submit" class="btn btn-default pull-right">Add</button>
+                                <button type="submit" class="btn btn-success pull-right">Add</button>
                             </div>
                             <div class="col-lg-6">
                                 <button type="reset" class="btn btn-warning pull-left">Clear</button>
@@ -124,28 +124,28 @@
 		</div><!--panel-->
     </div><!--col-lg-4-->
 
-    <div class="col-lg-4" id="edit_ea_panel">
-        <div class="panel panel-success">
+    <div class="col-lg-4" id="edit_eq_panel">
+        <div class="panel panel-info">
             <div class="panel-heading">
-                <h4 class="panel-title" id="panel-title">EDIT EDUCATIONAL ATTAINMENT</h4>
+                <h4 class="panel-title" id="panel-title">EDIT ESSAY QUESTION</h4>
             </div>
 
             <div class="panel-body">
                 <div class="col-lg-12">
-                    <form action="<?php echo base_url('utilities/update_educ_attain') ?>" method="POST" class="form-horizontal fade-effect" id="edit_ea-form">
+                    <form action="<?php echo base_url('utilities/update_essay_question') ?>" method="POST" class="form-horizontal fade-effect" id="edit_eq-form">
                         <div class="form-group">
-                            <h5>*Educational Attainment:</h5>
-                            <span class="indiv-error"><?php echo form_error("edit_educ_attainment"); ?></span>
-                            <input type="text" class="form-control" placeholder="Enter Educational Attainment" name="edit_educ_attainment">
-                            <input type="hidden" name="edit_ea"/>
+                            <h5>*Essay Question:</h5>
+                            <span class="indiv-error"><?php echo form_error("edit_essay_question"); ?></span>
+                            <textarea class="form-control" placeholder="Enter Essay Question" name="edit_essay_question"></textarea>
+                            <input type="hidden" name="edit_eq"/>
                         </div>
                         <hr>
                         <div class="form-group">
                             <div class="col-lg-6">
-                                <button type="submit" class="btn btn-default pull-right">Save</button>
+                                <button type="submit" class="btn btn-info pull-right">Save</button>
                             </div>
                             <div class="col-lg-6">
-                                <button type="reset" class="btn btn-warning pull-left" onclick="returnAdd()">Cancel</button>
+                                <button type="reset" class="btn btn-warning pull-left" onclick="returnAddEssay()">Cancel</button>
                             </div>
                         </div>
                     </form>
@@ -161,15 +161,15 @@
 <script type="text/javascript">
     //initialize datatable
     $(document).ready (function () {
-      $("#educ-attain-table").dataTable();
+      $("#essay-question-table").dataTable();
     });
 
     $('input[id="switch-state"]').on('switchChange.bootstrapSwitch', function(event, state) {
         var ID = $(this).val();
         var value = state ? value = 0 : value = 1;
-        var url = "<?php echo base_url()?>utilities/status_educ_attain/";
-        var dataString = "educ_id=" + ID + "&";
-            dataString += "educ_status=" + value;
+        var url = "<?php echo base_url()?>utilities/status_essay_question/";
+        var dataString = "essay_id=" + ID + "&";
+            dataString += "essay_status=" + value;
 
             state ? $('#changeState_'+ ID).html("Active"): $('#changeState_'+ ID).html("Inactive");
 

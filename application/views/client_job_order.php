@@ -113,40 +113,23 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="order-skills" class="col-lg-2 control-label form-label">
+                    <label class="col-lg-2 control-label form-label">
+                        Gender:
                     </label>
                     <div class="col-lg-2">
-                        <input type="number" class="form-control" name="slot_male">
-                        <span class="help-block">Number of Openings (Male)</span>
-                    </div>
-                    <div class="col-lg-2">
-                        <input type="number" class="form-control" name="slot_female">
-                        <span class="help-block">Number of Openings (Female)</span>
+                        <input type="radio" name="gender_pref" value="2"> All Male<br>
+                        <input type="radio" name="gender_pref" value="1"> All Female<br>
+                        <input type="radio" name="gender_pref" value="0"> No Preferrence
                     </div>
                     <div class="col-lg-2">
                         <span class="indiv-error">
                         <?php echo form_error("slot");?></span>
                         <input type="number" class="form-control" name="slot">
-                        <span class="help-block">Number of Openings (No Preference)</span>
+                        <span class="help-block">Number of Openings</span>
                     </div>
                     <div class="col-lg-2">
                         <input type="number" class="form-control" placeholder="Height" name="height">
                         <span class="help-block">in cm</span>
-                    </div>
-                    <div class="col-lg-2">
-                        <input type="number" class="form-control" placeholder="Weight" name="weight">
-                        <span class="help-block">in kg</span>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="order-skills" class="col-lg-2 control-label form-label">
-                        <text class="required">*</text> Schedule:
-                    </label>
-                    <div class="col-lg-10" id="hide">
-                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#scheduler-modal">
-                            <span class="glyphicon glyphicon-time"></span>
-                            Add Shifting Schedule
-                        </button>
                     </div>
                 </div>
                 <div class="form-group">
@@ -193,30 +176,6 @@
     </div>
 </body>
 </html>
-
-<!-- pop scheduler modal -->
-<div class="modal fade" role="modal" id="scheduler-modal">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Create Shift Schedule</h4>
-            </div>
-            <div class="modal-body" id="wschedule">
-                <div class="day-schedule-selector">
-                    <table class="schedule-table">
-                        <thead class="schedule-header"></thead>
-                        <tbody class="schedule-rows"></tbody>
-                    </table>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                <button type="button" class="btn btn-primary" onclick="save_sched()">Save</button>
-            </div>
-        </div>
-    </div>
-</div>
 
 <script type="text/javascript">
 

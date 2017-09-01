@@ -582,5 +582,12 @@
 
             redirect(base_url()."client/staff");
         }
+
+        public function get_match_details($app_id, $order_id) {
+
+            $data = $this->compute_job_match($order_id, $app_id);
+            echo json_encode($data);
+        }
+
 	}
 ?>

@@ -562,11 +562,13 @@ $(".modal-btn-staff").click(function(event) {
     var c_name = id.split("/")[2];
     var j_name = id.split("/")[3];
     var date_request = id.split("/")[4];
-    var reason = id.split("/")[5];
+    var date_replaced = id.split("/")[5];
+    var reason = id.split("/")[6];
     $("#staff_id").val(s_id);
     $("[name='client-name']").html(c_name);
     $("[name='job_position']").html(j_name);
     $("[name='date_request']").html(date_request);
+    $("[name='date_replaced']").html(date_replaced);
     $("[name='reason']").html(reason);
     $("#" + mod).modal("show");
 

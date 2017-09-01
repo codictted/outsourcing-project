@@ -231,7 +231,7 @@
 			return $query->result();
 		}
 
-<<<<<<< HEAD
+
 		//email
 		public function get_agency_email_details() {
 			$this->db->select("*");
@@ -243,10 +243,9 @@
 		//insert essay answers
 		public function insert_essayq($data) {//insert
 			$this->db->insert("essay_question", $data);
-=======
+		}
 		public function update_applicant_stat($id, $stat) {
-
-			$this->db->where("applicant_id", $id);
+			$this->db->where("id", $id);
 			$this->db->set("status", $stat);
 			$this->db->update("applicant");
 		}
@@ -262,6 +261,7 @@
 
 			$this->db->where("staff_id", $id);
 			$this->db->set("status", $stat);
+			$this->db->set("date_replaced", date('Y/m/d H:i:s'));
 			$this->db->update("staff_history");
 		}
 
@@ -316,7 +316,7 @@
 
 			}
 			return $order_list;
->>>>>>> a0d95625ad51f5ecbfb782d7cd2192eb1437ff92
+
 		}
 	}
 ?>

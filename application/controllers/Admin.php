@@ -826,7 +826,7 @@
                 $time = $this->input->post("interview_time");
                 $date = $this->input->post("interview_date");
                 $app_id = $this->input->post("app_id");
-<<<<<<< HEAD
+
                 $date_time = "Date: ".$date."\nTime: ".$time;
                 $message = $message." ".$date_time;
                 $mark = TRUE;
@@ -843,25 +843,18 @@
                 //     if(strlen($sub) <= 0)
                 //         $mark = FALSE;
                 // }
-=======
+
                 $date_time = "".$date."".$time;
                 $message = $message." ".$date_time;
                 $result = $this->itexmo($num, $message, "TR-JEABB956335_VA2MW");
-<<<<<<< HEAD
-=======
-                
->>>>>>> 2993f3551a04ee5725f02dd5573c3f61cd2418bf
->>>>>>> a0d95625ad51f5ecbfb782d7cd2192eb1437ff92
+
                 if ($result == ""){
                     echo "iTexMo: No response from server!!!
                     Please check the METHOD used (CURL or CURL-LESS). If you are using CURL then try CURL-LESS and vice versa.  
                     Please CONTACT US for help. ";  
                 }
-<<<<<<< HEAD
-                else if ($result == 0){
-=======
+
                 else if ($result == 0){ 
->>>>>>> a0d95625ad51f5ecbfb782d7cd2192eb1437ff92
 
                     $data = array(
                         "applicant_id" => $app_id,
@@ -875,12 +868,9 @@
                     redirect(base_url("admin/admin_applicant_list"));
                 }
                 else {
-<<<<<<< HEAD
-                    $this->session->set_flashdata("fail_notification", "Maximum number of messages sent reached.");
-=======
 
-                    $this->session->set_flashdata("fail_notification", "Error Num ". $result . " was encountered!");
->>>>>>> a0d95625ad51f5ecbfb782d7cd2192eb1437ff92
+                    $this->session->set_flashdata("fail_notification", "Maximum number of messages sent reached.");
+
                     redirect(base_url("admin/admin_applicant_list"));
                 }
             }
@@ -1279,24 +1269,24 @@
             echo json_encode($data);
         }
 
-<<<<<<< HEAD
-        public function approve_staff_replacement($id, $app_id) {
-            $this->Admin_model->update_applicant_stat($id, 5);
-            $this->Admin_model->update_staff_stat($id, 2);
-            $this->Admin_model->update_staff_history_stat($id, 2);
+
+        public function approve_staff_replacement($staff_id = 0, $app_id = 0) {
+            $this->Admin_model->update_applicant_stat($app_id, 5);
+            $this->Admin_model->update_staff_stat($staff_id, 2);
+            $this->Admin_model->update_staff_history_stat($staff_id, 2);
             $this->session->set_flashdata("success_notification", "You have successfully approved the replacement of staff!");
             redirect(base_url("admin/admin_staff_list"));
         }
-        public function decline_staff_replacement($id, $app_id) {
-            $this->Admin_model->update_applicant_stat($id, 5);
-            $this->Admin_model->update_staff_stat($id, 2);
-            $this->Admin_model->update_staff_history_stat($id, 1);
+        public function decline_staff_replacement($staff_id = 0, $app_id = 0) {
+            $this->Admin_model->update_applicant_stat($app_id, 5);
+            $this->Admin_model->update_staff_stat($staff_id, 2);
+            $this->Admin_model->update_staff_history_stat($staff_id, 1);
             $this->session->set_flashdata("success_notification", "You have successfully declined the replacement of staff!");
             redirect(base_url("admin/admin_staff_list"));
         }
 
        
-=======
+
          public function compute_job_match_per_applicant($j, $applicant) {
 
 
@@ -1474,6 +1464,6 @@
             $data = $this->compute_job_match($order_id, $app_id);
             echo json_encode($data);
         }
->>>>>>> 2993f3551a04ee5725f02dd5573c3f61cd2418bf
+
 	}
 ?>

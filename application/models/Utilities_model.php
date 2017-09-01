@@ -6,20 +6,12 @@
 			$this->load->database();
 		}
 
-<<<<<<< HEAD
+
 		// //JOB MATCH PASS RATE
 		// public function get_rate() {
 		//     $query = $this->db->select('jobmatch_rate')->from('jobmatch_rate')->get();
 		//     return $query->row()->jobmatch_rate;
 		// }
-=======
-		//JOB MATCH PASS RATE
-		public function get_rate() {
-		    $query = $this->db->select('jobmatch_rate')->from('jobmatch_rate')->where('flag ', 0)->get();
-		    return $query->row()->jobmatch_rate;
-		}
->>>>>>> a0d95625ad51f5ecbfb782d7cd2192eb1437ff92
-
 		// public function update_rate($newrate) {
 		// 	$this->db->set("jobmatch_rate", $newrate);
 		// 	$this->db->update("jobmatch_rate");    
@@ -92,7 +84,7 @@
 			$this->db->update("agency_default_email");
 		}
 
-<<<<<<< HEAD
+
 		// //TEXT MESSAGES
 		// public function get_text_message() {
 		//     $this->db->select("*");
@@ -106,21 +98,8 @@
 		// 	$this->db->set("job_offer_text", $jo_text_mess);
 		// 	$this->db->update("text_messages");
 		// }
-=======
-		//TEXT MESSAGES
-		public function get_text_message() {
-		    $this->db->select("*");
-			$this->db->from("text_messages");
-			$query = $this->db->get();
-			return $query->result();
-		}
 
-		public function update_text_message($ji_text_mess, $jo_text_mess) {
-			$this->db->set("job_interview_text", $ji_text_mess);
-			$this->db->set("job_offer_text", $jo_text_mess);
-			$this->db->update("text_messages");
-		}
->>>>>>> a0d95625ad51f5ecbfb782d7cd2192eb1437ff92
+	
 
 		//ESSAY QUESTIONS
 		public function get_essay_question() {

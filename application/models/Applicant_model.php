@@ -108,9 +108,9 @@
 
 		public function get_essay($id) {
 
-			$this->db->select("applicant_essay.*, essay_question.essay_question");
+			$this->db->select("applicant_essay.*, essay_question.question");
 			$this->db->from("applicant_essay");
-			$this->db->join("essay_question", "applicant_essay.question = essay_question.essay_question_id");
+			$this->db->join("essay_question", "applicant_essay.question = essay_question.id");
 			$this->db->where("applicant_id", $id);
 			$query = $this->db->get();
 			return $query->result();

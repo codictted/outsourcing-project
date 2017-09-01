@@ -53,6 +53,9 @@
                     <a href="<?php echo base_url()?>client/shortlist"><span class="glyphicon glyphicon-list-alt small"></span>Short List</a>
                 </li>
                 <li>
+                    <a href="<?php echo base_url()?>client/shortlisted_applicant"><span class="glyphicon glyphicon-knight"></span>Shortlisted Applicants</a>
+                </li>
+                <li>
                     <a href="<?php echo base_url()?>client/staff"><span class="glyphicon glyphicon-king small"></span>Staff Management</a>
                 </li>
             </ul>

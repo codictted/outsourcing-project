@@ -1,3 +1,4 @@
+
     <div class="admin-container slide-effect">
         <form>
             <fieldset>
@@ -27,7 +28,7 @@
                         </tr>
                         <tr>
                             <td><b>Quantity:</b></td>
-                            <td><i><?php $total = $order_details->num_male + $order_details->num_female + $order_details->total_openings; echo $total; ?></i></td>
+                            <td><i><?php $total = $order_details->total_openings; echo $total; ?></i></td>
                         </tr>
                         <tr>
                             <td><b>Deployed as of <?php echo date("m/d/Y"); ?></b></td>
@@ -39,7 +40,7 @@
                         </tr>                        
                         <tr>
                             <td><b>Date Posted:</b></td>
-                            <td><i><?php echo $order_post[0]->date_posted; ?></i></td>
+                            <td><i><?php echo $order_post->date_posted; ?></i></td>
                         </tr>
                     </table>
                 </div>
@@ -82,10 +83,6 @@
                                 <tr>
                                     <td>Height:</td>
                                     <td><?php echo $processed_data['height']; ?></td>
-                                </tr>
-                                <tr>
-                                    <td>Weight:</td>
-                                    <td><?php echo $processed_data['weight']; ?></td>
                                 </tr>
                                 <tr>
                                     <td>Must be Single:</td>
@@ -133,27 +130,6 @@
                     <th>Date of Deployment</th>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>Active</td>
-                        <td>Arlene Mariano</td>
-                        <td>Female</td>
-                        <td>2017-06-05</td>
-                        <td>2017-07-03 5:45PM</td>
-                    </tr>
-                    <tr>
-                        <td>Active</td>
-                        <td>Edward Elrick</td>
-                        <td>Male</td>
-                        <td>2017-06-09</td>
-                        <td>2017-07-03 5:45PM</td>
-                    </tr>
-                    <tr>
-                        <td>Terminated</td>
-                        <td>Arlene Mariano</td>
-                        <td>Female</td>
-                        <td>2017-06-05</td>
-                        <td>2017-07-03 5:45PM</td>
-                    </tr>
                     <tr>
                         <td>Inactive/Di na nagtatrabaho</td>
                         <td>Edward Elrick</td>

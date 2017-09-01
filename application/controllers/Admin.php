@@ -173,9 +173,35 @@
                     "status" => 1
                 );
 
-                is_null($cid) ? 
+                is_null($cid) OR $cid == "NULL" ? 
                 $this->Client_model->add_client($data) :
-                $this->Client_model->update_client($cid, $data);
+                $this->Client_model->update_client($id, $data);
+
+                $this->load->library('email');
+
+
+                $config['protocol']     = 'smtp';
+                $config['smtp_host']    = 'smtp.gmail.com';
+                $config['smtp_port']    = '465';
+                $config['smtp_timeout'] = '7';
+                $config['smtp_crypto']  = 'ssl';
+                $config['smtp_user']    = $data[0]->agency_email_text;
+                $config['smtp_pass']    = $data[0]->agency_email_pword;
+                $config['charset']      = 'utf-8';
+                $config['newline']      = "\r\n";
+                $config['mailtype']     = 'text';
+
+                $final_message = "Good Day! Your account credentials are:"."\n"."Username: ".$user."\n"."Password: ".$pass;
+
+                $this->email->initialize($config);
+                $this->email->from($email, $contact_name);
+                $this->email->to($data[0]->agency_email_text);
+
+                $this->email->subject('Inquiry');
+                $this->email->message($final_message);
+
+                $this->email->send();
+                echo $this->email->print_debugger();
 
                 $this->session->set_flashdata("success_notification", "Congratulations! You have successfully updated the client's details and status.");
                 echo json_encode(array("success" => TRUE));
@@ -217,7 +243,13 @@
 
             if($this->session->userdata("usertype") == "1") {
                 $data['title'] = "List of Job Orders";
-                $data['orders'] = $this->Client_model->get_all_job_orders(); 
+                $data['orders'] = $this->Client_model->get_all_job_orders();
+                $index = 0;
+                foreach($data['orders'] as $order) {
+
+                    $data['orders'][$index]->ctr_deployed = $this->Admin_model->count_deployed  ($order->order_id);
+                    $index++;
+                }
                 $this->load->view("admin-header", $data);
                 $this->load->view("nav-transaction");
                 $this->load->view("admin_order_list");
@@ -309,8 +341,8 @@
                     $this->Client_model->get_job_order_req($id),
                     $this->Client_model->get_joborder_details($id)
                 );
-                $data['sched'] = $this->Client_model->get_job_order_sched($id);
                 $data['emp_count'] = $this->Admin_model->count_deployed($id);
+                $data['staff_history'] = $this->Admin_model->staff_per_order($id);
                 $this->load->view("admin-header", $data);
                 $this->load->view("nav-transaction");
                 $this->load->view("jo_ongoing");
@@ -329,7 +361,6 @@
                 $data['order_skills'] = $this->Client_model->get_job_order_skills($id);
                 $data['order_benefits'] = $this->Client_model->get_job_order_benefits($id);
                 $data['order_req'] = $this->Client_model->get_job_order_req($id);
-                $data['sched'] = $this->Client_model->get_job_order_sched($id);
                 $this->load->view("admin-header", $data);
                 $this->load->view("nav-transaction");
                 $this->load->view("jo_completed");
@@ -348,7 +379,6 @@
                 $data['order_skills'] = $this->Client_model->get_job_order_skills($id);
                 $data['order_benefits'] = $this->Client_model->get_job_order_benefits($id);
                 $data['order_req'] = $this->Client_model->get_job_order_req($id);
-                $data['sched'] = $this->Client_model->get_job_order_sched($id);
                 $this->load->view("admin-header", $data);
                 $this->load->view("nav-transaction");
                 $this->load->view("jo_terminated");
@@ -367,7 +397,6 @@
                 $data['order_skills'] = $this->Client_model->get_job_order_skills($id);
                 $data['order_benefits'] = $this->Client_model->get_job_order_benefits($id);
                 $data['order_req'] = $this->Client_model->get_job_order_req($id);
-                $data['sched'] = $this->Client_model->get_job_order_sched($id);
                 $this->load->view("admin-header", $data);
                 $this->load->view("nav-transaction");
                 $this->load->view("jo_rejected");
@@ -459,27 +488,26 @@
                 $final_age = "From ".$quali->min_age." to ".$quali->max_age." years old";
 
             $final_height = is_null($quali->height) || $quali->height == "" ? "N/A" : $quali->height;
-            $final_weight = is_null($quali->weight) || $quali->weight == "" ? "N/A" : $quali->weight;
             $final_civil = is_null($quali->single) || $quali->single == "0" || $quali->single == "" ? "Not necessarily" : "Yes";
 
             $final_education = is_null($quali->educ_name) || $quali->educ_name == "" ? "No Preferrence" : $quali->educ_name;
             $final_course = is_null($quali->course_name) || $quali->course_name == "" ? "No Preferrence" : $quali->course_name;
 
-            $male = is_null($quali->num_male) || $quali->num_male == "" ? 0 : $quali->num_male;
-            $female = is_null($quali->num_female) || $quali->num_female == "" ? 0 : $quali->num_female;
+            switch ($quali->gender) {
+                case 0:
+                    $final_gender = "No Preferrence";
+                    break;
+                
+                case 1:
+                    $final_gender = "All Female";
+                    break;
 
-            if($male == 0 && $female == 0)
-                $final_gender = "No Preferrence";
-            elseif($male != 0 && $female == 0)
-                $final_gender = $male." (Male)";
-            elseif($male == 0 && $female != 0)
-                $final_gender = $female." (Female)";
-            else
-                $final_gender = $male." (Male), ".$female." (Female)";
+                case 2:
+                    $final_gender = "All Male";
+                    break;
+            }
 
-            $num_mix = is_null($quali->total_openings) || $quali->total_openings == "" ? 0 : $quali->total_openings;
-
-            $final_total = $male + $female + $num_mix;
+            $final_total = $quali->total_openings;
 
 
             $final_name = is_null($quali->comp) || $quali->comp == "" ?
@@ -489,7 +517,6 @@
                 "name" => $final_name,
                 "age" => $final_age,
                 "height" => $final_height,
-                "weight" => $final_weight,
                 "single" => $final_civil,
                 "gender" => $final_gender,
                 "education" => $final_education,
@@ -522,7 +549,6 @@
                     "course" => 1,
                     "single" => 1,
                     "height" => 1,
-                    "weight" => 1,
                     "urgent" => 1,
                     "skills" => 1,
                     "benefits" => 1,
@@ -674,20 +700,6 @@
                 // array_push($match_result[$index], array("nonmatch_skill" => $nonmatch_skill));
                 $match_result[$index]['match_skill'] = $match_skill;
                 $match_result[$index]['nonmatch_skill'] = $nonmatch_skill;
-
-                if(!(is_null($order_det[0]->weight)) OR !($order_det[0]->weight == 0.00) OR !($order_det[0]->weight == "")) {
-
-                    $no_items++;
-                    if($order_det[0]->weight == $applicant->weight) {
-
-                        $no_matched++;
-                        // array_push($match_quali, array("weight" => $order_det[0]->weight));
-                        $match_quali['weight'] = $order_det[0]->weight;
-                    }
-                    else
-                        // array_push($nonmatch_quali, array("weight" => $order_det[0]->weight));
-                        $nonmatch_quali['weight'] = $order_det[0]->weight;
-                }
 
                 if(!(is_null($order_det[0]->height)) OR !($order_det[0]->height == 0.00) OR !($order_det[0]->height == "")) {
 
@@ -1332,20 +1344,6 @@
 
             $match_result['match_skill'] = $match_skill;
             $match_result['nonmatch_skill'] = $nonmatch_skill;
-
-            if(!(is_null($order_det[0]->weight)) OR !($order_det[0]->weight == 0.00) OR !($order_det[0]->weight == "")) {
-
-                $no_items++;
-                if($order_det[0]->weight == $applicant->weight) {
-
-                    $no_matched++;
-                    // array_push($match_quali, array("weight" => $order_det[0]->weight));
-                    $match_quali['weight'] = $order_det[0]->weight;
-                }
-                else
-                    // array_push($nonmatch_quali, array("weight" => $order_det[0]->weight));
-                    $nonmatch_quali['weight'] = $order_det[0]->weight;
-            }
 
             if(!(is_null($order_det[0]->height)) OR !($order_det[0]->height == 0.00) OR !($order_det[0]->height == "")) {
 

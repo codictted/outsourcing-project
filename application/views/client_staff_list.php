@@ -5,7 +5,7 @@
                 <div class="col-lg-12">
                     <div class="alert alert-info alert-dismissable small">
                         <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-                        <i class="glyphicon glyphicon-info-sign"></i><b>REMINDER:</b> <p class="alert-p">You can always filter the list by your own specifications.</p>
+                        <i class="glyphicon glyphicon-info-sign"></i><b>REMINDER:</b> <p class="alert-p">This is your staff list. You can ask to replace a staff just remember that you have a valid reason.</p>
                     </div>
                 </div>
                 <?php if($this->session->flashdata("success_notification_replace")): ?>
@@ -27,24 +27,10 @@
                     </div>
                 <?php endif; ?>
                 <div class="form-group col-lg-12">
-                    <label class="form-label col-lg-1">Filter:</label>
+                    <label class="form-label col-lg-1"></label>
                     <div class="col-lg-3">
-                        <select class="form-control">
-                            <option selected disabled>--Choose--</option>
-                            <option value="0">Status</option>
-                            <option value="0">Client</option>
-                            <option value="0">Job Position</option>
-                            <option value="0">Date</option>
-                        </select>
                     </div>
                     <div class="col-lg-3">
-                        <select class="form-control">
-                            <option selected disabled>--Choose--</option>
-                            <option value="0">Status</option>
-                            <option value="0">Client</option>
-                            <option value="0">Job Position</option>
-                            <option value="0">Date</option>
-                        </select>
                     </div>
                     <div class="col-lg-2 pull-right">
                         <button id="repl-btn" type="button" class="btn btn-primary col-lg-12" onclick="change_table()"><span class="glyphicon glyphicon-king small"></span>

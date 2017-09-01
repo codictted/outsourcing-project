@@ -170,14 +170,6 @@
 			return $query->result();
 		}
 
-		public function get_job_order_sched($id) {
-
-			$this->db->from("job_order_sched");
-			$this->db->where("job_order_id", $id);
-			$query = $this->db->get();
-			return $query->result();
-		}
-
 		public function get_all_job_orders() {
 
 			$this->db->select("job_order.*, client.comp_name as comp, client.full_name as full,
@@ -219,6 +211,18 @@
 			return $query->result();
 		}
 
+		public function get_shortlisted_applicants($id) {
+
+			$query = $this->db->query("SELECT sh.*, app.id AS apid, app.first_name, app.last_name, app.status AS ap_stat, jpos.name AS jname FROM shortlist AS sh JOIN applicant AS app ON sh.applicant_id = app.id JOIN job_position AS jpos ON app.job_id = jpos.id WHERE sh.client_id = $id AND sh.status = 1");
+
+			return $query->result();
+		}
+
+		public function count_new_shortlist($id) {
+
+			$query = $this->db->query("SELECT DISTINCT COUNT(order_id) AS ctr FROM shortlist WHERE status = 0");
+			return $query->row();
+		}
 		public function get_educ_attain() {
 			$this->db->select("*");
 			$this->db->from("educ_attainment");

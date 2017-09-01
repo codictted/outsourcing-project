@@ -33,6 +33,7 @@
                 <tbody>
                     <?php foreach($staff as $st) {
 
+                        $url = "";
                         switch ($st->status) {
                             case 0:
                                 $stat = "Active";

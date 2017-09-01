@@ -65,19 +65,15 @@
                             $name = is_null($jo->comp) || $jo->comp == "" ?
                                     $jo->full :
                                     $jo->comp;
-                            $num_male = is_null($jo->num_male) || $jo->num_male == "" ? 0 : $jo->num_male;
-                            $num_female = is_null($jo->num_female) || $jo->num_female == "" ? 0 : $jo->num_female;
-                            $num_mix = is_null($jo->total_openings) || $jo->total_openings == "" ? 0 : $jo->total_openings;
-
-                            $total = $num_male + $num_female + $num_mix;
+                            $total = is_null($jo->total_openings) || $jo->total_openings == "" ? 0 : $jo->total_openings;
                     ?>
                     <tr id="<?php echo $jo->client_id; ?>" onclick="get_cl(this.id)">
                         <td><?php echo $urg; ?></td>
                         <td><?php echo $status; ?></td>
                         <td><?php echo $name; ?></td>
                         <td><?php echo $jo->jname; ?></td>
-                        <td><?php echo $total?></td>
-                        <td>0</td>
+                        <td><?php echo $total; ?></td>
+                        <td><?php echo $jo->ctr_deployed[0]->staff_ctr?></td>
                         <td><?php echo $jo->order_date; ?></td>
                         <td><button class="btn btn-default btn-sm table-btn" onclick="window.location.href='<?php echo base_url(); ?>admin/<?php echo $url; ?>'"><span class="glyphicon glyphicon-list"></span></button></td>
                     </tr>

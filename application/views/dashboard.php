@@ -1,5 +1,6 @@
 <div class="col-lg-12 dashboards">
 	<h3>Keep track of your daily notifications, admin!</h3>
+    <h4>Requests:</h4>
 	<div class="row">
         <div class="col-lg-3 col-md-6">
             <div class="panel panel-primary dash1">
@@ -87,6 +88,15 @@
                         <div class="clearfix"></div>
                     </div>
                 </a>
+            </div>
+        </div>
+    </div><br>
+    <h4>Reminders:</h4>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="alert alert-warning alert-dismissable small">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                <i class="glyphicon glyphicon-info-sign"></i><b>REMINDER:</b> <p class="alert-p"></p>
             </div>
         </div>
     </div>

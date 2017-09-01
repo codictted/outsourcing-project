@@ -553,6 +553,37 @@ $(function () {
     }//else if
   });
 
+
+$(".modal-btn-staff").click(function(event) {
+    event.stopPropagation();
+    var id = this.id;
+    var s_id = id.split("-")[0];
+    var mod = id.split("-")[1];
+    $("#staff_id").val(s_id);
+    $("#" + mod).modal("show");
+
+    if(mod=="replacement_modal") {
+
+      var url = "http://localhost/outsourcing/admin/get_replace_det/";
+      $.ajax({
+      dataType: "JSON",
+      url: url + s_id,
+      type: "GET",
+      success: function(data) {
+
+        var com = data[0].comp_name == null ? data[0].full_name : data[0].comp_name;
+        $("#client_name").html(com);
+        $("#job_position").html(data[0].jname);
+        $("#date_req").html(data[0].date_request);
+        $("#reason").html(data[0].reason);
+      }  
+    });//AJAX
+    }//IF
+
+    
+  });
+
+
   $(".modal-btn-client").click(function(event) {
     event.stopPropagation();
     var id = this.id;

@@ -557,5 +557,27 @@
             }
             return $status;
         }
+
+        public function submit_replace() {
+
+            $staff = $this->input->post("staff");
+            $reason = $this->input->post("reason");
+            foreach($staff as $st){
+
+                $this->Admin_model->update_staff_stat($st, 1);
+
+                $data = array(
+                    "staff_id" => $st,
+                    "client_id" => $this->session->userdata("id"),
+                    "reason" => $reason,
+                    "status" => 0
+                );
+                $this->Admin_model->insert_replace_history($data);
+            }
+
+            $this->session->set_flashdata("success_notification_replace", "Congratulations! You have successfully sent your replacement request!");
+
+            redirect(base_url()."client/staff");
+        }
 	}
 ?>

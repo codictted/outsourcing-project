@@ -15,115 +15,104 @@
                         </tr>
                         <tr>
                             <td><b>Job Advertisement Status:</b></td>
-                            <td><i>Posted (Closed, On hold)</i></td>
+                            <td><i>Posted</i></td>
                         </tr>
                         <tr>
                             <td><b>Position:</b></td>
-                            <td><i>Janitor</i></td>
+                            <td><i><?php echo $order_details->jname; ?></i></td>
                         </tr>                      
                         <tr>
                             <td><b>Client:</b></td>
-                            <td><i>Accenture</i></td>
+                            <td><i><?php $client = is_null($order_details->comp) ? $order_details->full : $order_details->comp; echo $client;?></i></td>
                         </tr>
                         <tr>
                             <td><b>Quantity:</b></td>
-                            <td><i>5</i></td>
+                            <td><i><?php $total = $order_details->num_male + $order_details->num_female + $order_details->total_openings; echo $total; ?></i></td>
                         </tr>
                         <tr>
-                            <td><b>Deployed as of 2017-0-0-0:</b></td>
-                            <td><i>2</i></td>
+                            <td><b>Deployed as of <?php echo date("m/d/Y"); ?></b></td>
+                            <td><i><?php echo $emp_count[0]->staff_ctr; ?></i></td>
                         </tr>
                         <tr>
                             <td><b>Date Ordered:</b></td>
-                            <td><i>2017-02-02 9PM</i></td>
+                            <td><i><?php echo $order_details->order_date; ?></i></td>
                         </tr>                        
                         <tr>
                             <td><b>Date Posted:</b></td>
-                            <td><i>2017-02-04 9AM</i></td>
+                            <td><i><?php echo $order_post[0]->date_posted; ?></i></td>
                         </tr>
                     </table>
                 </div>
             </div>
         </div>
         <div class="col-lg-12">
-            <br>
             <form class="col-lg-12">
                 <fieldset>
                     <legend>Job Description</legend>
                 </fieldset>
             </form>
             <div class="col-lg-12">
-                <button class="btn btn-sm btn-primary pull-right">
-                    <span class="glyphicon glyphicon-briefcase"></span>
-                    View Job Post
-                </button>
-                <table class="table custom-table">
-                    <thead>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>Skills: </td>
-                            <td><i>
-                                <ul>
-                                    <li>Marunong mag drive ng eroplano</li>
-                                    <li>Kayang magpatakbo hanggang 180kph</li>
-                                    <li>BMW</li>
-                                </ul>
-                            </i></td>
-                        </tr>
-                        <tr>
-                            <td>Qualifications: </td>
-                            <td><i>
-                                <ul>
-                                    <li>Naka experience na maglangoy</li>
-                                    <li>edi wiw</li>
-                                    <li>wowwo</li>
-                                    <li>buburahin din naman to</li>
-                                </ul>
-                            </i></td>
-                        </tr>
-                        <tr>
-                            <td>Description: </td>
-                            <td><i>
-                                <ul>
-                                    <li>Magdrive araw araw mula bahay hanggang school</li>
-                                    <li>Sunduin tuwing hapon</li>
-                                    <li>kayang magturo magmaneho</li>
-                                    <li>gagawin kapag nasira yung kotse</li>
-                                    <li>sariling linis</li>
-                                    <li>pwedeng iuwi sa bahay yung sasakyan</li>
-                                </ul>
-                            </i></td>
-                        </tr>
-                        <tr>
-                            <td>Details: </td>
-                            <td><i>
-                                <ul>
-                                    <li>No Preffered education</li>
-                                    <li>No Preffered Course</li>
-                                    <li>must be 25 - 30 y/o</li>
-                                    <li>no preffered height</li>
-                                    <li>no preffered weight</li>
-                                    <li>3 male(s) and 2 female(s)</li>
-                                </ul>
-                            </i></td>
-                        </tr>
-
-                        <tr>
-                            <td>Benefits: </td>
-                            <td><i>
-                                <ul>
-                                    <li>No Preffered education</li>
-                                    <li>No Preffered Course</li>
-                                    <li>must be 25 - 30 y/o</li>
-                                    <li>no preffered height</li>
-                                    <li>no preffered weight</li>
-                                    <li>3 male(s) and 2 female(s)</li>
-                                </ul>
-                            </i></td>
-                        </tr>
-                    </tbody>
+                <table class="details">
+                    <tr>
+                        <td><b>Benefits: </b></td>
+                        <td><?php echo $processed_data['benefits']; ?></td>
+                    </tr>
+                    <tr>
+                        <td><b>Additional Requirement: </b></td>
+                        <td><?php echo $processed_data['requirements']; ?></td>
+                    </tr>
+                    <tr>
+                        <td><b>Schedule: </b></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                    </tr>
+                    <tr><td></td><td></td></tr><tr><td><hr></td><td></td></tr>
+                    <tr>
+                        <td><b>Skills: </b></td>
+                        <td><?php echo $processed_data['skills']; ?></td>
+                    </tr>
+                    <tr>
+                        <td><b>Qualifications </b>
+                            <table class="details">
+                                <tr>
+                                    <td>Age:</td>
+                                    <td><?php echo $processed_data['age']; ?></td>
+                                </tr>
+                                <tr>
+                                    <td>Height:</td>
+                                    <td><?php echo $processed_data['height']; ?></td>
+                                </tr>
+                                <tr>
+                                    <td>Weight:</td>
+                                    <td><?php echo $processed_data['weight']; ?></td>
+                                </tr>
+                                <tr>
+                                    <td>Must be Single:</td>
+                                    <td><?php echo $processed_data['single']; ?></td>
+                                </tr>
+                                <tr>
+                                    <td>Gender:</td>
+                                    <td><?php echo $processed_data['gender']; ?></td>
+                                </tr>
+                                <tr>
+                                    <td>Education:</td>
+                                    <td><?php echo $processed_data['education']; ?></td>
+                                </tr>
+                                <tr>
+                                    <td>Course:</td>
+                                    <td><?php echo $processed_data['course']; ?></td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
                 </table>
+            </div>
+            <div class="col-lg-12 jdesc">
+                <label class="sub-label">Description: </label><br>
+                <div class="jcontent">
+                    <?php echo $order_details->description; ?>
+                </div>
             </div>
         </div>
         <div class="col-lg-12">
@@ -134,10 +123,6 @@
                 </fieldset>
             </form>
             <div class="col-lg-12">
-                <button class="btn btn-sm btn-primary pull-right">
-                    <span class="glyphicon glyphicon-th-list"></span>
-                    Create Short list
-                </button>
                 <br><br>
                 <table id="jo-ongoing-table" class="custom-table-large table-hover">
                 <thead>

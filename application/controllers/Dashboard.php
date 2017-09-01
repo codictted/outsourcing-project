@@ -1,6 +1,12 @@
 <?php
 	class Dashboard extends CI_Controller {
 
+        function __construct() {
+
+            parent::__construct();
+            $this->load->model("Dashboard_model");
+            $this->load->model("Admin_model");
+        }
 
         public function index() {
 
@@ -9,6 +15,8 @@
             	$data['title'] = "Welcome, Admin!";
             	$data['new_apps'] = $this->Dashboard_model->get_new_applicants();
             	$data['new_orders'] = $this->Dashboard_model->get_new_job_orders();
+                $data['job_order_reminder'] = $this->Admin_model->get_job_order_reminder();
+                var_dump($data['job_order_reminder']); die();
                 $this->load->view("admin-header", $data);
                 $this->load->view("dashboard"); 
             }

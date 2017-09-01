@@ -240,11 +240,25 @@
 			return $query->result();
 		}
 
+		public function update_applicant_stat($id, $stat) {
+
+			$this->db->where("applicant_id", $id);
+			$this->db->set("status", $stat);
+			$this->db->update("applicant");
+		}
+
 		public function update_staff_stat($id, $stat) {
 
 			$this->db->where("staff_id", $id);
 			$this->db->set("status", $stat);
 			$this->db->update("staff");
+		}
+
+		public function update_staff_history_stat($id, $stat) {
+
+			$this->db->where("staff_id", $id);
+			$this->db->set("status", $stat);
+			$this->db->update("staff_history");
 		}
 
 		public function insert_replace_history($data) {

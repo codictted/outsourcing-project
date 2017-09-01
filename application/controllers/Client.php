@@ -562,6 +562,7 @@
 
             $staff = $this->input->post("staff");
             $reason = $this->input->post("reason");
+            $date_request = new DateTime(NULL, new DateTimeZone("Asia/Manila"));
             foreach($staff as $st){
 
                 $this->Admin_model->update_staff_stat($st, 1);
@@ -570,8 +571,10 @@
                     "staff_id" => $st,
                     "client_id" => $this->session->userdata("id"),
                     "reason" => $reason,
+                    "date_request" => $date_request->format("Y-m-d H:i:s"),
                     "status" => 0
                 );
+
                 $this->Admin_model->insert_replace_history($data);
             }
 

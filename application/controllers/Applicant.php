@@ -359,7 +359,7 @@
                 $zip = $this->input->post("zip");
                 $bdate = $this->input->post("bdate");
                 $religion = $this->input->post("religion");
-            //    $spoken_language = $this->input->post("spoken_lang[]");
+                $spoken_language = array_unique($this->input->post("spoken_lang[]"));
                 $bstreet = $this->input->post("bstreet");
                 $bcity = $this->input->post("bcity");
                 $bprovince = $this->input->post("bprovince");
@@ -376,7 +376,12 @@
                 $status = 0;
                 $now = new DateTime(NULL, new DateTimeZone("Asia/Manila"));
 
-                $religion = $this->Maintenance_model->check_select_religion($religion);
+                $religion = $this->Dropdown_model->check_select_religion($religion);
+
+                foreach ($spoken_language as $index => $spokenVal) {
+                       $dataSpokenLang[$index] = $this->Dropdown_model->check_select_spoken_language($spokenVal);
+                }
+               
 
                 $applicant_details = array(
                     "job_id" => $pos,
@@ -432,8 +437,17 @@
 
                 $this->load->model("Applicant_model");
 
-                $id = $this->Applicant_model->insert_applicant($applicant_details);
-                $app_id = $id[0]->id;
+                $app_id = $this->Applicant_model->insert_applicant($applicant_details);
+            
+
+                //insert dataspoken
+                foreach ($dataSpokenLang as $spokenVal) {
+                        $data = array(
+                            "applicant_id" => $app_id,
+                            "lang_id" => $spokenVal
+                        );
+                    $this->Applicant_model->insert_spoken_language($data); 
+                }
 
                 //insert descendants
                 $descendants = $this->input->post("d_name");

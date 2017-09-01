@@ -14,10 +14,10 @@
         public function index() {
 
             $this->load->model("Dropdown_model");
-            $business_nature["business_nature"] = $this->Dropdown_model->get_business_nature();
+            $data["business_nature"] = $this->Dropdown_model->get_business_nature();
             $data['title'] = "Your best Outsourcing Management";
             $this->load->view('header', $data);
-            $this->load->view('home', $business_nature);
+            $this->load->view('home');
         }
 
         public function contact_us() {
@@ -97,7 +97,7 @@
             	if($this->form_validation->run() !== FALSE) {
 
                     $this->load->model("Client_model");
-                    $nature = $type == 1 ? $this->input->post("business_nature") : 1;
+                    $nature = $type == 1 ? $this->input->post("business_nature") : "N/A";
                     $comp_name = $this->input->post("comp_name");
                     $contact_name = $this->input->post("contact_name");
                     $email = $this->input->post("contact_email");
@@ -109,6 +109,9 @@
                     $zip = $this->input->post("contact_zip_address");
                     $inquiry = $this->input->post("inquiry");
                     $now = new DateTime(NULL, new DateTimeZone("Asia/Manila"));
+
+                    $nature = $this->Client_model->check_select_business_nature($nature);
+                  
                     $data = array(
                         "type" => $type,
                         "business_nature" => $nature,

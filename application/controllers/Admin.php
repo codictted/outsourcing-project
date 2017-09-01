@@ -132,7 +132,7 @@
                 $nature = $this->input->post("client_nature");
                 $comp_name = $this->input->post("comp_name");
                 if($type == 2) {
-                    $nature = 1;
+                    $nature = "N/A";
                     $comp_name = NULL;
                 }
                 $contact_name = $this->input->post("contact_name");
@@ -146,6 +146,9 @@
                 $user = $this->input->post("client_username");
                 $pass = $this->input->post("client_password");
                 $now = new DateTime(NULL, new DateTimeZone("Asia/Manila"));
+
+                $nature = $this->Client_model->check_select_business_nature($nature);
+
                 $data = array(
                     "type" => $type,
                     "business_nature" => $nature,
@@ -822,7 +825,7 @@
                 $app_id = $this->input->post("app_id");
                 $date_time = "".$date."".$time;
                 $message = $message." ".$date_time;
-                $result = $this->itexmo($num, $message, "TR-PRINC971683_DKJI3");
+                $result = $this->itexmo($num, $message, "TR-JEABB956335_VA2MW");
                 if ($result == ""){
                     echo "iTexMo: No response from server!!!
                     Please check the METHOD used (CURL or CURL-LESS). If you are using CURL then try CURL-LESS and vice versa.  
@@ -1197,6 +1200,8 @@
             die();
         }
 
+       
+
         public function save_shortlist() {
 
             $app_id = $this->input->post("applist");
@@ -1232,5 +1237,22 @@
             $data = $this->Admin_model->get_replace_det($id);
             echo json_encode($data);
         }
+
+        public function approve_staff_replacement($id, $app_id) {
+            $this->Admin_model->update_applicant_stat($id, 5);
+            $this->Admin_model->update_staff_stat($id, 2);
+            $this->Admin_model->update_staff_history_stat($id, 2);
+            $this->session->set_flashdata("success_notification", "You have successfully approved the replacement of staff!");
+            redirect(base_url("admin/admin_staff_list"));
+        }
+        public function decline_staff_replacement($id, $app_id) {
+            $this->Admin_model->update_applicant_stat($id, 5);
+            $this->Admin_model->update_staff_stat($id, 2);
+            $this->Admin_model->update_staff_history_stat($id, 1);
+            $this->session->set_flashdata("success_notification", "You have successfully declined the replacement of staff!");
+            redirect(base_url("admin/admin_staff_list"));
+        }
+
+       
 	}
 ?>

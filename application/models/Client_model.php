@@ -13,6 +13,33 @@
 			$this->db->insert("client", $data);
 		}
 
+		public function check_select_business_nature($business_nature_val) {
+			
+	        $query = $this->db->get_where('business_nature', array('name' => $business_nature_val));
+
+	        $count = $query->num_rows(); 
+
+	        if ($count === 0) {
+	        	$data = array(
+	                'name' => $business_nature_val,
+	                'status' => 0
+	            );
+	        	$this->db->insert("business_nature", $data);
+	        	return $this->db->insert_id();
+	        }
+	        else{
+		        $this->db->select("id");
+		        $this->db->from("business_nature");
+		        $this->db->where("name", $business_nature_val);
+		        $getID = $this->db->get();
+
+		        foreach ($getID->result() as $row){
+				    return $row->id;
+				}
+	        }
+
+		}
+
 		public function get_client_list() {
 
 			$this->db->select("client.*, business_nature.name");

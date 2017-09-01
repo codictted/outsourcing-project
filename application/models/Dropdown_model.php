@@ -108,10 +108,10 @@
 			$query = $this->db->get();
 			return $query->result();
 		}
-//sd
+
 		public function check_select_religion($religion_val) {
 			
-	        $query = $this->db->get_where('religion', array('id' => $religion_val));
+	        $query = $this->db->get_where('religion', array('name' => $religion_val));
 
 	        $count = $query->num_rows(); 
 
@@ -120,13 +120,49 @@
 	                'name' => $religion_val,
 	                'status' => 0
 	            );
-	        	$this->db->insert("skill_set", $data);
+	        	$this->db->insert("religion", $data);
 	        	return $this->db->insert_id();
 	        }
 	        else{
-		        return $skill_set_val;
+	        	$this->db->select("id");
+		        $this->db->from("religion");
+		        $this->db->where("name", $religion_val);
+		        $getID = $this->db->get();
+
+		        foreach ($getID->result() as $row){
+				    return $row->id;
+				}
 	        }
 
 		}
+
+		public function check_select_spoken_language($spoken_val) {
+			
+	        $query = $this->db->get_where('spoken_languages', array('language' => $spoken_val));
+
+	        $count = $query->num_rows(); 
+
+	        if ($count === 0) {
+	        	$data = array(
+	                'language' => $spoken_val,
+	                'status' => 0
+	            );
+	        	$this->db->insert("spoken_languages", $data);
+	        	return $this->db->insert_id();
+	        }
+	        else{
+	        	$this->db->select("id");
+		        $this->db->from("spoken_languages");
+		        $this->db->where("language", $spoken_val);
+		        $getID = $this->db->get();
+
+		        foreach ($getID->result() as $row){
+				    return $row->id;
+				}
+		        
+	        }
+
+		}
+
 	}
 ?>

@@ -37,6 +37,14 @@
             </fieldset>
         </form>
         <hr>
+         <?php if($this->session->flashdata("success_notification")): ?>
+                <div class="col-lg-12">
+                    <div class="alert alert-success alert-dismissable small">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                        <i class="glyphicon glyphicon-info-sign"></i><b>Well Done!</b> <p class="alert-p"><?php echo $this->session->flashdata("success_notification"); ?></p>
+                    </div>
+                </div>
+                <?php endif; ?>
         <div class="col-lg-12">
             <table id="staff-table" class="custom-table-large table-hover">
                 <thead>
@@ -81,7 +89,7 @@
                         <td><?php echo $gen; ?></td>
                         <td><?php echo $client; ?></td>
                         <td><?php echo $st->deployment_date; ?></td>
-                        <td><button type="button" class="btn btn-default btn-sm modal-btn-staff" id="<?php echo $st->staff_id."-".$url; ?>"><span class="glyphicon glyphicon-list"></span></button></td>
+                        <td><button type="button" class="btn btn-default btn-sm modal-btn-staff" id="<?php echo $st->staff_id."/".$url."/".$client."/".$st->jname."/".$st->date_request."/".$st->reason; ?>"><span class="glyphicon glyphicon-list"></span></button></td>
                     </tr>
                     <?php } ?>
                 </tbody>
@@ -99,28 +107,29 @@
                 <h4 class="modal-title">Replacement Details</h4>
             </div>
             <div class="modal-body">
-                <form action="<?php echo base_url('admin/save_applicant_require'); ?>" method="POST" class="form-horizontal">
+                
                     <div class="form-group">
                         <label class="form-label">Client: </label>
-                        <text class="form-label" id="client_name"></text>
+                        <text class="form-label" name="client-name"></text>
                     </div>
                     <div class="form-group">
                         <label class="form-label">Position: </label>
-                        <text class="form-label" id="job_position"></text>
+                        <text class="form-label" name="job_position"></text>
                     </div>
                     <div class="form-group">
                         <label class="form-label">Date Request: </label>
-                        <label class="form-label" id="date_req"></label>
+                        <label class="form-label" name="date_request"></label>
                     </div>
                     <div class="form-group">
                         <label class="form-label">Reason: </label>
-                        <label class="form-label" id="reason"></label>
+                        <label class="form-label" name="reason"></label>
                     </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                <button type="submit" class="btn btn-primary">Approve</button>
+                <button class="btn btn-danger" id="<?php echo $st->staff_id;?>" onclick="decline(this.id)">Decline</button>
+                <button class="btn btn-primary" id="<?php echo $st->staff_id;?>" onclick="approve(this.id)">Approve</button>
             </div>
-            </form>
+          
         </div>
     </div>
 </div>
@@ -136,4 +145,16 @@
     function get_app(id) {
         window.location.href="<?php echo base_url();?>admin/applicant_full_details/" + id;
     }
+
+    function approve(id) {
+        window.location.href="<?php echo base_url();?>admin/approve_staff_replacement/" + id;
+    }
+
+    function decline(id) {
+        window.location.href="<?php echo base_url();?>admin/decline_staff_replacement/" + id;
+    }
+
+
+  
+
 </script>

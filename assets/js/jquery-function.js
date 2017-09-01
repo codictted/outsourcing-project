@@ -348,11 +348,6 @@ $(function () {
         required: true,
         nowhitespace: true,
         regex: /^[0-9]+$/
-      },  
-      job_sf: {
-        required: true,
-        nowhitespace: true,
-        regex: /^[0-9,.]+$/
       }
     },
     messages: {
@@ -361,9 +356,6 @@ $(function () {
       },
       job_cat: {
         required: "Please choose job category."
-      },  
-      job_sf: {
-        required: "Please enter job service fee."
       }
     },
     errorElement: "em",
@@ -557,9 +549,17 @@ $(function () {
 $(".modal-btn-staff").click(function(event) {
     event.stopPropagation();
     var id = this.id;
-    var s_id = id.split("-")[0];
-    var mod = id.split("-")[1];
+    var s_id = id.split("/")[0];
+    var mod = id.split("/")[1];
+    var c_name = id.split("/")[2];
+    var j_name = id.split("/")[3];
+    var date_request = id.split("/")[4];
+    var reason = id.split("/")[5];
     $("#staff_id").val(s_id);
+    $("[name='client-name']").html(c_name);
+    $("[name='job_position']").html(j_name);
+    $("[name='date_request']").html(date_request);
+    $("[name='reason']").html(reason);
     $("#" + mod).modal("show");
 
     if(mod=="replacement_modal") {

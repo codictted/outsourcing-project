@@ -352,7 +352,6 @@
 
             $this->form_validation->set_rules("job_cat", "Job Category", "required|regex_match[/^[0-9]+$/]|strip_tags|xss_clean");
             $this->form_validation->set_rules("job_name", "Job Position Name", "required|regex_match[/^[a-zA-Z\s'-\.]+$/]|strip_tags|xss_clean".$is_unique, array('is_unique' => '%s already exists.'));
-            $this->form_validation->set_rules("job_sf", "Job Service fee", "required|regex_match[/^[0-9,\.]+$/]|strip_tags|xss_clean");
             $this->form_validation->set_rules("skill_set", "Job Skill Set", "required|strip_tags|xss_clean");
             $this->form_validation->set_rules("skill[]", "Job Skill", "required|strip_tags|xss_clean");
 
@@ -371,7 +370,6 @@
                         "job_cat" => $this->input->post("job_cat"),
                         "job_skill_set" => $skill_set,
                         "name" => $this->input->post("job_name"),
-                        "service_fee" => $this->input->post("job_sf"),
                         "status" => 0
                     );
                     $jobID = $this->Maintenance_model->insert_job_position($data);
@@ -464,7 +462,6 @@
 
             $this->form_validation->set_rules("job_cat", "Job Category", "required|regex_match[/^[0-9]+$/]|strip_tags|xss_clean");
             $this->form_validation->set_rules("job_name", "Job name", "required|regex_match[/^[a-zA-Z\s'-\.]+$/]|strip_tags|xss_clean".$is_unique, array('is_unique' => '%s already exists.'));
-            $this->form_validation->set_rules("job_sf", "Job Service fee", "required|regex_match[/^[0-9,\.]+$/]|strip_tags|xss_clean");
             $this->form_validation->set_rules("skill_set", "Skill set", "required|strip_tags|xss_clean");
             $this->form_validation->set_rules("skill[]", "skill", "required|strip_tags|xss_clean");
 
@@ -484,7 +481,6 @@
                         "job_cat" => $this->input->post("job_cat"),
                         "job_skill_set" => $skill_set,
                         "name" => $this->input->post("job_name"),
-                        "service_fee" => $this->input->post("job_sf"),
                         "status" => 0
                     );
 

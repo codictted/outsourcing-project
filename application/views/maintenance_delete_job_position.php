@@ -63,18 +63,6 @@
                         
                     </label>
                 </div>
-
-                <div class="form-group">
-                    <label for="name" class="col-lg-3 control-label form-label">
-                        <text class="required">*</text> Job Service fee:
-                    </label>
-
-                    <label class="col-lg-2 control-label form-label" style="text-align:left;">
-                        <text><?php echo $job[0]->service_fee; ?></text>
-                    </label>
-                </div>
-
-                
                 
                 <hr>
                 <div class="form-group">

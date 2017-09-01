@@ -56,19 +56,6 @@
                     </div>
                 </div>
 
-                 <div class="form-group">
-                    <label for="name" class="col-lg-3 control-label form-label">
-                        <text class="required">*</text> Job Service fee:
-                    </label>
-                    <div class="col-lg-8">
-                        <div class="error-form">
-                            <span class="indiv-error"><?php echo form_error("job_sf"); ?></span>
-                            <input type="text" class="form-control" placeholder="Enter Job Service fee" name="job_sf" value="<?php echo $job[0]->service_fee; ?>">
-                        </div>
-                    </div>
-                </div>
-
-
                 <div class="form-group">
                     <label for="name" class="col-lg-3 control-label form-label">
                         <text class="required">*</text> Job Skill Set:  

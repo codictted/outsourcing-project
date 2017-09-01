@@ -128,28 +128,28 @@
                     $this->Client_model->add_client($data);
 
                     //send email to the agency
-                    // $this->load->library('email');
+                    $this->load->library('email');
 
-                    // $config['protocol']    = 'smtp';
-                    // $config['smtp_host']    = 'smtp.gmail.com';
-                    // $config['smtp_port']    = '465';
-                    // $config['smtp_timeout'] = '7';
-                    // $config['smtp_crypto'] = 'ssl';
-                    // $config['smtp_user']    = '';
-                    // $config['smtp_pass']    = '';
-                    // $config['charset']    = 'utf-8';
-                    // $config['newline']    = "\r\n";
-                    // $config['mailtype'] = 'text';
+                    $config['protocol']    = 'smtp';
+                    $config['smtp_host']    = 'smtp.gmail.com';
+                    $config['smtp_port']    = '465';
+                    $config['smtp_timeout'] = '7';
+                    $config['smtp_crypto'] = 'ssl';
+                    $config['smtp_user']    = 'outsourcing.inquire@gmail.com';
+                    $config['smtp_pass']    = 'outsourcingteam';
+                    $config['charset']    = 'utf-8';
+                    $config['newline']    = "\r\n";
+                    $config['mailtype'] = 'text';
 
-                    // $this->email->initialize($config);
-                    // $this->email->from($email, $contact_name);
-                    // $this->email->to('outsourcing.inquire@gmail.com');
+                    $this->email->initialize($config);
+                    $this->email->from($email, $contact_name);
+                    $this->email->to('outsourcing.inquire@gmail.com');
 
-                    // $this->email->subject('Inquiry');
-                    // $this->email->message($inquiry);
+                    $this->email->subject('Inquiry');
+                    $this->email->message($inquiry);
 
-                    // $this->email->send();
-                    // echo $this->email->print_debugger();
+                    $this->email->send();
+                    echo $this->email->print_debugger();
 
                     $this->session->set_flashdata("success_notification_contact_us", "Congratulations! You have successfully sent your request to us! Please check your email frequently. Thank you very much for choosing us");
 

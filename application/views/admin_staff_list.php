@@ -57,7 +57,16 @@
                                 break;
                             
                             case 1:
-                                $stat = "fasdf";
+                                $stat = "Request for Replacement";
+                                $url = "replacement_modal";
+                                break;
+
+                            case 2:
+                                $stat = "Reshortlist";
+                                break;
+
+                            case 3:
+                                $stat = "Terminated";
                                 break;
                         }
                         $gen = $st->gender == 1 ? "Male" : "Female";
@@ -72,7 +81,7 @@
                         <td><?php echo $gen; ?></td>
                         <td><?php echo $client; ?></td>
                         <td><?php echo $st->deployment_date; ?></td>
-                        <td><button class="btn btn-default btn-sm table-btn" onclick="window.location.href='applist_matched'"><span class="glyphicon glyphicon-list"></span></button></td>
+                        <td><button type="button" class="btn btn-default btn-sm modal-btn-staff" id="<?php echo $st->staff_id."-".$url; ?>"><span class="glyphicon glyphicon-list"></span></button></td>
                     </tr>
                     <?php } ?>
                 </tbody>
@@ -81,6 +90,40 @@
     </div>
 </body>
 </html>
+
+<div class="modal" role="dialog" id="replacement_modal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Replacement Details</h4>
+            </div>
+            <div class="modal-body">
+                <form action="<?php echo base_url('admin/save_applicant_require'); ?>" method="POST" class="form-horizontal">
+                    <div class="form-group">
+                        <label class="form-label">Client: </label>
+                        <text class="form-label" id="client_name"></text>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Position: </label>
+                        <text class="form-label" id="job_position"></text>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Date Request: </label>
+                        <label class="form-label" id="date_req"></label>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Reason: </label>
+                        <label class="form-label" id="reason"></label>
+                    </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <button type="submit" class="btn btn-primary">Approve</button>
+            </div>
+            </form>
+        </div>
+    </div>
+</div>
 
 <script type="text/javascript">
     

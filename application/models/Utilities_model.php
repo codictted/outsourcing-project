@@ -8,7 +8,7 @@
 
 		//JOB MATCH PASS RATE
 		public function get_rate() {
-		    $query = $this->db->select('jobmatch_rate')->from('jobmatch_rate')->where('flag ', 1)->get();
+		    $query = $this->db->select('jobmatch_rate')->from('jobmatch_rate')->where('flag ', 0)->get();
 		    return $query->row()->jobmatch_rate;
 		}
 
@@ -87,7 +87,7 @@
 		//TEXT MESSAGES
 		public function get_text_message() {
 		    $this->db->select("*");
-			$this->db->from("text_message");
+			$this->db->from("text_messages");
 			$query = $this->db->get();
 			return $query->result();
 		}
@@ -95,7 +95,7 @@
 		public function update_text_message($ji_text_mess, $jo_text_mess) {
 			$this->db->set("job_interview_text", $ji_text_mess);
 			$this->db->set("job_offer_text", $jo_text_mess);
-			$this->db->update("text_message");
+			$this->db->update("text_messages");
 		}
 
 		//ESSAY QUESTIONS

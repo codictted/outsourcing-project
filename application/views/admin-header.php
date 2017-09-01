@@ -10,19 +10,12 @@
         <script src="<?php echo base_url(); ?>assets/js/dataTables.min.js"></script>
         <script src="<?php echo base_url(); ?>assets/js/jquery-function.js"></script>
         <script src="<?php echo base_url(); ?>assets/select2/dist/js/select2.min.js"></script>
-<<<<<<< HEAD
         <script src="<?php echo base_url(); ?>assets/js/jquery-maintenance.js"></script>
         <script src="<?php echo base_url(); ?>assets/js/jquery-utilities.js"></script>
         <script src="<?php echo base_url(); ?>assets/js/bootbox.min.js"></script>
-
-=======
-<<<<<<< HEAD
         <script src="<?php echo base_url(); ?>assets/js/bootbox.min.js"></script>
-=======
         <script src="<?php echo base_url(); ?>assets/js/jquery-maintenance.js"></script>
         <script src="<?php echo base_url(); ?>assets/js/jquery-utilities.js"></script>
->>>>>>> abe4490a35a14f18d5ef4bee66c886b13107a238
->>>>>>> 9bb42e39158472990ba6d7ae05491cbbf5a0806c
 
 
         <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/select2/dist/css/select2.min.css">  

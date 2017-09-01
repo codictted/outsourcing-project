@@ -292,10 +292,16 @@
             if($this->session->userdata("usertype") == "1") {
                 $data['title'] = "Job Order Details";
                 $data['order_details'] = $this->Client_model->get_joborder_details($id);
-                $data['order_skills'] = $this->Client_model->get_job_order_skills($id);
-                $data['order_benefits'] = $this->Client_model->get_job_order_benefits($id);
-                $data['order_req'] = $this->Client_model->get_job_order_req($id);
+                $data['order_post'] = $this->Client_model->get_joborder_post($id);
+                $data['processed_data'] = 
+                $this->process_data(
+                    $this->Client_model->get_job_order_skills($id),
+                    $this->Client_model->get_job_order_benefits($id),
+                    $this->Client_model->get_job_order_req($id),
+                    $this->Client_model->get_joborder_details($id)
+                );
                 $data['sched'] = $this->Client_model->get_job_order_sched($id);
+                $data['emp_count'] = $this->Admin_model->count_deployed($id);
                 $this->load->view("admin-header", $data);
                 $this->load->view("nav-transaction");
                 $this->load->view("jo_ongoing");
@@ -809,33 +815,20 @@
 
             $this->form_validation->set_rules("message", "Message", "required|strip_tags|xss_clean");
             if($this->form_validation->run() !== FALSE) {
-                $num = "09264678950";
+                $num = $this->input->post("app_number");
                 $message = $this->input->post("message");
                 $time = $this->input->post("interview_time");
                 $date = $this->input->post("interview_date");
-                $app_id = $this->input->post("applicant_id");
+                $app_id = $this->input->post("app_id");
                 $date_time = "".$date."".$time;
                 $message = $message." ".$date_time;
-                $mark = TRUE;
-                // while($mark) {
-
-                //     $sub = $message;
-                //     if(strlen($sub) > 100) {
-
-                //         $sub = substr($message, 0, 100);
-                //         $result = $this->itexmo($num, $sub, "TR-PRINC971683_DKJI3");
-                //         $sub = substr($sub, 100);
-                //     }
-
-                //     if(strlen($sub) <= 0)
-                //         $mark = FALSE;
-                // }
-                // if ($result == ""){
-                //     echo "iTexMo: No response from server!!!
-                //     Please check the METHOD used (CURL or CURL-LESS). If you are using CURL then try CURL-LESS and vice versa.  
-                //     Please CONTACT US for help. ";  
-                // }
-                // else if ($result == 0){
+                $result = $this->itexmo($num, $message, "TR-PRINC971683_DKJI3");
+                if ($result == ""){
+                    echo "iTexMo: No response from server!!!
+                    Please check the METHOD used (CURL or CURL-LESS). If you are using CURL then try CURL-LESS and vice versa.  
+                    Please CONTACT US for help. ";  
+                }
+                else if ($result == 0){
 
                     $data = array(
                         "applicant_id" => $app_id,
@@ -846,11 +839,12 @@
                     $this->Admin_model->update_applicant_status($app_id, 2);
                     $this->session->set_flashdata("success_notification", "You have successfully sent the message!");
                     redirect(base_url("admin/admin_applicant_list"));
-                //}
-                //else {
-                //     $this->session->set_flashdata("fail_notification", "Maximum number of messages sent reached.");
-                //     redirect(base_url("admin/admin_applicant_list"));
-                // }
+                }
+                else {
+
+                    $this->session->set_flashdata("fail_notification", "Error Num ". $result . " was encountered!");
+                    redirect(base_url("admin/admin_applicant_list"));
+                }
             }
         }
 
@@ -1230,6 +1224,12 @@
         public function get_shortlist_det($id) {
 
             $data = $this->Admin_model->get_shortlist_det($id);
+            echo json_encode($data);
+        }
+
+        public function get_replace_det($id) {
+
+            $data = $this->Admin_model->get_replace_det($id);
             echo json_encode($data);
         }
 	}

@@ -248,6 +248,7 @@
             if($this->session->userdata("usertype") == "1") {
                 $data['title'] = "List of Staff";
                 $data['staff'] = $this->Staff_model->get_all();
+                $data['history'] = $this->Staff_model->get_history();
                 $this->load->view("admin-header", $data);
                 $this->load->view("nav-transaction");
                 $this->load->view("admin_staff_list"); 

@@ -269,10 +269,9 @@
                     <div class="col-lg-3">
                         <div class="error-form">
                             <span class="indiv-error"><?php echo form_error("school"); ?></span>
-                            <select class="form-control" name="course" id="course" disabled>
-                                <option selected disabled>Course</option>
+                            <select class="form-control" name="course" id="course" multiple disabled>
                                 <?php foreach($course as $c){ ?>
-                                <option value="<?php echo $c->id; ?>"><?php echo $c->name; ?></option>
+                                <option value="<?php echo $c->name; ?>"><?php echo $c->name; ?></option>
                                 <?php } ?>
                             </select>
                         </div>
@@ -800,6 +799,27 @@ $("#skill-multi").select2({
 $("[name='spoken_lang[]']").select2({
         tags: true,
         placeholder: '    Select spoken language',
+        allowClear: true,
+        createTag: function (params) {
+            var term = $.trim(params.term);
+           
+            if (term.match(/^[!@#$%^&*()]+$/g)) {
+              return null;
+            }
+        
+            return {
+              id: term,
+              text: term,
+              newTag: true // add additional parameters
+            }
+        }
+});
+
+
+$("[name='course']").select2({
+        maximumSelectionLength: 1,
+        tags: true,
+        placeholder: '    Select course',
         allowClear: true,
         createTag: function (params) {
             var term = $.trim(params.term);

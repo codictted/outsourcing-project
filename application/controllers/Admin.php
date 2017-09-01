@@ -28,6 +28,7 @@
             if($this->session->userdata("usertype") == "1") {
                 $data['title'] = "List of Client";
                 $data['client'] = $this->get_client();
+                $data['reason'] = $this->Admin_model->get_reason();
                 $this->load->helper('captcha');
                 $config = array(
                 'word'          => $this->random_word(),
@@ -826,10 +827,7 @@
                 $date_time = "".$date."".$time;
                 $message = $message." ".$date_time;
                 $result = $this->itexmo($num, $message, "TR-JEABB956335_VA2MW");
-<<<<<<< HEAD
-=======
-                
->>>>>>> 2993f3551a04ee5725f02dd5573c3f61cd2418bf
+
                 if ($result == ""){
                     echo "iTexMo: No response from server!!!
                     Please check the METHOD used (CURL or CURL-LESS). If you are using CURL then try CURL-LESS and vice versa.  
@@ -1147,6 +1145,10 @@
 
                 $cid = $this->input->post("client_id");
                 $reason = $this->input->post("reason");
+
+                $reason = $this->Admin_model->check_select_reason($reason);
+
+
                 $this->Admin_model->update_client_status($cid, $reason);
                 $this->session->set_flashdata("success_notification_client_terminate", "You have successfully terminated the client.");
                 redirect(base_url('admin/admin_client_list'));
@@ -1248,7 +1250,7 @@
             echo json_encode($data);
         }
 
-<<<<<<< HEAD
+
         public function approve_staff_replacement($id, $app_id) {
             $this->Admin_model->update_applicant_stat($id, 5);
             $this->Admin_model->update_staff_stat($id, 2);
@@ -1264,8 +1266,7 @@
             redirect(base_url("admin/admin_staff_list"));
         }
 
-       
-=======
+
          public function compute_job_match_per_applicant($j, $applicant) {
 
 
@@ -1443,6 +1444,6 @@
             $data = $this->compute_job_match($order_id, $app_id);
             echo json_encode($data);
         }
->>>>>>> 2993f3551a04ee5725f02dd5573c3f61cd2418bf
+
 	}
 ?>

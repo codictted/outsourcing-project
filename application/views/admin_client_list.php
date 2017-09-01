@@ -125,14 +125,15 @@
                     <div class="col-lg-7">
                         <div class="error-form">
                             <input type="hidden" name="client_id" id="client_id">
-                            <select class="form-control" name="reason" id="reason">
-                                <option selected disabled>Choose</option>
-                                <option value="2">Contract Expired</option>
-                                <option value="3">Others</option>
+                            <select class="form-control" multiple style="width:100%;" name="reason">
+                                <?php foreach($reason as $r) { ?>
+                                    <option value="<?php echo $r->name; ?>"><?php echo $r->name; ?></option>
+                                <?php } ?> 
                             </select>
                         </div>
                     </div>
                 </div>
+
                 <div class="form-group">
                     <label class="col-lg-3 control-label form-label">
                         <text class="required">*</text> Captcha:
@@ -176,12 +177,34 @@
 
 
 <script type="text/javascript">
+
+    $("[name='reason']").select2({
+        maximumSelectionLength: 1,
+        tags: true,
+        placeholder: '    Enter',
+        allowClear: true,
+        createTag: function (params) {
+            var term = $.trim(params.term);
+           
+            if (term.match(/^[!@#$%^&*()]+$/g)) {
+              return null;
+            }
+        
+            return {
+              id: term,
+              text: term,
+              newTag: true // add additional parameters
+            }
+        }
+    });
+
+
     $(function () {
         //initialize datatable
       $("#client-table").dataTable();
 
       //populate datatable
-    });
+        });
 
     function get_cl(id) {
         window.location.href="<?php echo base_url();?>admin/client_full_details/" + id;

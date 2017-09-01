@@ -49,8 +49,7 @@
                         <text class="required">*</text> Skills:
                     </label>
                     <div class="col-lg-3">
-                        <select class="form-control" id="skill_set" name="skills[]">
-                            <option selected disabled>Skill Set</option>
+                        <select class="form-control" id="skill_set" name="skill_set" multiple>
                             <?php foreach($set as $ss) { ?>
                             <option value="<?php echo $ss->id; ?>"><?php echo $ss->name; ?></option>
                             <?php } ?>
@@ -96,11 +95,11 @@
                         <span class="help-block">Preferred Course</span>
                     </div>
                     <div class="col-lg-2">
-                        <input type="number" class="form-control" name="min_age">
+                        <input type="number" class="form-control" name="min_age" min="0" max="150">
                         <span class="help-block">y/o (Age Range-From)</span>
                     </div>
                     <div class="col-lg-2">
-                        <input type="number" class="form-control" name="max_age">
+                        <input type="number" class="form-control" name="max_age" min="0" max="150">
                         <span class="help-block">y/o (Age Range-To)</span>
                     </div>
                     <div class="col-lg-1">
@@ -147,7 +146,7 @@
                     <div class="col-lg-10">
                         <select class="form-control" id="benefit-multi" multiple name="benefits[]">
                             <?php foreach($benefit as $ben) { ?>
-                            <option value="<?php echo $ben->id; ?>"><?php echo $ben->name; ?></option>
+                            <option value="<?php echo $ben->name; ?>"><?php echo $ben->name; ?></option>
                             <?php } ?>
                         </select>
                     </div>
@@ -159,7 +158,7 @@
                     <div class="col-lg-10">
                         <select class="form-control" id="require-multi" multiple name="requirements[]">
                             <?php foreach($requirement as $req) { ?>
-                            <option value="<?php echo $req->id; ?>"><?php echo $req->requirement; ?></option>
+                            <option value="<?php echo $req->requirement; ?>"><?php echo $req->requirement; ?></option>
                             <?php } ?>
                         </select>
                     </div>
@@ -179,45 +178,111 @@
 
 <script type="text/javascript">
 
+    $("[name='benefits[]']").select2({
+        tags: true,
+        placeholder: '    Select benefits option',
+        allowClear: true,
+        createTag: function (params) {
+            var term = $.trim(params.term);
+           
+            if (term.match(/^[!@#$%^&*()]+$/g)) {
+              return null;
+            }
+        
+            return {
+              id: term,
+              text: term,
+              newTag: true // add additional parameters
+            }
+        }
+    });
+    
 
-    $("#benefit-multi").select2({
-            placeholder: "Select Benefits"
+    $("[name='requirements[]']").select2({
+        tags: true,
+        placeholder: '    Select requirements option',
+        allowClear: true,
+        createTag: function (params) {
+            var term = $.trim(params.term);
+           
+            if (term.match(/^[!@#$%^&*()]+$/g)) {
+              return null;
+            }
+        
+            return {
+              id: term,
+              text: term,
+              newTag: true // add additional parameters
+            }
+        }
     });
 
-    $("#require-multi").select2({
-            placeholder: "Select Additional Requirements"
+
+    $("[name='skill_set']").select2({
+        maximumSelectionLength: 1,
+        tags: true,
+        placeholder: '    Select skill set option',
+        allowClear: true,
+        createTag: function (params) {
+            var term = $.trim(params.term);
+           
+            if (term.match(/^[!@#$%^&*()]+$/g)) {
+              return null;
+            }
+        
+            return {
+              id: term,
+              text: term,
+              newTag: true // add additional parameters
+            }
+        }
     });
 
-     $("#skill-multi").select2({
-            placeholder: "Select Skills"
-    });
+    $("[name='skills[]']").select2({
+        tags: true,
+        placeholder: '    Select skills option',
+        allowClear: true,
+        createTag: function (params) {
+            var term = $.trim(params.term);
+           
+            if (term.match(/^[!@#$%^&*()]+$/g)) {
+              return null;
+            }
+        
+            return {
+              id: term,
+              text: term,
+              newTag: true // add additional parameters
+            }
+        }
+    }); 
+    
+    $("[name='skill_set']").on("change", function (e) { 
+            var url = "<?php echo base_url()?>maintenance/change_select_skill_id/";
+            
+            $.ajax({
+                dataType: "JSON",
+                url: url,
+                type: "POST",
+                data: $("[name='skill_set']").serialize(),
+                success: function(data) {
+                    $("[name='skills[]']").find('option:not(:selected)').remove().trigger('change');
+                    $("[name='skills[]']").select2({
+                        placeholder: '    Select skills option',
+                        allowClear: true,
+                        tags: true,
+                        data: data
+                    });
+                
+                }   
+            }); 
+    }); 
+
+
 
     $(function() {
 
-        $("#skill_set").change(function() {
-
-            var id = $(this).val();
-            var url = "<?php echo base_url(); ?>applicant/get_skill_list/";
-            $.ajax({
-
-                dataType: "JSON",
-                type: "GET",
-                url: url + id,
-                success: function(data) {
-
-                    var list = [];
-                    $.each(data, function(ctr, val) {
-
-                        list.push('<option value="' + val.id + '">' + val.name +'</option>');
-                    });
-
-                    $("#skill-multi").html(list.join(''));
-
-                }
-            });
-
-        });
-
+       
         $("#job_cat").change(function() {
         
             var id = $(this).val();

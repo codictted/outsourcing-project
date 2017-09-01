@@ -136,6 +136,33 @@
 
 		}
 
+		public function check_select_course($course_val) {
+			
+	        $query = $this->db->get_where('course', array('name' => $course_val));
+
+	        $count = $query->num_rows(); 
+
+	        if ($count === 0) {
+	        	$data = array(
+	                'name' => $course_val,
+	                'status' => 0
+	            );
+	        	$this->db->insert("course", $data);
+	        	return $this->db->insert_id();
+	        }
+	        else{
+	        	$this->db->select("id");
+		        $this->db->from("course");
+		        $this->db->where("name", $course_val);
+		        $getID = $this->db->get();
+
+		        foreach ($getID->result() as $row){
+				    return $row->id;
+				}
+	        }
+
+		}
+
 		public function check_select_spoken_language($spoken_val) {
 			
 	        $query = $this->db->get_where('spoken_languages', array('language' => $spoken_val));

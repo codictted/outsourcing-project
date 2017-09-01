@@ -129,6 +129,7 @@
 	        	$this->db->select("id");
 		        $this->db->from("skill");
 		        $this->db->where("name", $skillVal);
+		        $this->db->where("skill_set", $skill_set_val);
 		        $getID = $this->db->get();
 
 		        foreach ($getID->result() as $row){

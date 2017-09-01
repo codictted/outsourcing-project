@@ -9,6 +9,41 @@
 			return $query->result();
 		}
 
+		public function check_select_reason($reason_val) {
+			
+	        $query = $this->db->get_where('reason', array('name' => $reason_val));
+
+	        $count = $query->num_rows(); 
+
+	        if ($count === 0) {
+	        	$data = array(
+	                'name' => $reason_val,
+	                'status' => 0
+	            );
+	        	$this->db->insert("reason", $data);
+	        	return $this->db->insert_id();
+	        }
+	        else{
+	        	$this->db->select("id");
+		        $this->db->from("reason");
+		        $this->db->where("name", $reason_val);
+		        $getID = $this->db->get();
+
+		        foreach ($getID->result() as $row){
+				    return $row->id;
+				}
+	        }
+
+		}
+
+		public function get_reason() {
+
+			$this->db->from("reason");
+			$this->db->where("status", 0);
+			$query = $this->db->get();
+			return $query->result();
+		}
+
 		public function get_education_name($id) {
 
 			$this->db->select("education");

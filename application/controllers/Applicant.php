@@ -147,6 +147,12 @@
             );
 
             $this->form_validation->set_rules(
+                "course",
+                "Course",
+                "required|alpha"
+            );
+
+            $this->form_validation->set_rules(
                 "spoken_lang[]",
                 "Spoken Language",
                 "required"
@@ -378,6 +384,9 @@
 
                 $religion = $this->Dropdown_model->check_select_religion($religion);
 
+                $course = $this->Dropdown_model->check_select_course($course);
+
+                
                 foreach ($spoken_language as $index => $spokenVal) {
                        $dataSpokenLang[$index] = $this->Dropdown_model->check_select_spoken_language($spokenVal);
                 }

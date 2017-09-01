@@ -40,6 +40,59 @@
 
 		}
 
+
+		public function check_select_benefit($benefit_val) {
+			
+	        $query = $this->db->get_where('benefits', array('name' => $benefit_val));
+	        $count = $query->num_rows();
+
+	        if ($count === 0) {
+	        	$data = array(
+	                'name' => $benefit_val,
+	                'status' => 0
+	            );
+	        	$this->db->insert("benefits", $data);
+	        	return $this->db->insert_id();
+	        }
+	        else{
+	        	$this->db->select("id");
+		        $this->db->from("benefits");
+		        $this->db->where("name", $benefit_val);
+		        $getID = $this->db->get();
+
+		        foreach ($getID->result() as $row){
+				    return $row->id;
+				}
+	        }
+		}
+
+		public function check_select_requirement($requirement_val) {
+			
+	        $query = $this->db->get_where('requirement', array('requirement' => $requirement_val));
+	        $count = $query->num_rows();
+
+	        if ($count === 0) {
+	        	$data = array(
+	                'requirement' => $requirement_val,
+	                'is_required' => 0,
+	                'status' => 0
+	            );
+	        	$this->db->insert("requirement", $data);
+	        	return $this->db->insert_id();
+	        }
+	        else{
+	        	$this->db->select("id");
+		        $this->db->from("requirement");
+		        $this->db->where("requirement", $requirement_val);
+		        $getID = $this->db->get();
+
+		        foreach ($getID->result() as $row){
+				    return $row->id;
+				}
+	        }
+		}
+
+
 		public function get_client_list() {
 
 			$this->db->select("client.*, business_nature.name");
@@ -86,10 +139,7 @@
 		public function add_order($data) {
 
 			$this->db->insert("job_order", $data);
-			$this->db->select_max("order_id");
-			$this->db->from("job_order");
-			$query = $this->db->get();
-			return $query->result();
+			return $this->db->insert_id();
 		}
 
 		public function insert_jo_skill($data) {

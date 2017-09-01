@@ -9,6 +9,7 @@
             $this->load->model("Client_model");
             $this->load->model("Applicant_model");
             $this->load->model("Admin_model");
+            $this->load->model("Maintenance_model");
         }
         public function index() {
 
@@ -110,11 +111,24 @@
                 "required"
             );
 
-            // $this->form_validation->set_rules(
-            //     "skills",
-            //     "Skills",
-            //     "required"
-            // );
+            $this->form_validation->set_rules(
+                 "benefits[]",
+                 "Benefits",
+                 "required"
+            );
+
+            $this->form_validation->set_rules(
+                 "skills[]",
+                 "Skills",
+                 "required"
+            );
+
+            $this->form_validation->set_rules(
+                 "skill_set",
+                 "Skill set",
+                 "required"
+            );
+            
 
             $this->form_validation->set_rules(
                 "job_desc",
@@ -148,6 +162,10 @@
                 $jid = $this->input->post("job_pos");
                 $desc = $this->input->post("job_desc");
                 $educ = $this->input->post("educ");
+                $skill_set = $this->input->post("skill_set");
+                $skills = array_unique($this->input->post("skills[]"));
+                $benefits = array_unique($this->input->post("benefits[]"));
+                $requirements = array_unique($this->input->post("requirements[]"));
                 $course = $this->input->post("course");
                 $height = $this->input->post("height") == "" ? NULL : $this->input->post("height");
                 $weight = $this->input->post("weight") == "" ? NULL : $this->input->post("weight");
@@ -157,6 +175,18 @@
                 $urgent = is_null($this->input->post("urgent")) ? 1 : 0 ;
                 $status = 0;
                 $now = new DateTime(NULL, new DateTimeZone("Asia/Manila"));
+
+                $skill_set = $this->Maintenance_model->check_select_skill_set($skill_set);
+                foreach ($skills as $index => $skillVal) {
+                    $dataSkill[$index] = $this->Maintenance_model->check_select_skill($skill_set, $skillVal);
+                }
+                foreach ($benefits as $index => $benefitVal) {
+                    $dataBenefit[$index] = $this->Client_model->check_select_benefit($benefitVal);
+                }
+                foreach ($requirements as $index => $requirementVal) {
+                    $dataRequirement[$index] = $this->Client_model->check_select_requirement($requirementVal);
+                }
+
 
                 $data = array(
                     "client_id" => $id,
@@ -179,59 +209,40 @@
                     "status" => 0
                 );
 
-                $jid = $this->Client_model->add_order($data);
-                $jo = $jid[0]->order_id;
+                $order_id = $this->Client_model->add_order($data);
+                
 
-                $skills = $this->input->post("skills");
-                $count = count($skills);
-                if($count > 1) {
-
-                    for($i = 1; $i < $count; $i++) {
-
+                foreach ($dataSkill as $skillVal) {
                         $data = array(
-                            "job_order_id" => $jo,
-                            "skill" => $skills[$i]
+                            "job_order_id" => $order_id,
+                            "skill" => $skillVal
                         );
-
-                        $this->Client_model->insert_jo_skill($data);
-                    }
+                    $this->Client_model->insert_jo_skill($data);
                 }
 
-                $benefits = $this->input->post("benefits");
-                $count = count($benefits);
-                if($count > 0) {
-
-                    for($i = 0; $i < $count; $i++) {
-
+                foreach ($dataBenefit as $benefitVal) {
                         $data = array(
-                            "job_order_id" => $jo,
-                            "benefit" => $benefits[$i]
+                            "job_order_id" => $order_id,
+                            "benefit" => $benefitVal
                         );
-
-                        $this->Client_model->insert_jo_benefit($data);
-                    }
+                    $this->Client_model->insert_jo_benefit($data);
                 }
 
-                $req = $this->input->post("requirements");
-                $count = count($req);
-                if($count > 0) {
-
-                    for($i = 0; $i < $count; $i++) {
-
+                foreach ($dataRequirement as $requirementVal) {
                         $data = array(
-                            "job_order_id" => $jo,
-                            "requirement" => $req[$i]
+                            "job_order_id" => $order_id,
+                            "requirement" => $requirementVal
                         );
-                        $this->Client_model->insert_jo_requirement($data);
-                    }
+                    $this->Client_model->insert_jo_requirement($data);
                 }
-
-
+             
                 $this->session->set_flashdata("success_notification", "Congratulations! You have successfully sent your job order");
 
                 redirect(base_url()."client/client_job_order");
 
             }
+
+
             $this->session->set_flashdata("fail_notification", "Sorry, there were some errors encountered. Please review your form or try again later.");
 
             $data['title'] = "New Job Order";

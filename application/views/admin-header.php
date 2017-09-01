@@ -13,7 +13,6 @@
         <script src="<?php echo base_url(); ?>assets/js/jquery-maintenance.js"></script>
         <script src="<?php echo base_url(); ?>assets/js/jquery-utilities.js"></script>
         <script src="<?php echo base_url(); ?>assets/js/bootbox.min.js"></script>
-        <script src="<?php echo base_url(); ?>assets/js/bootbox.min.js"></script>
         <script src="<?php echo base_url(); ?>assets/js/jquery-maintenance.js"></script>
         <script src="<?php echo base_url(); ?>assets/js/jquery-utilities.js"></script>
 

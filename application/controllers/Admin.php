@@ -822,13 +822,14 @@
                 $app_id = $this->input->post("app_id");
                 $date_time = "".$date."".$time;
                 $message = $message." ".$date_time;
-                $result = $this->itexmo($num, $message, "TR-PRINC971683_DKJI3");
+                $result = $this->itexmo($num, $message, "TR-JEABB956335_VA2MW");
+                
                 if ($result == ""){
                     echo "iTexMo: No response from server!!!
                     Please check the METHOD used (CURL or CURL-LESS). If you are using CURL then try CURL-LESS and vice versa.  
                     Please CONTACT US for help. ";  
                 }
-                else if ($result == 0){
+                else if ($result == 0){ 
 
                     $data = array(
                         "applicant_id" => $app_id,
@@ -1020,7 +1021,7 @@
             else {
                 $this->session->set_flashdata("invalid", "Sorry, you are unauthorized to view this page.");
                 redirect(base_url("login"));
-            } 
+            }
         }
 
 
@@ -1080,9 +1081,17 @@
             echo json_encode($data);
         }
 
-        public function get_applicant_shortlist($id) {
+        public function get_applicant_shortlist($order_id, $id) {
 
-            $data = $this->Admin_model->get_applicant_shortlist($id);
+            $data['app_details'] = $this->Admin_model->get_applicant_shortlist($id);
+            $index = 0;
+            foreach($data['app_details'] as $app) {
+
+                $data['app_details'][$index]->job_match = $this->compute_job_match($order_id, $app->id);
+                $index++;
+            }
+            var_dump($data['app_details']);
+            die();
             echo json_encode($data);
         }
 

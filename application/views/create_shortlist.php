@@ -211,7 +211,9 @@
                         left.push(temp);
                         string_tr = "<tr>";
                         string_tr += "<td class='sub-label'>";
+                        string_tr += "<a onclick=\"window.location.href='../../<?php base_url(); ?>client/applicant_full_details/"+ value.id + "'\">";
                         string_tr += value.first_name + " " + value.last_name;
+                        string_tr += "</a>";
                         string_tr += "</td>";
                         string_tr += "<td class='sub-label'>";
                         string_tr += gen;

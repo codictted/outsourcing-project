@@ -7,6 +7,7 @@
         <script src="<?php echo base_url(); ?>assets/js/jquery.validate.min.js"></script>
         <script src="<?php echo base_url(); ?>assets/ckeditor/ckeditor.js"></script>
         <script src="<?php echo base_url(); ?>assets/js/jquery-ui.min.js"></script>
+        <script src="<?php echo base_url(); ?>assets/js/bootbox.min.js"></script>
         <script src="<?php echo base_url(); ?>assets/js/dataTables.min.js"></script>
         <script src="<?php echo base_url(); ?>assets/js/jquery-function.js"></script>
         <script src="<?php echo base_url(); ?>assets/jquery-weekly-scheduler/src/index.js"></script>

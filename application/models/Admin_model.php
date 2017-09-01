@@ -113,7 +113,7 @@
 
 		public function get_applicant_shortlist($id) {
 
-			$this->db->select("id, first_name, last_name, gender");
+			$this->db->select("*");
 			$this->db->from("applicant");
 			$this->db->where("status", 5);
 			$this->db->where("job_id", $id);
@@ -285,13 +285,16 @@
 
 			$query = $this->db->query("SELECT order_id FROM job_order WHERE order_date BETWEEN '$date' AND '$date2'");
 
+			$index = 0;
 			foreach($query->result() as $oid) {
 
 				$query2 = $this->db->query("SELECT COUNT(applicant_id) AS staff_ctr FROM shortlist WHERE order_id = $oid->order_id AND status = 1");
-				$query3 = $this->db->query("SELECT cl.comp_name, cl.full_name, jpos.name as jname FROM job_order as jo join client as cl on jo.client_id = cl.id join job_position as jpos on jo.job_id = jpos.id where jo.order_id = $oid->order_id");
-				var_dump($query3->result());
-				die();
-				$order_list->details = $query3->result();
+				$query3 = $this->db->query("SELECT jo.order_id, cl.comp_name, cl.full_name, jpos.name as jname FROM job_order as jo join client as cl on jo.client_id = cl.id join job_position as jpos on jo.job_id = jpos.id where jo.order_id = $oid->order_id");
+
+				if($index == 0)
+					array_push($order_list, $query2->result());
+				array_push($order_list[$index], $query3->result());
+				$index++;
 
 			}
 			return $order_list;

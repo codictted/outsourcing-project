@@ -324,5 +324,23 @@
 			$query = $this->db->query("SELECT staff.*, shortlist.*, applicant.* FROM staff JOIN applicant ON staff.applicant_id = applicant.id JOIN shortlist ON applicant.id = shortlist.applicant_id WHERE shortlist.order_id = $id AND shortlist.status = 1");
 			return $query->result();
 		}
+
+		public function get_job_category() {
+
+			$this->db->select("*");
+			$this->db->from("job_category");
+			$this->db->where("status", 0);
+			$query = $this->db->get();
+			return $query->result();
+		}
+/*
+		public function get_job_category() {
+
+			$this->db->select("*");
+			$this->db->from("job_category");
+			$this->db->where("status", 0);
+			$query = $this->db->get();
+			return $query->result();
+		}*/
 	}
 ?>

@@ -21,19 +21,7 @@
                         <option value="12">Deployed</option>
                     </select>
                 </div>
-                <div class="col-lg-3">
-                    <select class="form-control" id="client" name="client">
-                    <option selected disabled>--Client--</option>
-                        <?php
-                        if(count($client) > 0) {
-                                foreach($client as $cl) { 
-                                    $name = is_null($cl->comp_name) || $cl->comp_name == "" ? $cl->full_name : $cl->comp_name;?>
-                                    <option value="<?php echo $cl->id; ?>"><?php echo $name; ?></option>
-                                <?php }} else { ?>
-                                <option selected disabled>No pending clients</option>
-                            <?php } ?>
-                    </select>
-                </div>
+                
                 <div class="col-lg-3">
                     <select class="form-control" id="job_position" name="job_position">
                         <option selected disabled>--Position--</option>

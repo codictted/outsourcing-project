@@ -303,6 +303,7 @@
 
             if($this->session->userdata("usertype") == "1") {
                 $data['title'] = "Post a job advertisement";
+                $data['job_category'] = $this->Admin_model->get_job_category();
                 $this->load->view("admin-header", $data);
                 $this->load->view("nav-transaction");
                 $this->load->view("admin_post_job_ad");

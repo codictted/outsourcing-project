@@ -51,7 +51,7 @@
                     <th>Company Name/ Contact Person</th>
                     <th>Nature of Business</th>
                     <th>Date Activated</th>
-                    <th>Action</th>
+                    
                 </thead>
                 <tbody>
                     <?php foreach($client as $c) { ?>
@@ -80,7 +80,7 @@
                         <td><?php echo $name; ?></td>
                         <td><?php echo $c->name; ?></td>
                         <td><?php echo $c->acc_creation_date; ?></td>
-                        <td><button class="btn btn-default btn-sm table-btn" onclick="window.location.href='applist_new'"><span class="glyphicon glyphicon-list"></span></button></td>
+                        
                     </tr>
                     <?php } ?>
                 </tbody>

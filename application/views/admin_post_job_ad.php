@@ -12,10 +12,15 @@
                 <div class="form-group">
                     <label for="" class="col-lg-1 control-label"></label>
                     <div class="col-lg-5">
-                        <select class="form-control">
+                        <select class="form-control" name="job_category" id="job_category">
                             <option selected disabled><text class="required">* Job Category</option>
-                            <option>Driver</option>
-                            <option>Caregiver</option>
+                            <?php
+                            if(count($job_category) > 0) {
+                                    foreach($job_category as $jc) { ?>
+                                        <option value="<?php echo $jc->id; ?>"><?php echo $jc->name; ?></option>
+                                    <?php }} else { ?>
+                                    <option selected disabled>No pending Job categories</option>
+                                <?php } ?>
                         </select>
                     </div>
                     <div class="col-lg-5">
@@ -109,4 +114,29 @@
 
 <script type="text/javascript">
     CKEDITOR.replace('job_desc');
+
+    $("#job_category").change(function() {
+
+        var id = $("#job_category").val();
+        var name = $(this).find('option:selected').text();
+        $("[name='job_category_id']").val(id);
+        var url = "<?php echo base_url() ?>admin/get_job_order/";
+
+            $.ajax({
+                dataType: "JSON",
+                url: url + id,
+                type: "GET",
+                success: function(data) {
+
+                    var list = [];
+                    list.push("<option>Choose</option>")
+                    $.each(data, function(index, value) {
+
+                        list.push('<option value="' + value.order_id + '-' + value.job_id + '">' + value.name + '</option>');
+                    });
+                    $("#job_order_list").html(list.join('')).prop("disabled", false);
+                }
+            });
+      });
+
 </script>

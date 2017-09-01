@@ -37,6 +37,7 @@
                         switch ($st->status) {
                             case 0:
                                 $stat = "Active";
+                                $url = "active_modal";
                                 break;
                             
                             case 1:
@@ -51,6 +52,7 @@
 
                             case 3:
                                 $stat = "Terminated";
+                                $url = "terminated_modal";
                                 break;
                         }
                         $gen = $st->gender == 1 ? "Male" : "Female";
@@ -65,9 +67,12 @@
                         <td><?php echo $st->jname; ?></td>
                         <td><?php echo $client; ?></td>
                         <td><?php echo $st->deployment_date; ?></td>
-                        <td><button type="button" class="btn btn-default btn-sm modal-btn-staff" id="<?php echo $st->staff_id."/".$url."/".$client."/".$st->jname."/".$st->date_request."/".$st->date_replaced."/".$st->reason; ?>"><span class="glyphicon glyphicon-list"></span></button></td>
+                         <?php } ?>
+                        <?php foreach($history as $hs) { ?> 
+                        <td><button type="button" class="btn btn-default btn-sm modal-btn-staff" id="<?php echo $hs->staff_id."/".$url."/".$client."/".$hs->jname."/".$hs->date_request."/".$hs->date_replaced."/".$hs->reason; ?>"><span class="glyphicon glyphicon-list"></span></button></td>
+                        <?php }?>
                     </tr>
-                    <?php } ?>
+                   
                 </tbody>
             </table>
         </div>
@@ -110,6 +115,28 @@
     </div>
 </div>
 
+<div class="modal" role="dialog" id="active_modal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Staff Details</h4>
+            </div>
+            <div class="modal-body">
+                
+                    <div class="form-group">
+                        <label class="form-label">Client: </label>
+                        <text class="form-label" name="client-name"></text>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Position: </label>
+                        <text class="form-label" name="job_position"></text>
+                    </div>            
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="modal" role="dialog" id="reshortlist_modal">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -136,6 +163,28 @@
                         <label class="form-label" name="reason"></label>
                     </div>
             
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" role="dialog" id="terminated_modal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Staff Details</h4>
+            </div>
+            <div class="modal-body">
+                
+                    <div class="form-group">
+                        <label class="form-label">Client: </label>
+                        <text class="form-label" name="client-name"></text>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Position: </label>
+                        <text class="form-label" name="job_position"></text>
+                    </div>            
             </div>
         </div>
     </div>

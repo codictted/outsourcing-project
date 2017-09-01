@@ -52,7 +52,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="form-group">
+                    <div class="form-group">
                     <label for="company" class="col-lg-2 control-label form-label">
                         Company Name:
                     </label>
@@ -65,10 +65,9 @@
                     <div class="col-lg-5">
                         <div class="error-form">
                             <span class="indiv-error"><?php echo form_error("client_nature"); ?></span>
-                            <select class="form-control" id="client_nature" name="client_nature">
-                                <option selected disabled>Nature of Business</option>
+                            <select class="form-control" id="client_nature" name="client_nature" multiple>
                                 <?php foreach($nature as $bn) { ?>
-                                    <option value="<?php echo $bn->id; ?>"><?php echo $bn->name; ?></option>
+                                    <option value="<?php echo $bn->name; ?>"><?php echo $bn->name; ?></option>
                                 <?php } ?>
                             </select>
                         </div>
@@ -76,12 +75,23 @@
                 </div>
                 <div class="form-group">
                     <label for="name" class="col-lg-2 control-label form-label">
-                        <text class="required">*</text> Full Name:
+                        <text class="required">*</text> Contact Person:
                     </label>
                     <div class="col-lg-10">
                         <div class="error-form">
                             <span class="indiv-error"><?php echo form_error("contact_name"); ?></span>
-                            <input type="text" class="form-control" placeholder="Client's Full Name" id="contact_name" name="contact_name">
+                            <input type="text" class="form-control" placeholder="Contact Person's Full Name" id="contact_name" name="contact_name">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="name" class="col-lg-2 control-label form-label">
+                        <text class="required">*</text> Job Position:
+                    </label>
+                    <div class="col-lg-10">
+                        <div class="error-form">
+                            <span class="indiv-error"><?php echo form_error("job_position"); ?></span>
+                            <input type="text" class="form-control" placeholder="Contact Person's Job Position" id="job_position" name="job_position">
                         </div>
                     </div>
                 </div>
@@ -187,7 +197,27 @@
 </html>
 
 <script type="text/javascript">
-    
+
+        $("[name='client_nature']").select2({
+                maximumSelectionLength: 1,
+                tags: true,
+                placeholder: '    Select Nature of business',
+                allowClear: true,
+                createTag: function (params) {
+                    var term = $.trim(params.term);
+                   
+                    if (term.match(/^[!@#$%^&*()]+$/g)) {
+                      return null;
+                    }
+                
+                    return {
+                      id: term,
+                      text: term,
+                      newTag: true // add additional parameters
+                    }
+                }
+        });
+
     $(function() {
 
         $("#client").change(function() {
@@ -205,16 +235,19 @@
                     if(data.type == 1) {
                         $("#client_nature").prop("disabled", false);
                         $("#comp_name").prop("disabled", false);
+                        $("#job_position").prop("disabled", false);
                     }
                     else {
                         $("#client_nature").prop("disabled", true);
                         $("#comp_name").prop("disabled", true);
+                        $("#job_position").prop("disabled", true);
                     }
 
                     $('[name="contact_client_type"]').val(data.type);
                     $('[name="comp_name"]').val(cname);
                     $('[name="client_nature"]').val(data.business_nature);
                     $('[name="contact_name"]').val(data.full_name);
+                    $('[name="job_position"]').val(data.job_position);
                     $('[name="contact_email"]').val(data.email);
                     $('[name="contact_contact_number"]').val(data.mobile_no);
                     $('[name="contact_tel_number"]').val(data.tel_no);

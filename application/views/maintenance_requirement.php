@@ -5,7 +5,7 @@
                 <div class="col-lg-12">
                     <div class="alert alert-info alert-dismissable small">
                         <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-                        <i class="glyphicon glyphicon-info-sign"></i><b>REMINDER:</b> <p class="alert-p">There might be a to follow required requirement.</p>
+                        <i class="glyphicon glyphicon-info-sign"></i><b>REMINDER:</b> <p class="alert-p">This sets the different required documents based on the standard set by the agency.</p>
                     </div>
                 </div>
 
@@ -32,11 +32,11 @@
             </fieldset>
         </form>
         <hr>
-        <!--<div class="col-lg-12">
+        <div class="col-lg-12">
             <button type="button" class="btn btn-primary col-lg-3 pull-right" onclick="window.location.href='<?php echo base_url();?>maintenance/add_req_document_form/'"><span class="glyphicon glyphicon-plus"></span>Add Required Document
             </button><br><br><br>
-        </div>-->
-        <div class="col-lg-8">
+        </div>
+        <div class="col-lg-12">
             <table id="required-table" class="custom-table-large table-hover">
                 <thead>
                     <th><center>Status</center></th>
@@ -77,39 +77,6 @@
                 </tbody>
             </table>
         </div>
-
-        <div class="col-lg-4">
-            <div class="panel panel-success">
-              <div class="panel-heading">
-                <h4 class="panel-title">REQUIRED DOCUMENTS</h4>
-              </div>
-              <div class="panel-body">
-                <div class="col-lg-12">
-                    <form class="form-horizontal">
-                        <div class="form-group">
-                            <h5>*Required Document Name:</h5>
-                            <input type="text" class="form-control" id="#" name="#">
-                        </div>
-                        <div class="form-group">
-                            <h5>*To follow?</h5>
-                            <div class="col-lg-6">
-                                <input name="req_follow" type='checkbox' data-off-text="No" data-on-text="Yes" disabled checked>
-                            </div>
-                        </div>
-                        <hr>
-                        <div class="form-group">
-                            <div class="col-lg-6">
-                                <button type="submit" class="btn btn-default pull-right">Add</button>
-                            </div>
-                            <div class="col-lg-6">
-                                <button type="reset" class="btn btn-warning pull-left">Clear</button>
-                            </div>
-                        </div>
-                    </form>
-                </div><!--col-lg-12-->
-              </div><!--panel-body-->
-            </div><!--panel-->
-        </div><!--col-lg-4-->
 
     </div>
 </body>

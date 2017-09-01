@@ -5,33 +5,7 @@
                 <div class="col-lg-12">
                     <div class="alert alert-info alert-dismissable small">
                         <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-                        <i class="glyphicon glyphicon-info-sign"></i><b>REMINDER:</b> <p class="alert-p">You can always filter the list by your own specifications.</p>
-                    </div>
-                </div>
-                <div class="form-group col-lg-12">
-                    <label class="form-label col-lg-1">Filter:</label>
-                    <div class="col-lg-3">
-                        <select class="form-control">
-                            <option selected disabled>--Choose--</option>
-                            <option value="0">Status</option>
-                            <option value="0">Type</option>
-                            <option value="0">Nature of Business</option>
-                            <option value="0">Application Date</option>
-                        </select>
-                    </div>
-                    <div class="col-lg-3">
-                        <select class="form-control">
-                            <option selected disabled>--Choose--</option>
-                            <option value="0">Status</option>
-                            <option value="0">Client</option>
-                            <option value="0">Job Position</option>
-                            <option value="0">Date</option>
-                        </select>
-                    </div>
-                    <div class="col-lg-3 pull-right">                    
-                        <button type="button" class="btn btn-primary" onclick="window.location.href='post_job'"><span class="glyphicon glyphicon-plus"></span>
-                            Create New Job Advertisement
-                        </button>
+                        <i class="glyphicon glyphicon-info-sign"></i><b>REMINDER:</b> <p class="alert-p">This shows the list of job openings to be displayed on the main page of the website.</p>
                     </div>
                 </div>
             </fieldset>

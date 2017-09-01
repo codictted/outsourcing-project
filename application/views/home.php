@@ -133,10 +133,9 @@
                     <div class="col-lg-5 error-form">
                         <div class="error-form">
                             <span class="indiv-error"><?php echo form_error("business_nature"); ?></span>
-                            <select class="form-control" id="client_nature" name="business_nature" value="1">
-                                <option selected disabled>Nature of Business</option>
+                            <select class="form-control" id="client_nature" name="business_nature" multiple>
                                 <?php foreach($business_nature as $bn) { ?>
-                                <option value="<?php echo $bn->id; ?>"><?php echo $bn->name; ?></option>
+                                <option value="<?php echo $bn->name; ?>"><?php echo $bn->name; ?></option>
                                 <?php } ?>
                             </select>
                         </div>
@@ -158,12 +157,23 @@
                 </div>
                 <div class="form-group">
                     <label for="name" class="col-lg-2 control-label form-label">
-                        <text class="required">*</text> Full Name:
+                        <text class="required">*</text> Contact Person:
                     </label>
                     <div class="col-lg-10">
                         <div class="error-form">
                             <span class="indiv-error"><?php echo form_error("contact_name"); ?></span>
                             <input type="text" id="contact_name" name="contact_name" class="form-control" placeholder="Your Full Name">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="name" class="col-lg-2 control-label form-label">
+                        <text class="required">*</text>Job Position:
+                    </label>
+                    <div class="col-lg-10">
+                        <div class="error-form">
+                            <span class="indiv-error"><?php echo form_error("job_position"); ?></span>
+                            <input type="text" id="job_position" name="job_position" class="form-control" placeholder="Your Job Position">
                         </div>
                     </div>
                 </div>
@@ -301,3 +311,28 @@
 </div>
 </body>
 </html>
+
+<script type="text/javascript">
+
+
+$("[name='business_nature']").select2({
+        maximumSelectionLength: 1,
+        tags: true,
+        placeholder: '    Select Nature of business',
+        allowClear: true,
+        createTag: function (params) {
+            var term = $.trim(params.term);
+           
+            if (term.match(/^[!@#$%^&*()]+$/g)) {
+              return null;
+            }
+        
+            return {
+              id: term,
+              text: term,
+              newTag: true // add additional parameters
+            }
+        }
+});
+
+</script>

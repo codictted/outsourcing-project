@@ -13,6 +13,33 @@
 			$this->db->insert("client", $data);
 		}
 
+		public function check_select_business_nature($business_nature_val) {
+			
+	        $query = $this->db->get_where('business_nature', array('name' => $business_nature_val));
+
+	        $count = $query->num_rows(); 
+
+	        if ($count === 0) {
+	        	$data = array(
+	                'name' => $business_nature_val,
+	                'status' => 0
+	            );
+	        	$this->db->insert("business_nature", $data);
+	        	return $this->db->insert_id();
+	        }
+	        else{
+		        $this->db->select("id");
+		        $this->db->from("business_nature");
+		        $this->db->where("name", $business_nature_val);
+		        $getID = $this->db->get();
+
+		        foreach ($getID->result() as $row){
+				    return $row->id;
+				}
+	        }
+
+		}
+
 		public function get_client_list() {
 
 			$this->db->select("client.*, business_nature.name");
@@ -184,6 +211,7 @@
 			return $query->result();
 		}
 
+<<<<<<< HEAD
 		public function get_shortlisted_applicants($id) {
 
 			$query = $this->db->query("SELECT sh.*, app.id AS apid, app.first_name, app.last_name, app.status AS ap_stat, jpos.name AS jname FROM shortlist AS sh JOIN applicant AS app ON sh.applicant_id = app.id JOIN job_position AS jpos ON app.job_id = jpos.id WHERE sh.client_id = $id AND sh.status = 1");
@@ -196,5 +224,14 @@
 			$query = $this->db->query("SELECT DISTINCT COUNT(order_id) AS ctr FROM shortlist WHERE status = 0");
 			return $query->row();
 		}
+=======
+		public function get_educ_attain() {
+			$this->db->select("*");
+			$this->db->from("educ_attainment");
+			$this->db->where("flag = 0");
+			$query = $this->db->get();
+			return $query->result();
+		}
+>>>>>>> a87066092cf845fd3ee2c4c79e223c58993471fc
 	}
 ?>

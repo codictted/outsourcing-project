@@ -66,15 +66,6 @@
 			return $query->result();
 		}
 
-		public function get_sms_message(){
-
-			$this->db->select("interview_message1, interview_message2, interview_message3");
-			$this->db->from("utilities");
-			$query = $this->db->get();
-
-			return $query->result();
-		}
-
 		public function insert_interview($data) {
 
 			$this->db->insert("applicant_intervew", $data);
@@ -240,11 +231,38 @@
 			return $query->result();
 		}
 
+
+		//email
+		public function get_agency_email_details() {
+			$this->db->select("*");
+			$this->db->from("agency_default_email");
+			$query = $this->db->get();
+			return $query->result();
+		}
+
+		//insert essay answers
+		public function insert_essayq($data) {//insert
+			$this->db->insert("essay_question", $data);
+		}
+		public function update_applicant_stat($id, $stat) {
+			$this->db->where("id", $id);
+			$this->db->set("status", $stat);
+			$this->db->update("applicant");
+		}
+
 		public function update_staff_stat($id, $stat) {
 
 			$this->db->where("staff_id", $id);
 			$this->db->set("status", $stat);
 			$this->db->update("staff");
+		}
+
+		public function update_staff_history_stat($id, $stat) {
+
+			$this->db->where("staff_id", $id);
+			$this->db->set("status", $stat);
+			$this->db->set("date_replaced", date('Y/m/d H:i:s'));
+			$this->db->update("staff_history");
 		}
 
 		public function insert_replace_history($data) {
@@ -298,6 +316,7 @@
 
 			}
 			return $order_list;
+
 		}
 
 		public function staff_per_order($id) {

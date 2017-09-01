@@ -1,20 +1,20 @@
 $(function() {
 
 //birthplace same as address
-	$("#same_address").change(function() {
-		if(this.checked) {
-			$('[name="bstreet"]').val($("#street").val());
-			$('[name="bcity"]').val($("#city").val());
-			$('[name="bprovince"]').val($("#province").val());
-			$('[name="bzip"]').val($("#zip").val());
-		}
-		else {
-			$('[name="bstreet"]').val('');
-			$('[name="bcity"]').val('');
-			$('[name="bprovince"]').val('');
-			$('[name="bzip"]').val('');
-		}
-	});
+	// $("#same_address").change(function() {
+	// 	if(this.checked) {
+	// 		$('[name="bstreet"]').val($("#street").val());
+	// 		$('[name="bcity"]').val($("#city").val());
+	// 		$('[name="bprovince"]').val($("#province").val());
+	// 		$('[name="bzip"]').val($("#zip").val());
+	// 	}
+	// 	else {
+	// 		$('[name="bstreet"]').val('');
+	// 		$('[name="bcity"]').val('');
+	// 		$('[name="bprovince"]').val('');
+	// 		$('[name="bzip"]').val('');
+	// 	}
+	// });
 
 	//add fields for descendants
 	$("#add_descendant").click(function() {
@@ -93,23 +93,6 @@ $('#application-form').validate({
         digits: true,
         exactlength: 4
       },
-      bstreet: {
-        required: true,
-        nowhitespace: true
-      },
-      bcity: {
-        required: true,
-        nowhitespace: true
-      },
-      bprovince: {
-        required: true,
-        nowhitespace: true,
-        regex: /^[a-zA-Z\s'-\.]+$/
-      },
-      bzip: {
-        digits: true,
-        exactlength: 4
-      },
       guardian: {
         required: true,
         nowhitespace: true,
@@ -162,22 +145,6 @@ $('#application-form').validate({
         // required: "Please enter zip code",
         digits: "Invalid character"
       },
-      bstreet: {
-        required: "Please enter street address",
-      },
-      bcity: {
-        required: "Please enter city",
-      },
-      bprovince: {
-        required: "Please enter province",
-      },
-      bzip: {
-        //required: "Please enter zip code",
-        digits: "Invalid character"
-      },
-      // religion: {
-      //   required: "Please choose your religion"
-      // },
       education: {
         required: "Please choose your highest educational attainment"
       },
@@ -188,10 +155,10 @@ $('#application-form').validate({
         required: "Please enter your guardian's name"
       },
       g_relation: {
-        required: "Please enter your relationship to your guardian"
+        required: "Please enter your relationship with your Emergency Contact Person"
       },
       g_contact: {
-        required: "Please enter your guardian's contact number"
+        required: "Please enter your Emergency Contact Person's contact number"
       }
     },
     errorElement: "em",
@@ -229,9 +196,35 @@ $('#application-form').validate({
         }
   });
 
-<<<<<<< HEAD
 
-  
-=======
->>>>>>> a47c7710fdd4f4c9b4b31be1724f9ab009fcc906
+
+function viewPersonal() {
+  $("#personal_form").show();
+  $("#family_form").hide();
+  $("#work_form").hide();
+  $("#essay_form").hide();
+}
+
+function viewFamilyBackground() {
+  $("#personal_form").hide();
+  $("#family_form").show();
+  $("#work_form").hide();
+  $("#essay_form").hide();
+}
+
+function viewWork() {
+  $("#personal_form").hide();
+  $("#family_form").hide();
+  $("#work_form").show();
+  $("#essay_form").hide();
+}
+
+function viewEssay() {
+  $("#personal_form").hide();
+  $("#family_form").hide();
+  $("#work_form").hide();
+  $("#essay_form").show();
+}
+
 });
+

@@ -64,7 +64,6 @@
 
             $type = $this->input->post("contact_client_type");
             if($type == 1) {
-
                 $this->form_validation->set_rules(
                     "client_nature",
                     "Nature of Business", 
@@ -72,6 +71,10 @@
                 $this->form_validation->set_rules(
                     "comp_name",
                     "Company Name",
+                    "required|strip_tags|xss_clean");
+                $this->form_validation->set_rules(
+                    "job_position",
+                    "Job Position",
                     "required|strip_tags|xss_clean");
             }
             $this->form_validation->set_rules(
@@ -132,10 +135,11 @@
                 $nature = $this->input->post("client_nature");
                 $comp_name = $this->input->post("comp_name");
                 if($type == 2) {
-                    $nature = 1;
+                    $nature = "N/A";
                     $comp_name = NULL;
                 }
                 $contact_name = $this->input->post("contact_name");
+                $cont_job_pos = $this->input->post("job_position");
                 $email = $this->input->post("contact_email");
                 $cnumber = $this->input->post("contact_contact_number");
                 $tnumber = $this->input->post("contact_tel_number");
@@ -146,11 +150,15 @@
                 $user = $this->input->post("client_username");
                 $pass = $this->input->post("client_password");
                 $now = new DateTime(NULL, new DateTimeZone("Asia/Manila"));
+
+                $nature = $this->Client_model->check_select_business_nature($nature);
+
                 $data = array(
                     "type" => $type,
                     "business_nature" => $nature,
                     "comp_name" => $comp_name,
                     "full_name" => $contact_name,
+                    "job_position" => $cont_job_pos,
                     "email" => $email,
                     "mobile_no" => $cnumber,
                     "tel_no" => $tnumber,
@@ -571,7 +579,6 @@
                 $data['applicant_exp'] = $this->Applicant_model->get_exp($id);
                 $data['applicant_sem'] = $this->Applicant_model->get_sem($id);
                 $data['applicant_personality'] = $this->Applicant_model->get_personality($id);
-                $data['applicant_essay'] = $this->Applicant_model->get_essay($id);
                 $data['skills'] = $this->Applicant_model->get_skills($id);
                 $this->load->view("admin-header", $data);
                 $this->load->view("nav-transaction");
@@ -629,7 +636,6 @@
                 $data['jname'] = $this->Admin_model->get_job_name($data['applicant_det']->job_id);
                 $jo_details = $this->Admin_model->get_client_list($data['applicant_det']->job_id);
                 $data['job_match'] = $this->compute_job_match($jo_details, $data['applicant_det']);
-                $data['sms'] = $this->Admin_model->get_sms_message();
                 $this->load->view("admin-header", $data);
                 $this->load->view("nav-transaction");
                 $this->load->view("applist_matched");
@@ -829,15 +835,34 @@
                 $time = $this->input->post("interview_time");
                 $date = $this->input->post("interview_date");
                 $app_id = $this->input->post("app_id");
+
+                $date_time = "Date: ".$date."\nTime: ".$time;
+                $message = $message." ".$date_time;
+                $mark = TRUE;
+                // while($mark) {
+
+                //     $sub = $message;
+                //     if(strlen($sub) > 100) {
+
+                //         $sub = substr($message, 0, 100);
+                $result = $this->itexmo($num, $message, "TR-JEABB956335_VA2MW ");
+                //         $sub = substr($sub, 100);
+                //     }
+
+                //     if(strlen($sub) <= 0)
+                //         $mark = FALSE;
+                // }
+
                 $date_time = "".$date."".$time;
                 $message = $message." ".$date_time;
                 $result = $this->itexmo($num, $message, "TR-JEABB956335_VA2MW");
-                
+
                 if ($result == ""){
                     echo "iTexMo: No response from server!!!
                     Please check the METHOD used (CURL or CURL-LESS). If you are using CURL then try CURL-LESS and vice versa.  
                     Please CONTACT US for help. ";  
                 }
+
                 else if ($result == 0){ 
 
                     $data = array(
@@ -845,6 +870,7 @@
                         "date" => $date_time,
                         "status" => 0
                     );
+
                     $this->Admin_model->insert_interview($data);
                     $this->Admin_model->update_applicant_status($app_id, 2);
                     $this->session->set_flashdata("success_notification", "You have successfully sent the message!");
@@ -852,7 +878,8 @@
                 }
                 else {
 
-                    $this->session->set_flashdata("fail_notification", "Error Num ". $result . " was encountered!");
+                    $this->session->set_flashdata("fail_notification", "Maximum number of messages sent reached.");
+
                     redirect(base_url("admin/admin_applicant_list"));
                 }
             }
@@ -1020,7 +1047,7 @@
                 $data['applicant_family'] = $this->Applicant_model->get_family($id);
                 $data['applicant_exp'] = $this->Applicant_model->get_exp($id);
                 $data['applicant_sem'] = $this->Applicant_model->get_sem($id);
-                $data['applicant_personality'] = $this->Applicant_model->get_personality($id);
+                //$data['applicant_personality'] = $this->Applicant_model->get_personality($id);
                 $data['applicant_essay'] = $this->Applicant_model->get_essay($id);
                 $data['skills'] = $this->Applicant_model->get_skills($id);
                 $this->load->view("admin-header", $data);
@@ -1213,6 +1240,8 @@
             die();
         }
 
+       
+
         public function save_shortlist() {
 
             $app_id = $this->input->post("applist");
@@ -1248,6 +1277,24 @@
             $data = $this->Admin_model->get_replace_det($id);
             echo json_encode($data);
         }
+
+
+        public function approve_staff_replacement($staff_id = 0, $app_id = 0) {
+            $this->Admin_model->update_applicant_stat($app_id, 5);
+            $this->Admin_model->update_staff_stat($staff_id, 2);
+            $this->Admin_model->update_staff_history_stat($staff_id, 2);
+            $this->session->set_flashdata("success_notification", "You have successfully approved the replacement of staff!");
+            redirect(base_url("admin/admin_staff_list"));
+        }
+        public function decline_staff_replacement($staff_id = 0, $app_id = 0) {
+            $this->Admin_model->update_applicant_stat($app_id, 5);
+            $this->Admin_model->update_staff_stat($staff_id, 2);
+            $this->Admin_model->update_staff_history_stat($staff_id, 1);
+            $this->session->set_flashdata("success_notification", "You have successfully declined the replacement of staff!");
+            redirect(base_url("admin/admin_staff_list"));
+        }
+
+       
 
          public function compute_job_match_per_applicant($j, $applicant) {
 
@@ -1412,5 +1459,6 @@
             $data = $this->compute_job_match($order_id, $app_id);
             echo json_encode($data);
         }
+
 	}
 ?>

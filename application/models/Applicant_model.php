@@ -5,10 +5,12 @@
 		public function insert_applicant($data) {
 
 			$this->db->insert("applicant", $data);
-			$this->db->select_max("id");
-			$this->db->from("applicant");
-			$query = $this->db->get();
-			return $query->result();
+			return $this->db->insert_id();
+		}
+		
+		public function insert_spoken_language($data) {
+
+			$this->db->insert("applicant_languages", $data);
 		}
 
 		public function insert_descendants($data) {
@@ -31,14 +33,13 @@
 			$this->db->insert("applicant_seminar", $data);
 		}
 
-		public function insert_personality_exam($data) {
+		// public function insert_personality_exam($data) {
 
-			$this->db->insert_batch("applicant_personality", $data);
-		}
+		// 	$this->db->insert_batch("applicant_personality", $data);
+		// }
 
-		public function insert_essay_exam($data) {
-
-			$this->db->insert_batch("applicant_essay", $data);
+		public function insert_applicant_essay($data) {
+			$this->db->insert("applicant_essay", $data);
 		}
 
 		public function get_all() {
@@ -95,15 +96,15 @@
 			return $query->result();
 		}
 
-		public function get_personality($id) {
+		// public function get_personality($id) {
 
-			$this->db->select("applicant_personality.*, personality_exam.question");
-			$this->db->from("applicant_personality");
-			$this->db->join("personality_exam", "applicant_personality.question = personality_exam.id");
-			$this->db->where("applicant_id", $id);
-			$query = $this->db->get();
-			return $query->result();
-		}
+		// 	$this->db->select("applicant_personality.*, personality_exam.question");
+		// 	$this->db->from("applicant_personality");
+		// 	$this->db->join("personality_exam", "applicant_personality.question = personality_exam.id");
+		// 	$this->db->where("applicant_id", $id);
+		// 	$query = $this->db->get();
+		// 	return $query->result();
+		// }
 
 		public function get_essay($id) {
 

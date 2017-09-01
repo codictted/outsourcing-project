@@ -5,7 +5,7 @@
                 <div class="col-lg-12">
                     <div class="alert alert-info alert-dismissable small">
                         <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-                        <i class="glyphicon glyphicon-info-sign"></i><b>REMINDER:</b> <p class="alert-p">You can always filter the list by your own specifications.</p>
+                        <i class="glyphicon glyphicon-info-sign"></i><b>REMINDER:</b> <p class="alert-p">You can always filter the list by your own specifications.<br>You can view the details of the client by clicking the companies' respective row.</p>
                     </div>
                 </div>
                 <?php if($this->session->flashdata("success_notification_client_terminate")): ?>
@@ -26,24 +26,9 @@
                     </div>
                 <?php endif; ?>
                 <div class="form-group col-lg-12">
-                    <label class="form-label col-lg-1">Filter:</label>
                     <div class="col-lg-3">
-                        <select class="form-control">
-                            <option selected disabled>--Choose--</option>
-                            <option value="0">Status</option>
-                            <option value="0">Type</option>
-                            <option value="0">Nature of Business</option>
-                            <option value="0">Application Date</option>
-                        </select>
                     </div>
                     <div class="col-lg-3">
-                        <select class="form-control">
-                            <option selected disabled>--Choose--</option>
-                            <option value="0">Status</option>
-                            <option value="0">Client</option>
-                            <option value="0">Job Position</option>
-                            <option value="0">Date</option>
-                        </select>
                     </div>
                     <div class="col-lg-3">                    
                         <button type="button" class="btn btn-primary btn-margin" onclick="window.location.href='<?php echo base_url()?>admin/create_client'"><span class="glyphicon glyphicon-plus"></span>Add Client

@@ -117,7 +117,6 @@
                 $data['applicant_family'] = $this->Applicant_model->get_family($id);
                 $data['applicant_exp'] = $this->Applicant_model->get_exp($id);
                 $data['applicant_sem'] = $this->Applicant_model->get_sem($id);
-                $data['applicant_personality'] = $this->Applicant_model->get_personality($id);
                 $data['applicant_essay'] = $this->Applicant_model->get_essay($id);
                 $this->load->view("admin-header", $data);
                 $this->load->view("nav-queries");

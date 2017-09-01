@@ -196,6 +196,7 @@ $('#application-form').validate({
         }
   });
 
+<<<<<<< HEAD
 });
 
 function viewPersonal() {
@@ -225,3 +226,11 @@ function viewEssay() {
   $("#work_form").hide();
   $("#essay_form").show();
 }
+=======
+<<<<<<< HEAD
+
+  
+=======
+>>>>>>> a47c7710fdd4f4c9b4b31be1724f9ab009fcc906
+});
+>>>>>>> a0d95625ad51f5ecbfb782d7cd2192eb1437ff92

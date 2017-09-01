@@ -118,6 +118,64 @@
             </div>
             </form>
         </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" role="dialog" id="match-details-modal">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Auto Job Match Details</h4>
+            </div>
+            <div class="modal-body">
+                <form action="" method="post" class="form-horizontal">
+                    <div class="panel-heading">
+                    </div>
+                    <table class="table col-lg-12 custom-table-large table-striped">
+                        <tr>
+                            <td colspan="2"><b><center>QUALIFICATIONS</center></b></td>
+                            <td colspan="2"><b><center>SKILLS</center></b></td>
+                        </tr>
+                        <tr>
+                            <td><span class="glyphicon glyphicon-ok"></span>Matched</td>
+                            <td><span class="glyphicon glyphicon-remove"></span>Did Not Matched</td>
+                            <td><span class="glyphicon glyphicon-ok"></span>Matched</td>
+                            <td><span class="glyphicon glyphicon-remove"></span>Did Not Matched</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <ul id="match_quali">
+                                    
+                                </ul>
+                            </td>
+                            <td>
+                                <ul id="nonmatch_quali">
+                                </ul>
+                            </td>
+                            <td>
+                                <ul id="match_skill">
+                                </ul>
+                            </td>
+                            <td>
+                                <ul id="nonmatch_skill">
+                                </ul>
+                            </td>
+                        </tr>
+                    </table>
+                    <div class="panel-footer">
+                        <text>Total number of items: &nbsp;<text id="total"></text></text><br>
+                        <text>Total number of matched items: &nbsp;<text id="matched"></text></text><br>
+                        <text>Auto Match Result: <text id="result"></text></text>
+                    </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <button type="submit" class="btn btn-primary">Continue</button>
+            </div>
+        </form> 
+    </div>
     </div>
 </div>
 
@@ -202,22 +260,29 @@
                     var string_tr = "";
                     $.each(data, function(index, value) {
 
+                        var percentage = ((value.job_match['matched'] / value.job_match['total']) * 100).toFixed(2);
                         var gen = value.gender == 1 ? "Male" : "Female";
-                        temp = {
+                        temp_obj = {
                             id: value.id,
                             gender: gen,
-                            name: value.first_name + " " + value.last_name
+                            name: value.first_name + " " + value.last_name,
+                            match: percentage
                         }
-                        left.push(temp);
+
+                        left.push(temp_obj);
                         string_tr = "<tr>";
                         string_tr += "<td class='sub-label'>";
+                        string_tr += "<a onclick=\"window.location.href='applicant_full_details/"+ value.id + "'\">";
                         string_tr += value.first_name + " " + value.last_name;
+                        string_tr += "</a>";
                         string_tr += "</td>";
                         string_tr += "<td class='sub-label'>";
                         string_tr += gen;
                         string_tr += "</td>";
                         string_tr += "<td class='sub-label'>";
-                        string_tr += "lol";
+                        string_tr += "<a id=" + value.id + " onclick=\"show_modal_match(this.id)\">";
+                        string_tr += value.match + "%";
+                        string_tr += "</a>";
                         string_tr += "</td>";
                         string_tr += "<td>";
                         string_tr += "<button class='btn-success' id ="+ value.id +" onclick='select(this.id)'>";
@@ -243,12 +308,13 @@
         //var i = left.indexOf(id);
 
         var i = left.map(x => x.id).indexOf(id);
-        temp = {
+        temp_obj = {
             id: left[i].id,
             gender: left[i].gender,
-            name: left[i].name
+            name: left[i].name,
+            match: left[i].match
         }
-        right.push(temp);
+        right.push(temp_obj);
         left.splice(i, 1);
 
         final_id.push(id);
@@ -260,13 +326,14 @@
     function unselect(id) {
 
         var i = right.map(x => x.id).indexOf(id);
-        temp = {
+        temp_obj = {
             id: right[i].id,
             gender: right[i].gender,
-            name: right[i].name
+            name: right[i].name,
+            match: right[i].match
         }
 
-        left.push(temp);
+        left.push(temp_obj);
         right.splice(i, 1);
 
         i = final_id.indexOf(id);
@@ -291,6 +358,7 @@
         else {
             $.each(right, function(index, value) {
 
+                console.log(right);
                 //left.push(value.id);
                 //var gen = value.gender == 1 ? "Male" : "Female";
                 string_tr = "<tr>";
@@ -307,7 +375,9 @@
                 string_tr += value.gender;
                 string_tr += "</td>";
                 string_tr += "<td class='sub-label'>";
-                string_tr += "lol";
+                string_tr += "<a id=" + value.id + " onclick=\"show_modal_match(this.id)\">";
+                string_tr += value.match + "%";
+                string_tr += "</a>";
                 string_tr += "</td>";
                 string_tr += "</tr>";
                 populate.push(string_tr);
@@ -341,7 +411,9 @@
                 string_tr += value.gender;
                 string_tr += "</td>";
                 string_tr += "<td class='sub-label'>";
-                string_tr += "lol";
+                string_tr += "<a id=" + value.id + " onclick=\"show_modal_match(this.id)\">";
+                string_tr += value.match + "%";
+                string_tr += "</a>";
                 string_tr += "</td>";
                 string_tr += "<td>";
                 string_tr += "<button class='btn-success' id ="+ value.id +" onclick='select(this.id)'>";
@@ -378,6 +450,80 @@
             $("#short_list").html(populate.join(''));
             $("#finalize_modal").modal("show");
         }
+    }
+
+    function show_modal_match(id) {
+
+        var url = "<?php echo base_url(); ?>admin/get_match_details/";
+        var oid = $("#joborder_id").val();
+        $.ajax({
+
+            dataType: "JSON",
+            url: url + id + "/" + oid,
+            type: "GET",
+            success: function(data) {
+
+                var arr = [];
+                var temp;
+                $.each(data['match_quali'], function(index, value){
+
+                    temp = "<li>";
+                    temp += value;
+                    temp += "</li>";
+
+                    arr.push(temp);
+                });
+
+                $("#match_quali").html(arr.join(''));
+
+                arr = [];
+                temp = "";
+                $.each(data['nonmatch_quali'], function(index, value){
+
+                    temp = "<li>";
+                    temp += value;
+                    temp += "</li>";
+
+                    arr.push(temp);
+                });
+
+                $("#nonmatch_quali").html(arr.join(''));
+
+                arr = [];
+                temp = "";
+                $.each(data['match_skill'], function(index, value){
+
+                    temp = "<li>";
+                    temp += value;
+                    temp += "</li>";
+
+                    arr.push(temp);
+                });
+
+                $("#match_skill").html(arr.join(''));
+
+                arr = [];
+                temp = "";
+                $.each(data['nonmatch_skill'], function(index, value){
+
+                    temp = "<li>";
+                    temp += value;
+                    temp += "</li>";
+
+                    arr.push(temp);
+                });
+
+                $("#nonmatch_skill").html(arr.join(''));
+
+                $("#total").html(data['total']);
+                $("#matched").html(data['matched']);
+
+                var percentage = ((data['matched'] / data['total']) * 100).toFixed(2);
+                $("#result").html(percentage+"%");
+            }
+        });
+
+        $("#match-details-modal").modal("show");
     }
 
 </script>

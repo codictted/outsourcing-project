@@ -1,5 +1,6 @@
 <div class="col-lg-12 dashboards">
 	<h3>Keep track of your daily notifications, admin!</h3>
+    <h4>Requests:</h4>
 	<div class="row">
         <div class="col-lg-3 col-md-6">
             <div class="panel panel-primary dash1">
@@ -89,6 +90,34 @@
                 </a>
             </div>
         </div>
+    </div><br>
+    <h4>Reminders:</h4>
+    <div class="row">
+        <?php
+            if(count($job_order_reminder) >= 1) {
+            foreach($job_order_reminder as $jo) {?>
+        <div class="col-lg-12">
+            <div class="alert alert-warning alert-dismissable small">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                <i class="glyphicon glyphicon-info-sign"></i><b>REMINDER:</b><p class="alert-p">
+                    You haven't yet found a qualified appicant for this job order for a week.
+                </p>
+                <p class="alert-p">
+                    Client: <?php $name = is_null($jo[1][0]->comp_name) ? $jo[1][0]->full_name : $jo[1][0]->comp_name; echo $name; ?>
+                </p>
+                <p class="alert-p">
+                    <a href="<?php echo base_url(); ?>admin/jo_ongoing/<?php echo $jo[1][0]->order_id; ?>">Job Order Position: <?php echo $jo[1][0]->jname; ?></a>
+                </p>
+            </div>
+        </div>
+        <?php }} else { ?>
+        <div class="col-lg-12">
+            <div class="alert alert-warning alert-dismissable small">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                <i class="glyphicon glyphicon-info-sign"></i><b>NO REMINDERS</b>
+            </div>
+        </div>
+        <?php } ?>
     </div>
 </div>
 </body>

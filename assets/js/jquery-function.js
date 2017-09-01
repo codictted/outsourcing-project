@@ -289,6 +289,62 @@ $(function () {
         }
   });
 
+  /*$('#date-form').validate({
+    rules: {
+      date_from: {
+        required: true,
+        nowhitespace: true,
+        regex: /^[a-zA-Z\s'-\.]+$/
+      },
+      date_to: {
+        required: true,
+        nowhitespace: true,
+        regex: /^[0-9]+$/
+      }
+    },
+    messages: {
+      date_from: {
+        required: "Please enter date from."
+      },
+      date_to: {
+        required: "Please choose date to."
+      }
+    },
+    errorElement: "em",
+        errorPlacement: function ( error, element ) {
+          // Add the `help-block` class to the error element
+          error.addClass("error-mes");
+          // Add `has-feedback` class to the parent div.form-group
+          // in order to add icons to inputs
+          element.parents( ".error-form" ).addClass( "has-feedback" );
+
+          if ( element.prop( "type" ) === "checkbox" ) {
+            error.insertAfter( element.parent( "label" ) );
+          } else {
+            error.insertAfter( element );
+          }
+
+          // Add the span element, if doesn't exists, and apply the icon classes to it.
+          if ( !element.next( "span" )[ 0 ] ) {
+            $( "<span class='glyphicon glyphicon-remove form-control-feedback'></span>" ).insertAfter( element );
+          }
+        },
+        success: function ( label, element ) {
+          // Add the span element, if doesn't exists, and apply the icon classes to it.
+          if ( !$( element ).next( "span" )[ 0 ] ) {
+            $( "<span class='glyphicon glyphicon-ok form-control-feedback'></span>" ).insertAfter( $( element ) );
+          }
+        },
+        highlight: function ( element, errorClass, validClass ) {
+          $( element ).parents( ".error-form" ).addClass( "has-error" ).removeClass( "has-success" );
+          $( element ).next( "span" ).addClass( "glyphicon-remove" ).removeClass( "glyphicon-ok" );
+        },
+        unhighlight: function ( element, errorClass, validClass ) {
+          $( element ).parents( ".error-form" ).addClass( "has-success" ).removeClass( "has-error" );
+          $( element ).next( "span" ).addClass( "glyphicon-ok" ).removeClass( "glyphicon-remove" );
+        }
+  });*/
+
   $('#job-form').validate({
     rules: {
       job_name: {
@@ -300,11 +356,6 @@ $(function () {
         required: true,
         nowhitespace: true,
         regex: /^[0-9]+$/
-      },  
-      job_sf: {
-        required: true,
-        nowhitespace: true,
-        regex: /^[0-9,.]+$/
       }
     },
     messages: {
@@ -313,9 +364,6 @@ $(function () {
       },
       job_cat: {
         required: "Please choose job category."
-      },  
-      job_sf: {
-        required: "Please enter job service fee."
       }
     },
     errorElement: "em",
@@ -504,6 +552,45 @@ $(function () {
       });//AJAX
     }//else if
   });
+
+
+$(".modal-btn-staff").click(function(event) {
+    event.stopPropagation();
+    var id = this.id;
+    var s_id = id.split("/")[0];
+    var mod = id.split("/")[1];
+    var c_name = id.split("/")[2];
+    var j_name = id.split("/")[3];
+    var date_request = id.split("/")[4];
+    var reason = id.split("/")[5];
+    $("#staff_id").val(s_id);
+    $("[name='client-name']").html(c_name);
+    $("[name='job_position']").html(j_name);
+    $("[name='date_request']").html(date_request);
+    $("[name='reason']").html(reason);
+    $("#" + mod).modal("show");
+
+    if(mod=="replacement_modal") {
+
+      var url = "http://localhost/outsourcing/admin/get_replace_det/";
+      $.ajax({
+      dataType: "JSON",
+      url: url + s_id,
+      type: "GET",
+      success: function(data) {
+
+        var com = data[0].comp_name == null ? data[0].full_name : data[0].comp_name;
+        $("#client_name").html(com);
+        $("#job_position").html(data[0].jname);
+        $("#date_req").html(data[0].date_request);
+        $("#reason").html(data[0].reason);
+      }  
+    });//AJAX
+    }//IF
+
+    
+  });
+
 
   $(".modal-btn-client").click(function(event) {
     event.stopPropagation();

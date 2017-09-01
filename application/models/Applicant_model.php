@@ -5,10 +5,12 @@
 		public function insert_applicant($data) {
 
 			$this->db->insert("applicant", $data);
-			$this->db->select_max("id");
-			$this->db->from("applicant");
-			$query = $this->db->get();
-			return $query->result();
+			return $this->db->insert_id();
+		}
+		
+		public function insert_spoken_language($data) {
+
+			$this->db->insert("applicant_languages", $data);
 		}
 
 		public function insert_descendants($data) {

@@ -104,7 +104,7 @@
 
 		public function get_applicant_shortlist($id) {
 
-			$this->db->select("id, first_name, last_name, gender");
+			$this->db->select("*");
 			$this->db->from("applicant");
 			$this->db->where("status", 5);
 			$this->db->where("job_id", $id);
@@ -231,6 +231,7 @@
 			return $query->result();
 		}
 
+<<<<<<< HEAD
 		//email
 		public function get_agency_email_details() {
 			$this->db->select("*");
@@ -242,6 +243,80 @@
 		//insert essay answers
 		public function insert_essayq($data) {//insert
 			$this->db->insert("essay_question", $data);
+=======
+		public function update_applicant_stat($id, $stat) {
+
+			$this->db->where("applicant_id", $id);
+			$this->db->set("status", $stat);
+			$this->db->update("applicant");
+		}
+
+		public function update_staff_stat($id, $stat) {
+
+			$this->db->where("staff_id", $id);
+			$this->db->set("status", $stat);
+			$this->db->update("staff");
+		}
+
+		public function update_staff_history_stat($id, $stat) {
+
+			$this->db->where("staff_id", $id);
+			$this->db->set("status", $stat);
+			$this->db->update("staff_history");
+		}
+
+		public function insert_replace_history($data) {
+
+			$this->db->insert("staff_history", $data);
+		}
+
+		public function get_replace_det($id) {
+
+			$this->db->select("staff.*, staff_history.*, client.comp_name, client.full_name, jpos.name as jname, applicant.id");
+			$this->db->from("staff");
+			$this->db->join("staff_history", "staff_history.staff_id = staff.staff_id");
+			$this->db->join("applicant", "applicant.id = staff.applicant_id");
+			$this->db->join("client", "staff.client_id = client.id");
+			$this->db->join("job_position as jpos", "jpos.id = applicant.job_id");
+			$this->db->where("staff.staff_id", $id);
+
+			$query = $this->db->get();
+			return $query->result();
+
+		}
+
+		public function count_deployed($id) {
+
+			$query = $this->db->query("SELECT COUNT(applicant_id) AS staff_ctr FROM shortlist WHERE order_id = $id AND status = 1");
+
+			return $query->result();
+		}
+
+		public function get_job_order_reminder() {
+
+			$order_list = array();
+			$date = new DateTime('-1 week');
+			$date = $date->format('Y-m-d 00:00:00');
+
+			$date2 = new DateTime('-1 week');
+			$date2 = $date2->format('Y-m-d 23:59:59');
+
+			$query = $this->db->query("SELECT order_id FROM job_order WHERE order_date BETWEEN '$date' AND '$date2'");
+
+			$index = 0;
+			foreach($query->result() as $oid) {
+
+				$query2 = $this->db->query("SELECT COUNT(applicant_id) AS staff_ctr FROM shortlist WHERE order_id = $oid->order_id AND status = 1");
+				$query3 = $this->db->query("SELECT jo.order_id, cl.comp_name, cl.full_name, jpos.name as jname FROM job_order as jo join client as cl on jo.client_id = cl.id join job_position as jpos on jo.job_id = jpos.id where jo.order_id = $oid->order_id");
+
+				if($index == 0)
+					array_push($order_list, $query2->result());
+				array_push($order_list[$index], $query3->result());
+				$index++;
+
+			}
+			return $order_list;
+>>>>>>> a0d95625ad51f5ecbfb782d7cd2192eb1437ff92
 		}
 	}
 ?>

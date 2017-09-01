@@ -63,18 +63,6 @@
                         
                     </label>
                 </div>
-
-                <div class="form-group">
-                    <label for="name" class="col-lg-3 control-label form-label">
-                        <text class="required">*</text> Job Service fee:
-                    </label>
-
-                    <label class="col-lg-2 control-label form-label" style="text-align:left;">
-                        <text><?php echo $job[0]->service_fee; ?></text>
-                    </label>
-                </div>
-
-                
                 
                 <hr>
                 <div class="form-group">
@@ -90,24 +78,6 @@
 </html>
 
 <script type="text/javascript">
-
-    /*$('#sub').click(function(){
-        var ID = <?php echo $job[0]->id;?>;
-        var url = "<?php echo base_url()?>maintenance/delete_job_position/";
-        var dataString = "job_id=" + ID;
-            $.ajax({
-                dataType: "JSON",
-                url: url,
-                type: "POST",
-                data: dataString,
-                success: function(data) {
-                
-                    data.success ? 
-                    window.location.href="<?php echo base_url()?>maintenance/job_position/" :
-                    location.reload();
-                }   
-            }); 
-    });*/
 
     $('#cancel').click(function(){
         window.location.href="<?php echo base_url();?>maintenance/job_position/";

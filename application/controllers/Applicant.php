@@ -26,12 +26,21 @@
         public function index() {
 
             $data["job_cat"] = $this->get_job_cat();
+<<<<<<< HEAD
             $data["set"]     = $this->get_skill_set();
             $data['edat']    = $this->Dropdown_model->get_educ_attain();
             $data["course"]  = $this->get_course();
             // $data["spoken"]  = $this->Dropdown_model->get_spoken_lang();
             $data["essayq"]  = $this->Dropdown_model->get_essayq();
             $data["title"]   = "Application Form";
+=======
+            $data["set"] = $this->get_skill_set();
+            $data['education'] = $this->Dropdown_model->get_education();
+            $data["course"] = $this->get_course();
+            $data["spoken"] = $this->Dropdown_model->get_spoken_lang();
+            $data["religion"] = $this->Dropdown_model->get_religion();
+            $data["title"] = "Application Form";
+>>>>>>> a0d95625ad51f5ecbfb782d7cd2192eb1437ff92
             $this->load->view("header", $data);
             $this->load->view("nav");
             $this->load->view("application_form", $data);
@@ -147,9 +156,38 @@
             );
 
             $this->form_validation->set_rules(
+<<<<<<< HEAD
                 "birthplce",
                 "Birthplace",
                 "strip_tags|xss_clean"
+=======
+                "spoken_lang[]",
+                "Spoken Language",
+                "required"
+            );
+
+            $this->form_validation->set_rules(
+                "bstreet",
+                "Street Address",
+                "required|strip_tags|xss_clean"
+            );
+
+            $this->form_validation->set_rules(
+                "bcity",
+                "City",
+                "required|strip_tags|xss_clean"
+            );
+
+            $this->form_validation->set_rules(
+                "bprovince",
+                "Province",
+                "required|strip_tags|xss_clean"
+            );
+            $this->form_validation->set_rules(
+                "bzip",
+                "Zip Code",
+                "numeric|exact_length[4]|strip_tags|xss_clean"
+>>>>>>> a0d95625ad51f5ecbfb782d7cd2192eb1437ff92
             );
 
             $this->form_validation->set_rules(
@@ -246,7 +284,15 @@
                 $zip = $this->input->post("zip");
                 $bdate = $this->input->post("bdate");
                 $religion = $this->input->post("religion");
+<<<<<<< HEAD
                 $birthplace = $this->input->post("birthplace");
+=======
+                $spoken_language = array_unique($this->input->post("spoken_lang[]"));
+                $bstreet = $this->input->post("bstreet");
+                $bcity = $this->input->post("bcity");
+                $bprovince = $this->input->post("bprovince");
+                $bzip = $this->input->post("bzip");
+>>>>>>> a0d95625ad51f5ecbfb782d7cd2192eb1437ff92
                 $educ = $this->input->post("education");
                 $year = $this->input->post("level");
                 $school = $this->input->post("school");
@@ -258,6 +304,13 @@
                 $g_contact = $this->input->post("g_contact");
                 $status = 0;
                 $now = new DateTime(NULL, new DateTimeZone("Asia/Manila"));
+
+                $religion = $this->Dropdown_model->check_select_religion($religion);
+
+                foreach ($spoken_language as $index => $spokenVal) {
+                       $dataSpokenLang[$index] = $this->Dropdown_model->check_select_spoken_language($spokenVal);
+                }
+               
 
                 $applicant_details = array(
                     "job_id" => $pos,
@@ -294,8 +347,23 @@
                 );
 
                 $this->load->model("Applicant_model");
+<<<<<<< HEAD
                 $id = $this->Applicant_model->insert_applicant($applicant_details);
                 $app_id = $id[0]->id;
+=======
+
+                $app_id = $this->Applicant_model->insert_applicant($applicant_details);
+            
+
+                //insert dataspoken
+                foreach ($dataSpokenLang as $spokenVal) {
+                        $data = array(
+                            "applicant_id" => $app_id,
+                            "lang_id" => $spokenVal
+                        );
+                    $this->Applicant_model->insert_spoken_language($data); 
+                }
+>>>>>>> a0d95625ad51f5ecbfb782d7cd2192eb1437ff92
 
                 $eaid    = $this->input->post("essay_id");
                 $eanswer = $this->input->post("essay_answer");

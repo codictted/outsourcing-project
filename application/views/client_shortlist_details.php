@@ -35,6 +35,7 @@
                     <legend class="custom-legend">Short List</legend>
                 </fieldset>
             </form>
+            <input type="hidden" id="joborder_id" value="<?php echo $shortlist_det[0]->order_id; ?>">
             <table id="choose_shortlist" class="table-hover">
                 <thead>
                     <th>Name</th>
@@ -44,6 +45,7 @@
                 </thead>
                 <tbody id="pop_left">
                     <?php foreach($shortlist_det as $sh) {
+
                     $gen = $sh->gender == 1 ? "Male" : "Female";
                     $full_name = $sh->first_name." ".$sh->last_name;
                     $match_res = round(($sh->job_match['matched']/$sh->job_match['total']) * 100, 2);
@@ -53,9 +55,9 @@
                                 insert_value(".$sh->id.", \"$gen\", \"$full_name\", ".$match_res.");
                                 </script>"; ?>
                     <tr>
-                        <td><?php echo $full_name; ?></td>
+                        <td><a onclick="window.location.href='../../<?php base_url(); ?>client/applicant_full_details/<?php echo $sh->applicant_id; ?>'"><?php echo $full_name; ?></a></td>
                         <td><?php echo $gen; ?></td>
-                        <td><?php echo $match_res; ?>%</td>
+                        <td><a id="<?php echo $sh->id; ?>" onclick="show_modal_match(this.id)"><?php echo $match_res; ?>%</a></td>
                         <td>
                             <button type="button" id="<?php echo $sh->id; ?>" class="btn-success" onclick="client_select(this.id)">
                             <span class='glyphicon glyphicon-arrow-right'></span>
@@ -86,7 +88,7 @@
             <hr>
             <button class="btn btn-sm btn-primary pull-right" onclick="final()">
                 <span class="glyphicon glyphicon-th-list"></span>
-                Send Shortlist
+                Hire Applicants
             </button><br><br>
         </div>
     </form>
@@ -94,39 +96,192 @@
 </body>
 </html>
 
+<div class="modal" role="dialog" id="finalize_modal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Are you sure you want to hire the following applicant(s)?</h4>
+            </div>
+            <div class="modal-body">
+                <form action="<?php echo base_url('client/save_shortlist'); ?>" method="post" class="form-horizontal">
+                <input type="hidden" name="client_id">
+                <input type="hidden" name="order_id">
+                <ul id="short_list">
+                    
+                </ul>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <button type="submit" class="btn btn-primary">Continue</button>
+            </div>
+        </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal" role="dialog" id="match-details-modal">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Auto Job Match Details</h4>
+            </div>
+            <div class="modal-body">
+                <form action="" method="post" class="form-horizontal">
+                    <div class="panel-heading">
+                    </div>
+                    <table class="table col-lg-12 custom-table-large table-striped">
+                        <tr>
+                            <td colspan="2"><b><center>QUALIFICATIONS</center></b></td>
+                            <td colspan="2"><b><center>SKILLS</center></b></td>
+                        </tr>
+                        <tr>
+                            <td><span class="glyphicon glyphicon-ok"></span>Matched</td>
+                            <td><span class="glyphicon glyphicon-remove"></span>Did Not Matched</td>
+                            <td><span class="glyphicon glyphicon-ok"></span>Matched</td>
+                            <td><span class="glyphicon glyphicon-remove"></span>Did Not Matched</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <ul id="match_quali">
+                                    
+                                </ul>
+                            </td>
+                            <td>
+                                <ul id="nonmatch_quali">
+                                </ul>
+                            </td>
+                            <td>
+                                <ul id="match_skill">
+                                </ul>
+                            </td>
+                            <td>
+                                <ul id="nonmatch_skill">
+                                </ul>
+                            </td>
+                        </tr>
+                    </table>
+                    <div class="panel-footer">
+                        <text>Total number of items: &nbsp;<text id="total"></text></text><br>
+                        <text>Total number of matched items: &nbsp;<text id="matched"></text></text><br>
+                        <text>Auto Match Result: <text id="result"></text></text>
+                    </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <button type="submit" class="btn btn-primary">Continue</button>
+            </div>
+        </form> 
+    </div>
+    </div>
+</div>
+
 <script type="text/javascript">
     $(document).ready (function () {
       $("#choose_shortlist, #send_shortlist").dataTable();
     });
 
+    function show_modal_match(id) {
+
+        var url = "<?php echo base_url(); ?>client/get_match_details/";
+        var oid = $("#joborder_id").val();
+        $.ajax({
+
+            dataType: "JSON",
+            url: url + id + "/" + oid,
+            type: "GET",
+            success: function(data) {
+
+                var arr = [];
+                var temp;
+                $.each(data['match_quali'], function(index, value){
+
+                    temp = "<li>";
+                    temp += value;
+                    temp += "</li>";
+
+                    arr.push(temp);
+                });
+
+                $("#match_quali").html(arr.join(''));
+
+                arr = [];
+                temp = "";
+                $.each(data['nonmatch_quali'], function(index, value){
+
+                    temp = "<li>";
+                    temp += value;
+                    temp += "</li>";
+
+                    arr.push(temp);
+                });
+
+                $("#nonmatch_quali").html(arr.join(''));
+
+                arr = [];
+                temp = "";
+                $.each(data['match_skill'], function(index, value){
+
+                    temp = "<li>";
+                    temp += value;
+                    temp += "</li>";
+
+                    arr.push(temp);
+                });
+
+                $("#match_skill").html(arr.join(''));
+
+                arr = [];
+                temp = "";
+                $.each(data['nonmatch_skill'], function(index, value){
+
+                    temp = "<li>";
+                    temp += value;
+                    temp += "</li>";
+
+                    arr.push(temp);
+                });
+
+                $("#nonmatch_skill").html(arr.join(''));
+
+                $("#total").html(data['total']);
+                $("#matched").html(data['matched']);
+
+                var percentage = ((data['matched'] / data['total']) * 100).toFixed(2);
+                $("#result").html(percentage+"%");
+            }
+        });
+
+        $("#match-details-modal").modal("show");
+    }
+
     function client_select(id) {
 
-        var i = left.map(x => x.id).indexOf(id);
-        console.log(i);
-        // temp = {
-        //     id: left[i].id,
-        //     gender: left[i].gender,
-        //     name: left[i].name,
-        //     match: left[i].match
-        // }
-        // right.push(temp);
-        // left.splice(i, 1);
+        var i = left.map(x => x.id).indexOf(parseInt(id));
+        temp = {
+            id: left[i].id,
+            gender: left[i].gender,
+            name: left[i].name,
+            match: left[i].match
+        }
+        right.push(temp);
+        left.splice(i, 1);
 
-        // final_id.push(id);
+        final_id.push(id);
         
-        // repopulate_right_table();
-        // repopulate_left_table();
+        repopulate_right_table();
+        repopulate_left_table();
     }
 
     function client_unselect(id) {
 
-        var i = right.map(x => x.id).indexOf(id);
-        
+        var i = right.map(x => x.id).indexOf(parseInt(id));
         temp = {
             id: right[i].id,
             gender: right[i].gender,
             name: right[i].name,
-            match: left[i].match
+            match: right[i].match
         }
 
         left.push(temp);
@@ -164,13 +319,16 @@
                 string_tr += "</button>";
                 string_tr += "</td>";
                 string_tr += "<td class='sub-label'>";
+                string_tr += "<a onclick=\"window.location.href='../../<?php base_url(); ?>client/applicant_full_details/"+ value.id + "'\">";
                 string_tr += value.name;
                 string_tr += "</td>";
                 string_tr += "<td class='sub-label'>";
                 string_tr += value.gender;
                 string_tr += "</td>";
                 string_tr += "<td class='sub-label'>";
+                string_tr += "<a id=" + value.id + " onclick=\"show_modal_match(this.id)\">";
                 string_tr += value.match + "%";
+                string_tr += "</a>";
                 string_tr += "</td>";
                 string_tr += "</tr>";
                 populate.push(string_tr);
@@ -198,13 +356,17 @@
                 //left.push(value.id);
                 string_tr = "<tr>";
                 string_tr += "<td class='sub-label'>";
+                string_tr += "<a onclick=\"window.location.href='../../<?php base_url(); ?>client/applicant_full_details/"+ value.id + "'\">";
                 string_tr += value.name;
+                string_tr += "</a>";
                 string_tr += "</td>";
                 string_tr += "<td class='sub-label'>";
                 string_tr += value.gender;
                 string_tr += "</td>";
                 string_tr += "<td class='sub-label'>";
+                string_tr += "<a id=" + value.id + " onclick=\"show_modal_match(this.id)\">";
                 string_tr += value.match + "%";
+                string_tr += "</a>";
                 string_tr += "</td>";
                 string_tr += "<td>";
                 string_tr += "<button type='button' class='btn-success' id ="+ value.id +" onclick='client_select(this.id)'>";
@@ -217,6 +379,29 @@
             });
 
             $("#pop_left").html(populate.join(''));
+        }
+    }
+
+    function final() {
+
+        if(right.length == 0)
+            bootbox.alert("No applicants selected!");
+
+        else {
+
+            var populate = [];
+            var string_tr = "";
+            $.each(right, function(index, value) {
+
+                string_tr = "<li class='larger-label'>";
+                string_tr += "<input type='hidden' name='applist[]' value='" + value.id + "'>";
+                string_tr += value.name;
+                string_tr += "</li>";
+                populate.push(string_tr);
+            });
+
+            $("#short_list").html(populate.join(''));
+            $("#finalize_modal").modal("show");
         }
     }
 </script>

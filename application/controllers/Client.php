@@ -557,5 +557,37 @@
             }
             return $status;
         }
+
+        public function submit_replace() {
+
+            $staff = $this->input->post("staff");
+            $reason = $this->input->post("reason");
+            $date_request = new DateTime(NULL, new DateTimeZone("Asia/Manila"));
+            foreach($staff as $st){
+
+                $this->Admin_model->update_staff_stat($st, 1);
+
+                $data = array(
+                    "staff_id" => $st,
+                    "client_id" => $this->session->userdata("id"),
+                    "reason" => $reason,
+                    "date_request" => $date_request->format("Y-m-d H:i:s"),
+                    "status" => 0
+                );
+
+                $this->Admin_model->insert_replace_history($data);
+            }
+
+            $this->session->set_flashdata("success_notification_replace", "Congratulations! You have successfully sent your replacement request!");
+
+            redirect(base_url()."client/staff");
+        }
+
+        public function get_match_details($app_id, $order_id) {
+
+            $data = $this->compute_job_match($order_id, $app_id);
+            echo json_encode($data);
+        }
+
 	}
 ?>

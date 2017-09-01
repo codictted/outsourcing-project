@@ -13,6 +13,33 @@
 			$this->db->insert("client", $data);
 		}
 
+		public function check_select_business_nature($business_nature_val) {
+			
+	        $query = $this->db->get_where('business_nature', array('name' => $business_nature_val));
+
+	        $count = $query->num_rows(); 
+
+	        if ($count === 0) {
+	        	$data = array(
+	                'name' => $business_nature_val,
+	                'status' => 0
+	            );
+	        	$this->db->insert("business_nature", $data);
+	        	return $this->db->insert_id();
+	        }
+	        else{
+		        $this->db->select("id");
+		        $this->db->from("business_nature");
+		        $this->db->where("name", $business_nature_val);
+		        $getID = $this->db->get();
+
+		        foreach ($getID->result() as $row){
+				    return $row->id;
+				}
+	        }
+
+		}
+
 		public function get_client_list() {
 
 			$this->db->select("client.*, business_nature.name");
@@ -104,6 +131,15 @@
 			return $query->row();
 		}
 
+		public function get_joborder_post($id) {
+
+			$this->db->select("*");
+			$this->db->from("job_order_post");
+			$this->db->where("order_id", $id);
+			$query = $this->db->get();
+
+			return $query->result();
+		}
 		public function get_job_order_skills($id) {
 
 			$this->db->select("job_order_skill.*, skill.name as sk");
@@ -178,7 +214,7 @@
 
 		public function get_staff_list($id) {
 
-			$query = $this->db->query("SELECT st.*, app.first_name, app.last_name, app.birthdate, app.gender, jpos.name AS jname, st.*, cl.comp_name, cl.full_name FROM staff AS st JOIN applicant AS app ON st.applicant_id = app.id JOIN client AS cl ON cl.id = st.client_id JOIN job_position AS jpos ON app.job_id = jpos.id WHERE st.client_id = $id");
+			$query = $this->db->query("SELECT st.*, app.first_name, app.last_name, app.birthdate, app.gender, jpos.name AS jname, st.*, cl.comp_name, cl.full_name FROM staff AS st JOIN applicant AS app ON st.applicant_id = app.id JOIN client AS cl ON cl.id = st.client_id JOIN job_position AS jpos ON app.job_id = jpos.id WHERE st.client_id = $id AND st.status != 2");
 
 			return $query->result();
 		}

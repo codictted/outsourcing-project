@@ -75,10 +75,6 @@
                                     <td><?php echo $processed_data['height']; ?></td>
                                 </tr>
                                 <tr>
-                                    <td>Weight:</td>
-                                    <td><?php echo $processed_data['weight']; ?></td>
-                                </tr>
-                                <tr>
                                     <td>Must be Single:</td>
                                     <td><?php echo $processed_data['single']; ?></td>
                                 </tr>
@@ -169,11 +165,6 @@
                                 <td><center><input type="checkbox" name="on[]" value="height" checked></center></td>
                                 <td><b>Height: </b></td>
                                 <td><?php echo $processed_data['height']; ?></td>
-                            </tr>
-                            <tr>
-                                <td><center><input type="checkbox" name="on[]" value="weight" checked></center></td>
-                                <td><b>Weight: </b></td>
-                                <td><?php echo $processed_data['weight']; ?></td>
                             </tr>
                             <tr>
                                 <td><center><input type="checkbox" name="on[]" value="urgent" checked></center></td>

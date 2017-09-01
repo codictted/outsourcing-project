@@ -299,5 +299,11 @@
 			}
 			return $order_list;
 		}
+
+		public function staff_per_order($id) {
+
+			$query = $this->db->query("SELECT staff.*, shortlist.*, applicant.* FROM staff JOIN applicant ON staff.applicant_id = applicant.id JOIN shortlist ON applicant.id = shortlist.applicant_id WHERE shortlist.order_id = $id AND shortlist.status = 1");
+			return $query->result();
+		}
 	}
 ?>

@@ -10,6 +10,10 @@
             $civil = "Widow";
         $tel = is_null($applicant_det->tel_num) || $applicant_det->tel_num == "" ?
                 "N/A" : $applicant_det->tel_num;
+
+        $birthdate = new DateTime($applicant_det->birthdate);
+        $today = new DateTime('today');
+        $app_age = $birthdate->diff($today)->y;
     ?>
     <div class="admin-container slide-effect">
         <form>
@@ -55,7 +59,7 @@
                                 </tr>
                                 <tr>
                                     <td colspan="2"><b>Birthdate:</b></td>
-                                    <td><i><?php echo $applicant_det->birthdate; ?> (19y/o)</i></td>
+                                    <td><i><?php echo $applicant_det->birthdate; ?> (<?php echo $app_age; ?>y/o)</i></td>
                                     <td colspan="2"><b>Nationality:</b></td>
                                     <td><i>Filipino</i></td>
                                 </tr>

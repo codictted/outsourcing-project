@@ -5,28 +5,14 @@
                 <div class="col-lg-12">
                     <div class="alert alert-info alert-dismissable small">
                         <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-                        <i class="glyphicon glyphicon-info-sign"></i><b>REMINDER:</b> <p class="alert-p">You can always filter the list by your own specifications.</p>
+                        <i class="glyphicon glyphicon-info-sign"></i><b>REMINDER:</b> <p class="alert-p">View your list of job orders and track their status.</p>
                     </div>
                 </div>
                 <div class="form-group col-lg-12">
-                    <label class="form-label col-lg-1">Filter:</label>
+                    <label class="form-label col-lg-1"></label>
                     <div class="col-lg-3">
-                        <select class="form-control">
-                            <option selected disabled>--Choose--</option>
-                            <option value="0">Status</option>
-                            <option value="0">Client</option>
-                            <option value="0">Job Position</option>
-                            <option value="0">Date</option>
-                        </select>
                     </div>
                     <div class="col-lg-3">
-                        <select class="form-control">
-                            <option selected disabled>--Choose--</option>
-                            <option value="0">Status</option>
-                            <option value="0">Client</option>
-                            <option value="0">Job Position</option>
-                            <option value="0">Date</option>
-                        </select>
                     </div>
                     <div class="col-lg-3 pull-right">                    
                         <button type="button" class="btn btn-primary col-lg-12" onclick="window.location.href='<?php echo base_url(); ?>client/client_job_order/'"><span class="glyphicon glyphicon-plus"></span>
@@ -47,10 +33,29 @@
                 </thead>
                 <tbody>
                     <?php foreach($order as $jo) {
-                        if($jo->status == 1)
-                            $stat = "On Going";
-                        else
-                            $stat = "Others";?>
+                        
+                        switch ($jo->status) {
+                            case 0:
+                                $stat = "New";
+                                break;
+                            
+                            case 1:
+                                $stat = "Ongoing";
+                                break;
+
+                            case 2:
+                                $stat = "Completed";
+                                break;
+
+                            case 3:
+                                $stat = "Terminated";
+                                break;
+
+                            case 4:
+                                $stat = "Rejected";
+                                break;
+                        }
+                    ?>
                     <tr id="<?php echo $jo->order_id; ?>" onclick="show_det(this.id)">
                         <td><?php echo $stat; ?></td>
                         <td><?php echo $jo->jname; ?></td>
@@ -100,10 +105,6 @@
                         <td id="height"></td>
                     </tr>
                     <tr>
-                        <td><b>Weight: </b></td>
-                        <td id="weight"></td>
-                    </tr>
-                    <tr>
                         <td><b>Urgent: </b></td>
                         <td id="urgent"></td>
                     </tr>
@@ -147,12 +148,7 @@
             type: "GET",
             success: function(data) {
 
-                var slot = data.total_openings == null || data.total_openings == "" ? 
-                    "" : data.total_openings;
-                var male = data.num_male == null || data.num_male == "" ?
-                    "" : " ("+ data.num_male + " Male, ";
-                var female = data.num_female == null || data.num_female == "" ?
-                    "" : data.num_female + " Female)";
+                var slot = data.total_openings;
 
                 if((data.min_age == null || data.min_age == "") && (data.max_age == null || data.max_age == ""))
                     var age = "No Age Preferrence";
@@ -170,18 +166,16 @@
                             "No Preferrence" : data.course_name;
                 var civil = data.single == 1 ? "Must be single" : "No Preferrence";
                 var height = data.height == null ? "No Preferrence" : data.height;
-                var weight = data.weight == null ? "No Preferrence" : data.weight;
                 var urgent = data.urgent == 0 ? "Yes" : "No";
 
 
                 $("#job_name").html(data.jname);
-                $("#slot").html(slot + male + female);
+                $("#slot").html(slot);
                 $("#age").html(age);
                 $("#educ").html(educ);
                 $("#course").html(course);
                 $("#civil").html(civil);
                 $("#height").html(height);
-                $("#weight").html(weight);
                 $("#urgent").html(urgent);
                 $("#desc").html(data.description);
 

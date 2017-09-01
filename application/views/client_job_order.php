@@ -114,7 +114,7 @@
                 </div>
                 <div class="form-group">
                     <label class="col-lg-2 control-label form-label">
-                        Gender:
+                        <text class="required">*</text> Gender:
                     </label>
                     <div class="col-lg-2">
                         <input type="radio" name="gender_pref" value="2"> All Male<br>
@@ -125,7 +125,7 @@
                         <span class="indiv-error">
                         <?php echo form_error("slot");?></span>
                         <input type="number" class="form-control" name="slot">
-                        <span class="help-block">Number of Openings</span>
+                        <span class="help-block"><text class="required">*</text>Number of Openings</span>
                     </div>
                     <div class="col-lg-2">
                         <input type="number" class="form-control" placeholder="Height" name="height">
@@ -142,7 +142,7 @@
                 </div>
                 <div class="form-group">
                     <label class="col-lg-2 control-label form-label">
-                        <text class="required">*</text> Benefits:
+                        Benefits:
                     </label>
                     <div class="col-lg-10">
                         <select class="form-control" id="benefit-multi" multiple name="benefits[]">

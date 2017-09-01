@@ -1,48 +1,65 @@
-<div class="client-container fade-effect">
-    <form class="form-horizontal">
-        <fieldset>
-            <legend>Applicant Shortlist</legend>
-            <div class="col-lg-12">
-                <div class="alert alert-info alert-dismissable small">
-                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-                    <i class="glyphicon glyphicon-info-sign"></i><b>REMINDER:</b> <p class="alert-p">The data displayed by row is by job order. You will see the list of shortlisted applicants when you click the button.</p>
+    <div class="client-container fade-effect">
+        <form class="form-horizontal">
+            <fieldset>
+                <legend>Track your Short Listed Applicants</legend>
+                <div class="col-lg-12">
+                    <div class="alert alert-info alert-dismissable small">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                        <i class="glyphicon glyphicon-info-sign"></i><b>REMINDER:</b> <p class="alert-p">Track your applicant's status after you have selected them in short list.</p>
+                    </div>
                 </div>
-            </div>
-        </fieldset>
-        <div class="form-group col-lg-12">
-            <label class="form-label col-lg-1"></label>
-            <div class="col-lg-3">
-            </div>
-            <div class="col-lg-3">
-            </div>
-        </div>
-        <br><br>
+            </fieldset>
+        </form>
         <hr>
         <div class="col-lg-12">
-            <table id="shortlist-table" class="custom-table-large table-hover">
+            <table id="orders-table" class="custom-table-large table-hover">
                 <thead>
                     <th>Status</th>
+                    <th>Full Name</th>
                     <th>Job Position</th>
-                    <th>Date Shortlisted</th>
-                    <th>Action</th>
+                    <th>Shortlisted Date</th>
+                    <th>Expected Deployment Date</th>
                 </thead>
                 <tbody>
-                    <?php foreach($shortlist as $sh) { ?>
-                    <tr id="<?php echo $sh->order_id; ?>" onclick="show_det(this.id)">
-                    	<td>New</td>
-                    	<td><?php echo $sh->jname ;?></td>
-                    	<td><?php echo $sh->date_shortlist ;?></td>
-                    	<td><button type="button" class="btn btn-default btn-sm table-btn" onclick="window.location.href='<?php echo base_url(); ?>client/shortlist_full/<?php echo $sh->order_id; ?>'"><span class="glyphicon glyphicon-list"></span></button></td>
+                    <?php foreach($app_list as $app) {
+
+                        switch ($app->ap_stat) {
+                            case 8:
+                                $status = "Selected";
+                                break;
+                            
+                            case 9:
+                                $status = "Job Offered";
+                                break;
+
+                            case 10:
+                                $status = "Job Offer Rejected";
+                                break;
+
+                            case 11:
+                                $status = "Passing of Requirements";
+                                break;
+
+                            case 12:
+                                $status = "For Endorsement";
+                                break;
+                        }
+                    ?>
+                    <tr id="<?php echo $app->apid ?>" onclick="show_det(this.id)">
+                        <td><?php echo $status; ?></td>
+                        <td><?php echo $app->first_name." ".$app->last_name; ?></td>
+                        <td><?php echo $app->jname; ?></td>
+                        <td><?php echo $app->date_shortlist; ?></td>
+                        <td><?php echo $app->deployment_date; ?></td>
+                        <td><button class="btn btn-default btn-sm table-btn" onclick="alert('Accepted or Not')"><span class="glyphicon glyphicon-list"></span></button></td>
                     </tr>
                     <?php } ?>
                 </tbody>
             </table>
         </div>
-    </form>
-</div>
+    </div>
 </body>
 </html>
-
 <div class="modal" role="dialog" id="order_details">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -52,6 +69,7 @@
             </div>
             <div class="modal-body">
                 <label class="sub-label" id="job_name"></label><br>
+                <text class="pull-right">(0) Hired Staff</text><hr>
                 <table class="details">
                     <tr>
                         <td><b>Total Slot: </b></td>
@@ -76,6 +94,14 @@
                     <tr>
                         <td><b>Height: </b></td>
                         <td id="height"></td>
+                    </tr>
+                    <tr>
+                        <td><b>Weight: </b></td>
+                        <td id="weight"></td>
+                    </tr>
+                    <tr>
+                        <td><b>Urgent: </b></td>
+                        <td id="urgent"></td>
                     </tr>
                     <tr>
                         <td><b>Skills: </b></td>
@@ -105,7 +131,7 @@
     
     $(function() {
 
-        $("#shortlist-table").dataTable();
+        $("#orders-table").dataTable();
     });
 
     function show_det(id) {
@@ -119,6 +145,10 @@
 
                 var slot = data.total_openings == null || data.total_openings == "" ? 
                     "" : data.total_openings;
+                var male = data.num_male == null || data.num_male == "" ?
+                    "" : " ("+ data.num_male + " Male, ";
+                var female = data.num_female == null || data.num_female == "" ?
+                    "" : data.num_female + " Female)";
 
                 if((data.min_age == null || data.min_age == "") && (data.max_age == null || data.max_age == ""))
                     var age = "No Age Preferrence";
@@ -136,15 +166,19 @@
                             "No Preferrence" : data.course_name;
                 var civil = data.single == 1 ? "Must be single" : "No Preferrence";
                 var height = data.height == null ? "No Preferrence" : data.height;
+                var weight = data.weight == null ? "No Preferrence" : data.weight;
+                var urgent = data.urgent == 0 ? "Yes" : "No";
 
 
                 $("#job_name").html(data.jname);
-                $("#slot").html(slot);
+                $("#slot").html(slot + male + female);
                 $("#age").html(age);
                 $("#educ").html(educ);
                 $("#course").html(course);
                 $("#civil").html(civil);
                 $("#height").html(height);
+                $("#weight").html(weight);
+                $("#urgent").html(urgent);
                 $("#desc").html(data.description);
 
             }

@@ -91,24 +91,6 @@
 
 <script type="text/javascript">
 
-    /*$('#sub').click(function(){
-        var ID = <?php echo $job[0]->id;?>;
-        var url = "<?php echo base_url()?>maintenance/delete_job_position/";
-        var dataString = "job_id=" + ID;
-            $.ajax({
-                dataType: "JSON",
-                url: url,
-                type: "POST",
-                data: dataString,
-                success: function(data) {
-                
-                    data.success ? 
-                    window.location.href="<?php echo base_url()?>maintenance/job_position/" :
-                    location.reload();
-                }   
-            }); 
-    });*/
-
     $('#cancel').click(function(){
         window.location.href="<?php echo base_url();?>maintenance/job_position/";
     });

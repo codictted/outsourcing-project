@@ -229,4 +229,9 @@ $('#application-form').validate({
         }
   });
 
+<<<<<<< HEAD
+
+  
+=======
+>>>>>>> a47c7710fdd4f4c9b4b31be1724f9ab009fcc906
 });

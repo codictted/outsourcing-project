@@ -30,6 +30,7 @@
             $data['education'] = $this->Dropdown_model->get_education();
             $data["course"] = $this->get_course();
             $data["spoken"] = $this->Dropdown_model->get_spoken_lang();
+            $data["religion"] = $this->Dropdown_model->get_religion();
             $data["title"] = "Application Form";
             $this->load->view("header", $data);
             $this->load->view("nav");
@@ -142,6 +143,12 @@
             $this->form_validation->set_rules(
                 "religion",
                 "Religion",
+                "required"
+            );
+
+            $this->form_validation->set_rules(
+                "spoken_lang[]",
+                "Spoken Language",
                 "required"
             );
 
@@ -352,6 +359,7 @@
                 $zip = $this->input->post("zip");
                 $bdate = $this->input->post("bdate");
                 $religion = $this->input->post("religion");
+            //    $spoken_language = $this->input->post("spoken_lang[]");
                 $bstreet = $this->input->post("bstreet");
                 $bcity = $this->input->post("bcity");
                 $bprovince = $this->input->post("bprovince");
@@ -367,6 +375,8 @@
                 $g_contact = $this->input->post("g_contact");
                 $status = 0;
                 $now = new DateTime(NULL, new DateTimeZone("Asia/Manila"));
+
+                $religion = $this->Maintenance_model->check_select_religion($religion);
 
                 $applicant_details = array(
                     "job_id" => $pos,

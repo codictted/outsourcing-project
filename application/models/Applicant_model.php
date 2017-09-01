@@ -31,14 +31,13 @@
 			$this->db->insert("applicant_seminar", $data);
 		}
 
-		public function insert_personality_exam($data) {
+		// public function insert_personality_exam($data) {
 
-			$this->db->insert_batch("applicant_personality", $data);
-		}
+		// 	$this->db->insert_batch("applicant_personality", $data);
+		// }
 
-		public function insert_essay_exam($data) {
-
-			$this->db->insert_batch("applicant_essay", $data);
+		public function insert_applicant_essay($data) {
+			$this->db->insert("applicant_essay", $data);
 		}
 
 		public function get_all() {
@@ -95,21 +94,21 @@
 			return $query->result();
 		}
 
-		public function get_personality($id) {
+		// public function get_personality($id) {
 
-			$this->db->select("applicant_personality.*, personality_exam.question");
-			$this->db->from("applicant_personality");
-			$this->db->join("personality_exam", "applicant_personality.question = personality_exam.id");
-			$this->db->where("applicant_id", $id);
-			$query = $this->db->get();
-			return $query->result();
-		}
+		// 	$this->db->select("applicant_personality.*, personality_exam.question");
+		// 	$this->db->from("applicant_personality");
+		// 	$this->db->join("personality_exam", "applicant_personality.question = personality_exam.id");
+		// 	$this->db->where("applicant_id", $id);
+		// 	$query = $this->db->get();
+		// 	return $query->result();
+		// }
 
 		public function get_essay($id) {
 
-			$this->db->select("applicant_essay.*, essay_question.question");
+			$this->db->select("applicant_essay.*, essay_question.essay_question");
 			$this->db->from("applicant_essay");
-			$this->db->join("essay_question", "applicant_essay.question = essay_question.id");
+			$this->db->join("essay_question", "applicant_essay.question = essay_question.essay_question_id");
 			$this->db->where("applicant_id", $id);
 			$query = $this->db->get();
 			return $query->result();

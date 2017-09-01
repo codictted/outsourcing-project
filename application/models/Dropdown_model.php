@@ -52,10 +52,10 @@
 			return $query->result();
 		}
 
-		public function get_education() {
-
-			$this->db->from("education");
-			$this->db->where("status", 0);
+		public function get_educ_attain() {
+			$this->db->select("*");
+			$this->db->from("educ_attainment");
+			$this->db->where("flag = 0");
 			$query = $this->db->get();
 			return $query->result();
 		}
@@ -97,6 +97,15 @@
 
 			$this->db->from("spoken_languages");
 			$this->db->where("status", 0);
+			$query = $this->db->get();
+			return $query->result();
+		}
+
+		//essay questions
+		public function get_essayq() {
+			$this->db->select("*");
+			$this->db->from("essay_question");
+			$this->db->where("flag = 0");
 			$query = $this->db->get();
 			return $query->result();
 		}

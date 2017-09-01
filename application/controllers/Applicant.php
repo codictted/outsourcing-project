@@ -26,11 +26,12 @@
         public function index() {
 
             $data["job_cat"] = $this->get_job_cat();
-            $data["set"] = $this->get_skill_set();
-            $data['education'] = $this->Dropdown_model->get_education();
-            $data["course"] = $this->get_course();
-            $data["spoken"] = $this->Dropdown_model->get_spoken_lang();
-            $data["title"] = "Application Form";
+            $data["set"]     = $this->get_skill_set();
+            $data['edat']    = $this->Dropdown_model->get_educ_attain();
+            $data["course"]  = $this->get_course();
+            // $data["spoken"]  = $this->Dropdown_model->get_spoken_lang();
+            $data["essayq"]  = $this->Dropdown_model->get_essayq();
+            $data["title"]   = "Application Form";
             $this->load->view("header", $data);
             $this->load->view("nav");
             $this->load->view("application_form", $data);
@@ -146,26 +147,9 @@
             );
 
             $this->form_validation->set_rules(
-                "bstreet",
-                "Street Address",
-                "required|strip_tags|xss_clean"
-            );
-
-            $this->form_validation->set_rules(
-                "bcity",
-                "City",
-                "required|strip_tags|xss_clean"
-            );
-
-            $this->form_validation->set_rules(
-                "bprovince",
-                "Province",
-                "required|strip_tags|xss_clean"
-            );
-            $this->form_validation->set_rules(
-                "bzip",
-                "Zip Code",
-                "numeric|exact_length[4]|strip_tags|xss_clean"
+                "birthplce",
+                "Birthplace",
+                "strip_tags|xss_clean"
             );
 
             $this->form_validation->set_rules(
@@ -182,13 +166,13 @@
 
             $this->form_validation->set_rules(
                 "d_name",
-                "Descendant's Name",
+                "Child's Name",
                 "strip_tags|xss_clean"
             );
 
             $this->form_validation->set_rules(
                 "guardian",
-                "Guardian's Name",
+                "Emergency Contact",
                 "required|strip_tags|xss_clean"
             );
 
@@ -240,98 +224,8 @@
                 "strip_tags|xss_clean"
             );
 
-            $this->form_validation->set_rules(
-                "answer_1",
-                "Question 1",
-                "required",
-                array('required' => 'Please answer question number 1')
-            );
 
-            $this->form_validation->set_rules(
-                "answer_2",
-                "Question 2",
-                "required",
-                array('required' => 'Please answer question number 2')
-            );
-
-            $this->form_validation->set_rules(
-                "answer_3",
-                "Question 3",
-                "required",
-                array('required' => 'Please answer question number 3')
-            );
-
-            $this->form_validation->set_rules(
-                "answer_4",
-                "Question 4",
-                "required",
-                array('required' => 'Please answer question number 4')
-            );
-
-            $this->form_validation->set_rules(
-                "answer_5",
-                "Question 5",
-                "required",
-                array('required' => 'Please answer question number 5')
-            );
-
-             $this->form_validation->set_rules(
-                "IIanswer_1",
-                "Question 1",
-                "required",
-                array('required' => 'Please answer question number 1')
-            );
-
-            $this->form_validation->set_rules(
-                "IIanswer_2",
-                "Question 2",
-                "required",
-                array('required' => 'Please answer question number 2')
-            );
-
-            $this->form_validation->set_rules(
-                "IIanswer_3",
-                "Question 3",
-                "required",
-                array('required' => 'Please answer question number 3')
-            );
-
-            $this->form_validation->set_rules(
-                "IIanswer_4",
-                "Question 4",
-                "required",
-                array('required' => 'Please answer question number 4')
-            );
-
-            $this->form_validation->set_rules(
-                "IIanswer_5",
-                "Question 5",
-                "required",
-                array('required' => 'Please answer question number 5')
-            );
-
-            $this->form_validation->set_rules(
-                "essay_answer_1",
-                "Essay 1",
-                "required|strip_tags|xss_clean",
-                array('required' => 'Please provide atleast a short answer')
-            );
-
-            $this->form_validation->set_rules(
-                "essay_answer_2",
-                "Essay 2",
-                "required|strip_tags|xss_clean",
-                array('required' => 'Please provide atleast a short answer')
-            );
-
-             $this->form_validation->set_rules(
-                "essay_answer_3",
-                "Essay 3",
-                "required|strip_tags|xss_clean",
-                array('required' => 'Please provide atleast a short answer')
-            );
-
-             if($this->form_validation->run() !== FALSE) {
+            if($this->form_validation->run() !== FALSE) {
 
                 //applicant details
                 $pos = $this->input->post("job_pos");
@@ -352,10 +246,7 @@
                 $zip = $this->input->post("zip");
                 $bdate = $this->input->post("bdate");
                 $religion = $this->input->post("religion");
-                $bstreet = $this->input->post("bstreet");
-                $bcity = $this->input->post("bcity");
-                $bprovince = $this->input->post("bprovince");
-                $bzip = $this->input->post("bzip");
+                $birthplace = $this->input->post("birthplace");
                 $educ = $this->input->post("education");
                 $year = $this->input->post("level");
                 $school = $this->input->post("school");
@@ -387,10 +278,7 @@
                     "zip" => $zip,
                     "birthdate" => $bdate,
                     "religion" => $religion,
-                    "birth_address" => $bstreet,
-                    "birth_city" => $bcity,
-                    "birth_province" => $bprovince,
-                    "birth_zip" => $bzip,
+                    "birthplace" => $birthplace,
                     "education" => $educ,
                     "year_level" => $year,
                     "school" => $school,
@@ -405,29 +293,28 @@
 
                 );
 
-                //personality exam and essay
-                $answer1 = $this->input->post("answer_1");
-                $answer2 = $this->input->post("answer_2");
-                $answer3 = $this->input->post("answer_3");
-                $answer4 = $this->input->post("answer_4");
-                $answer5 = $this->input->post("answer_5");
-                $IIanswer1 = $this->input->post("IIanswer_1");
-                $IIanswer2 = $this->input->post("IIanswer_2");
-                $IIanswer3 = $this->input->post("IIanswer_3");
-                $IIanswer4 = $this->input->post("IIanswer_4");
-                $IIanswer5 = $this->input->post("IIanswer_5");
-                $eanswer1 = $this->input->post("essay_answer_1");
-                $eanswer2 = $this->input->post("essay_answer_2");
-                $eanswer3 = $this->input->post("essay_answer_3");
-
                 $this->load->model("Applicant_model");
-
                 $id = $this->Applicant_model->insert_applicant($applicant_details);
                 $app_id = $id[0]->id;
 
+                $eaid    = $this->input->post("essay_id");
+                $eanswer = $this->input->post("essay_answer");
+                $index   = 0;
+                foreach ($eanswer as $ea) {
+                    $data = array (
+                        "applicant_id" => $app_id,
+                        "question" => $eaid[$index],
+                        "answer"   => $ea
+                    );
+
+                    $this->Applicant_model->insert_applicant_essay($data);
+                    $index++;
+                }
+
+
                 //insert descendants
                 $descendants = $this->input->post("d_name");
-                $d_gender = $this->input->post("d_gender");
+                //$d_gender = $this->input->post("d_gender");
                 $d_date = $this->input->post("d_date");
                 $counter = count($descendants);
                 if($counter > 0  && ($descendants[0] != "")) {
@@ -435,7 +322,7 @@
                         $data = array(
                             "applicant_id" => $app_id,
                             "name" => $descendants[$i],
-                            "gender" => $d_gender[$i],
+                            //"gender" => $d_gender[$i],
                             "bdate" =>$d_date[$i]
                         );
 
@@ -506,84 +393,6 @@
                     }
                 }
 
-                $personality_exam = array(
-
-                    array(
-                        "applicant_id" => $app_id,
-                        "question" => 1,
-                        "answer" => $answer1
-                    ),
-                    array(
-                        "applicant_id" => $app_id,
-                        "question" => 2,
-                        "answer" => $answer2
-                    ),
-                    array(
-                        "applicant_id" => $app_id,
-                        "question" => 3,
-                        "answer" => $answer3
-                    ),
-                    array(
-                        "applicant_id" => $app_id,
-                        "question" => 4,
-                        "answer" => $answer4
-                    ),
-                    array(
-                        "applicant_id" => $app_id,
-                        "question" => 5,
-                        "answer" => $answer5
-                    ),
-                    array(
-                        "applicant_id" => $app_id,
-                        "question" => 6,
-                        "answer" => $IIanswer1
-                    ),
-                    array(
-                        "applicant_id" => $app_id,
-                        "question" => 7,
-                        "answer" => $IIanswer2
-                    ),
-                    array(
-                        "applicant_id" => $app_id,
-                        "question" => 8,
-                        "answer" => $IIanswer3
-                    ),
-                    array(
-                        "applicant_id" => $app_id,
-                        "question" => 9,
-                        "answer" => $IIanswer4
-                    ),
-                    array(
-                        "applicant_id" => $app_id,
-                        "question" => 10,
-                        "answer" => $IIanswer5
-                    )
-                );
-
-                $essay = array(
-
-                    array(
-                        "applicant_id" => $app_id,
-                        "question" => 1,
-                        "answer" => $eanswer1
-                    ),
-                    array(
-                        "applicant_id" => $app_id,
-                        "question" => 2,
-                        "answer" => $eanswer2
-                    ),
-                    array(
-                        "applicant_id" => $app_id,
-                        "question" => 3,
-                        "answer" => $eanswer3
-                    )
-
-                );
-
-                $this->Applicant_model->insert_personality_exam($personality_exam);
-                $this->Applicant_model->insert_essay_exam($essay);
-
-
                 $this->session->set_flashdata("success_notification_application", "Congratulations! You have successfully sent your application form! Please check your phone at all times. Thank you very much for choosing us.");
 
                 redirect(base_url()."applicant/");
@@ -598,12 +407,11 @@
             $this->load->view("nav");
             $this->load->view("application_form", $data);
         }
+
         public function info() {
+            phpinfo();
+        }
 
-        phpinfo();
     }
-
-    }
-
     
 ?>

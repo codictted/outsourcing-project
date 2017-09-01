@@ -78,13 +78,17 @@
                         Details:
                     </label>
                     <div class="col-lg-2">
-                        <select class="form-control" name="educ">
-                            <option selected disabled>Education</option>
-                            <?php foreach($education as $educ) { ?>
-                            <option value="<?php echo $educ->id; ?>"><?php echo $educ->education; ?></option>
-                            <?php } ?>
-                        </select>
-                        <span class="help-block">Highest Educational Attainment</span>
+                        <div class="error-form">
+                            <select class="form-control" name="education" id="education" required>
+                                <option selected disabled>--</option>
+                                <?php   
+                                    foreach ($edat as $ea) {
+                                        echo "<option value="."'$ea->educ_attaintment_id'".">"."$ea->educ_attainment"."</option>";
+                                    }
+                                ?>
+                            </select>
+                        </div>
+                        <span class="help-block"><text class="required">*</text>&nbsp;Highest Attainment</span>
                     </div>
                     <div class="col-lg-2">
                         <select class="form-control" name="course">

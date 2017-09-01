@@ -34,7 +34,6 @@
                             <li><a href="#personal_form">Personal Information</a></li>
                             <li><a href="#family_form">Family Background</a></li>
                             <li><a href="#work_form">Work Experience</a></li>
-                            <li><a href="#personality_form">Personality Test</a></li>
                             <li><a href="#essay_form">Essay Questions</a></li>
                         </ul><hr>
                     <div id="personal_form">
@@ -55,13 +54,13 @@
                                 </tr>
                                 <tr>
                                     <td colspan="2"><b>Birthdate:</b></td>
-                                    <td><i><?php echo $applicant_det->birthdate; ?> (19y/o)</i></td>
+                                    <td><i><?php echo $applicant_det->birthdate; ?></i></td>
                                     <td colspan="2"><b>Nationality:</b></td>
                                     <td><i>Filipino</i></td>
                                 </tr>
                                 <tr>
                                     <td colspan="2"><b>Birthplace:</b></td>
-                                    <td><i><?php echo $applicant_det->birth_address.' '.$applicant_det->birth_city.', '.$applicant_det->birth_province.' '.$applicant_det->birth_zip; ?></i></td>
+                                    <td><i><?php echo $applicant_det->birthplace; ?></i></td>
                                     <td colspan="2"><b>Religion:</b></td>
                                     <td><i>Roman Catholic</i></td>
                                 </tr>
@@ -79,11 +78,6 @@
                                 </tr>
                             </table>
                         </div>
-                        <div class="form-group">
-                            <div class="pull-right">
-                                <a href="#family_form" class="btn btn-primary"><span class="glyphicon glyphicon-arrow-right"></span></a>
-                            </div>
-                        </div>
                     </div>
                     <div id="family_form">
                         <div class="form-group">
@@ -94,34 +88,26 @@
                                     <td><i><?php echo $applicant_det->spouse; ?></i></td>
                                 </tr>
                                 <tr>
-                                    <td><b>Contact Person:</b></td>
+                                    <td><b>Emergency Contact Person:</b></td>
                                     <td><i><?php echo $applicant_det->guardian.', '.$applicant_det->relationship.' ('.$applicant_det->guardian_contact.')'; ?></i></td>
                                 </tr>
                                 <tr><td><b>-----</b></td></tr>
                                 <tr>
-                                    <td colspan="2"><b>Descendants:</b></td>
+                                    <td colspan="2"><b>Children:</b></td>
                                     <table class="custom-table col-lg-12">
                                         <tr>
                                             <td>Name</td>
-                                            <td>Gender</td>
                                             <td>Birthdate</td>
                                         </tr>
-                                        <?php foreach($applicant_family as $af) {
-                                            $gen = $af->gender == 1 ? "Male" : "Female";?>
+                                        <?php foreach($applicant_family as $af) {?>
                                         <tr>
                                             <td><?php echo $af->name; ?></td>
-                                            <td><?php echo $gen; ?></td>
-                                            <td><?php echo $af->bdate; ?> (17y/o)</td>
+                                            <td><?php echo $af->bdate; ?></td>
                                         </tr>
                                         <?php } ?>
                                     </table>
                                 </tr>
                             </table>
-                        </div>
-                        <div class="form-group">
-                            <div class="pull-right">
-                                <a href="#family_form" class="btn btn-primary"><span class="glyphicon glyphicon-arrow-right"></span></a>
-                            </div>
                         </div>
                     </div>
                     <div id="work_form">
@@ -178,65 +164,20 @@
                                 </tr>
                             </table>
                         </div>
-                        <div class="form-group">
-                            <div class="pull-right">
-                                <a href="#family_form" class="btn btn-primary"><span class="glyphicon glyphicon-arrow-right"></span></a>
-                            </div>
-                        </div>
                     </div>
-                    <div id="personality_form">
-                        <div class="form-group">
-                            <h4><center>Personality Test</center></h4>
-                            <table class="col-lg-12 custom-table">
-                                <tr>
-                                    <td></td>
-                                    <td><b>Question</b></td>
-                                    <td><b>Answer</b></td>
-                                </tr>
-                                <?php foreach($applicant_personality as $ap) {
-                                    if($ap->answer == 0)
-                                        $ans = "True";
-                                    elseif ($ap->answer == 1)
-                                        $ans = "False";
-                                    elseif ($ap->answer == 3)
-                                        $ans = "Strongly Disagree";
-                                    elseif ($ap->answer == 4)
-                                        $ans = "Disagree";
-                                    elseif ($ap->answer == 5)
-                                        $ans ="Unsure";
-                                    elseif ($ap->answer == 6)
-                                        $ans = "Agree"; 
-                                    elseif ($ap->answer == 7)
-                                        $ans = "Agree";
-                                    else
-                                        $ans = "N/A";?>
-                                <tr>
-                                    <td></td>
-                                    <td><?php echo $ap->question; ?></td>
-                                    <td><i><?php echo $ans; ?></i></td>
-                                </tr>
-                                <?php } ?>
-                            </table>
-                        </div>
-                        <div class="form-group">
-                            <div class="pull-right">
-                                <a href="#family_form" class="btn btn-primary"><span class="glyphicon glyphicon-arrow-right"></span></a>
-                            </div>
-                        </div>
-                    </div>
+            
                     <div id="essay_form">
                         <div class="form-group">
                             <h4><center>Essay Question</center></h4>
                             <table class="col-lg-12 custom-table">
                                 <?php foreach($applicant_essay as $ess) { ?>
                                 <tr>
-                                    <td><b><?php echo $ess->question; ?></b></td>
+                                    <td><b>Question: <?php echo $ess->essay_question; ?></b></td>
                                 </tr>
                                 <tr>
-                                    <td><i><br><?php echo $ess->answer; ?></td>
+                                    <td><i><br>Answer: <?php echo $ess->answer; ?></td>
                                 </tr>
-                                <tr><td>---</td></tr>
-                                <tr><td>---</td></tr>
+                                <tr><td>--------------</td></tr>
                                 <?php } ?>
                             </table>
                         </div>

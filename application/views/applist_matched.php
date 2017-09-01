@@ -119,8 +119,7 @@
                         </label>
                         <div class="col-lg-7">
                             <div class="error-form">
-                                <textarea rows="6" class="form-control" name="message" id="message"><?php echo $sms[0]->interview_message1." ".$applicant_det->first_name.". "
-                                    .$sms[0]->interview_message2.$jname[0]->name.". ".$sms[0]->interview_message3; ?></textarea>
+                                <textarea rows="6" class="form-control" name="message" id="message"><?php echo "Hi, ".$applicant_det->first_name."! This is OMS and we would like to inform you the schedule of your interview."; ?></textarea>
                             </div>
                         </div>
                     </div>

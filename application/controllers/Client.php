@@ -72,7 +72,7 @@
 
             if($this->session->userdata("usertype") == "2") {
                 $data['title'] = "New Job Order";
-                $data['education'] = $this->Dropdown_model->get_education();
+                $data['edat']    = $this->Dropdown_model->get_educ_attain();
                 $data['course'] = $this->Dropdown_model->get_course_list();
                 $data['job_cat'] = $this->Dropdown_model->get_job_category();
                 $data['set'] = $this->Dropdown_model->get_skill_set();

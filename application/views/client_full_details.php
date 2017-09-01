@@ -49,8 +49,14 @@
                                     <td><i></i></td>
                                 </tr>
                                 <tr>
-                                    <td colspan="2"><b>Full Name:</b></td>
+                                    <td colspan="2"><b>Contact Person:</b></td>
                                     <td><i><?php echo $client->full_name; ?></i></td>
+                                    <td colspan="2"><b></b></td>
+                                    <td><i></i></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2"><b>Job Position:</b></td>
+                                    <td><i><?php echo $client->job_position; ?></i></td>
                                     <td colspan="2"><b></b></td>
                                     <td><i></i></td>
                                 </tr>

@@ -66,15 +66,6 @@
 			return $query->result();
 		}
 
-		public function get_sms_message(){
-
-			$this->db->select("interview_message1, interview_message2, interview_message3");
-			$this->db->from("utilities");
-			$query = $this->db->get();
-
-			return $query->result();
-		}
-
 		public function insert_interview($data) {
 
 			$this->db->insert("applicant_intervew", $data);
@@ -238,6 +229,19 @@
 
 			$query = $this->db->query("SELECT sh.*, cl.comp_name, cl.full_name, jpos.name as jname FROM shortlist as sh JOIN job_order as jo ON jo.order_id = sh.order_id JOIN job_position as jpos ON jpos.id = jo.job_id JOIN client as cl ON cl.id = sh.client_id WHERE sh.applicant_id = $id AND sh.status = 0");
 			return $query->result();
+		}
+
+		//email
+		public function get_agency_email_details() {
+			$this->db->select("*");
+			$this->db->from("agency_default_email");
+			$query = $this->db->get();
+			return $query->result();
+		}
+
+		//insert essay answers
+		public function insert_essayq($data) {//insert
+			$this->db->insert("essay_question", $data);
 		}
 	}
 ?>

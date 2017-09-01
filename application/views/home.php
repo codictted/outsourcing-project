@@ -158,12 +158,23 @@
                 </div>
                 <div class="form-group">
                     <label for="name" class="col-lg-2 control-label form-label">
-                        <text class="required">*</text> Full Name:
+                        <text class="required">*</text> Contact Person:
                     </label>
                     <div class="col-lg-10">
                         <div class="error-form">
                             <span class="indiv-error"><?php echo form_error("contact_name"); ?></span>
                             <input type="text" id="contact_name" name="contact_name" class="form-control" placeholder="Your Full Name">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="name" class="col-lg-2 control-label form-label">
+                        <text class="required">*</text>Job Position:
+                    </label>
+                    <div class="col-lg-10">
+                        <div class="error-form">
+                            <span class="indiv-error"><?php echo form_error("job_position"); ?></span>
+                            <input type="text" id="job_position" name="job_position" class="form-control" placeholder="Your Job Position">
                         </div>
                     </div>
                 </div>

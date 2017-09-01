@@ -182,5 +182,13 @@
 
 			return $query->result();
 		}
+
+		public function get_educ_attain() {
+			$this->db->select("*");
+			$this->db->from("educ_attainment");
+			$this->db->where("flag = 0");
+			$query = $this->db->get();
+			return $query->result();
+		}
 	}
 ?>

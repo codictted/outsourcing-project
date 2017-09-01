@@ -52,7 +52,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="form-group">
+                    <div class="form-group">
                     <label for="company" class="col-lg-2 control-label form-label">
                         Company Name:
                     </label>
@@ -76,12 +76,23 @@
                 </div>
                 <div class="form-group">
                     <label for="name" class="col-lg-2 control-label form-label">
-                        <text class="required">*</text> Full Name:
+                        <text class="required">*</text> Contact Person:
                     </label>
                     <div class="col-lg-10">
                         <div class="error-form">
                             <span class="indiv-error"><?php echo form_error("contact_name"); ?></span>
-                            <input type="text" class="form-control" placeholder="Client's Full Name" id="contact_name" name="contact_name">
+                            <input type="text" class="form-control" placeholder="Contact Person's Full Name" id="contact_name" name="contact_name">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="name" class="col-lg-2 control-label form-label">
+                        <text class="required">*</text> Job Position:
+                    </label>
+                    <div class="col-lg-10">
+                        <div class="error-form">
+                            <span class="indiv-error"><?php echo form_error("job_position"); ?></span>
+                            <input type="text" class="form-control" placeholder="Contact Person's Job Position" id="job_position" name="job_position">
                         </div>
                     </div>
                 </div>
@@ -205,16 +216,19 @@
                     if(data.type == 1) {
                         $("#client_nature").prop("disabled", false);
                         $("#comp_name").prop("disabled", false);
+                        $("#job_position").prop("disabled", false);
                     }
                     else {
                         $("#client_nature").prop("disabled", true);
                         $("#comp_name").prop("disabled", true);
+                        $("#job_position").prop("disabled", true);
                     }
 
                     $('[name="contact_client_type"]').val(data.type);
                     $('[name="comp_name"]').val(cname);
                     $('[name="client_nature"]').val(data.business_nature);
                     $('[name="contact_name"]').val(data.full_name);
+                    $('[name="job_position"]').val(data.job_position);
                     $('[name="contact_email"]').val(data.email);
                     $('[name="contact_contact_number"]').val(data.mobile_no);
                     $('[name="contact_tel_number"]').val(data.tel_no);

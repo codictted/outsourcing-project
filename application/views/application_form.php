@@ -1,6 +1,6 @@
 <br><br><br><br>
 <div class="container">
-    <form class="form-horizontal" id="application-form" action="<?php echo base_url() ?>applicant/submit" method="post">
+    <form class="form-horizontal" id="appliation-form" action="<?php echo base_url() ?>applicant/submit" method="post">
     <fieldset>
         <legend>Applicant Information</legend>
         <small><i>Please take note of the fileds with (<text class="required">*</text>), for they are required fields.</i></small><br><br>
@@ -9,7 +9,6 @@
                 <li><a href="#personal_form">Personal Information</a></li>
                 <li><a href="#family_form">Family Background</a></li>
                 <li><a href="#work_form">Work Experience</a></li>
-                <li><a href="#personality_form">Personality Test</a></li>
                 <li><a href="#essay_form">Essay Questions</a></li>
             </ul>
             <?php if($this->session->flashdata("success_notification_application")): ?>
@@ -52,7 +51,7 @@
                 </div>
                 <div class="form-group">
                     <label for="name" class="col-lg-2 control-label form-label">
-                        <text class="required">*</text> Full Name:
+                        <text class="required">*</text>Full Name:
                     </label>
                     <div class="col-lg-3">
                         <div class="error-form">
@@ -121,7 +120,7 @@
                         <span class="medium"><text class="required">*</text> Gender:</span><br>
                         <div class="error-form">
                             <span class="indiv-error"><?php echo form_error("gender"); ?></span>
-                            <input type="radio" name="gender" value="1"><text class="small" required> Male</text>
+                            <input type="radio" name="gender" value="1" required><text class="small"> Male</text>
                             &nbsp;&nbsp;&nbsp;
                             <input type="radio" name="gender" value="2"><text class="small"> Female</text>
                         </div>
@@ -151,7 +150,7 @@
                     <div class="col-lg-10">
                         <div class="error-form">
                             <span class="indiv-error"><?php echo form_error("street"); ?></span>
-                            <input type="text" name="street" id="street" class="form-control" placeholder="Street Address" required>
+                            <input type="text" name="street" id="street" class="form-control" placeholder="Street Address/Bldg. No./Village/Brgy." required>
                         </div>
                     </div>
                 </div>
@@ -161,7 +160,7 @@
                     <div class="col-lg-4">
                         <div class="error-form">
                             <span class="indiv-error"><?php echo form_error("city"); ?></span>
-                            <input type="text" name="city" id="city" class="form-control" placeholder="City" required>
+                            <input type="text" name="city" id="city" class="form-control" placeholder="City/Municipality" required>
                         </div>
                     </div>
                     <div class="col-lg-4">
@@ -197,48 +196,15 @@
                             </select>
                         </div>
                     </div>
-                    <div class="col-lg-6">
-                        <div class="error-form">
-                            <select class="form-control" id="spoken-multip" multiple name="spoken_lang[]">
-                                <?php foreach($spoken as $sp) { ?>
-                                <option value="<?php echo $sp->id; ?>"><?php echo $sp->language?></option>
-                                <?php } ?>
-                            </select>
-                        </div>
-                        <span class="small col-lg-1"><text class="required">*</text>&nbsp;Spoken&nbsp;Languages</span>
-                    </div>
                 </div>
                 <div class="form-group">
                     <label class="col-lg-2 control-label form-label">
-                        <text class="required">*</text> Birthplace:<br>
+                        <text></text>Birthplace:<br>
                     </label>
                     <div class="col-lg-10">
-                        <input type="checkbox" id="same_address"><text class="small">&nbsp;Same as Address</text>
                         <div class="error-form">
-                            <span class="indiv-error"><?php echo form_error("bstreet"); ?></span>
-                            <input type="text" name="bstreet" id="bstreet" class="form-control" placeholder="Street Address">
-                        </div>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="col-lg-2 control-label">
-                    </label>
-                    <div class="col-lg-4">
-                        <div class="error-form">
-                            <span class="indiv-error"><?php echo form_error("bcity"); ?></span>
-                            <input type="text" name="bcity" id="bcity" class="form-control" placeholder="City">
-                        </div>
-                    </div>
-                    <div class="col-lg-4">
-                        <div class="error-form">
-                            <span class="indiv-error"><?php echo form_error("bprovince"); ?></span>
-                            <input type="text" name="bprovince" id="bprovince" class="form-control" placeholder="Province">
-                        </div>
-                    </div>
-                    <div class="col-lg-2">
-                        <div class="error-form">
-                            <span class="indiv-error"><?php echo form_error("bzip"); ?></span>
-                            <input type="text" name="bzip" id="bzip" class="form-control" placeholder="Zip Code">
+                            <span class="indiv-error"><?php echo form_error("birthplace"); ?></span>
+                            <input type="text" name="birthplace" id="birthplace" class="form-control" placeholder="Birthplace">
                         </div>
                     </div>
                 </div>
@@ -251,17 +217,21 @@
                         <div class="error-form">
                             <select class="form-control" name="education" id="education" required>
                                 <option selected disabled>--</option>
-                                <?php foreach($education as $educ) { ?>
-                                <option value="<?php echo $educ->id; ?>"><?php echo $educ->education; ?></option>
-                                <?php } ?>
+                                <?php   
+                                    foreach ($edat as $ea) {
+                                        echo "<option value="."'$ea->educ_attaintment_id'".">"."$ea->educ_attainment"."</option>";
+                                    }
+                                ?>
                             </select>
                         </div>
                         <span class="help-block"><text class="required">*</text>&nbsp;Highest Attainment</span>
                     </div>
                     <div class="col-lg-2">
                         <div class="error-form">
-                            <select class="form-control" name="level" id="level" required disabled>
+                            <select class="form-control" name="level" id="level" required>
                                 <option selected disabled>--</option>
+                                <option value="1">Graduate</option>
+                                <option value="2">Undergraduate</option>
                             </select>
                         </div>
                         <span class="help-block"><text class="required">*</text>&nbsp;Year Level</span>
@@ -285,7 +255,7 @@
                 </div>
                 <div class="form-group">
                     <div class="pull-right">
-                        <button class="btn btn-primary" id="test"><span class="glyphicon glyphicon-arrow-right"></button></a>
+                        <button class="btn btn-primary" type="button" id="appform_view_familybg" onclick="viewFamilyBackground()"><span class="glyphicon glyphicon-arrow-right"></button>
                     </div>
                 </div>
             </div>
@@ -295,7 +265,7 @@
                     <div class="col-lg-6">
                         <div class="error-form">
                             <span class="indiv-error"><?php echo form_error("spouse_name"); ?></span>
-                            <input type="text" class="form-control" name="spouse_name" id="spouse_name" placeholder="Spouse's Full Name">
+                            <input type="text" class="form-control" name="spouse_name" id="spouse_name" placeholder="Spouse's Name">
                         </div>
                     </div>
                     <div class="col-lg-2">
@@ -308,15 +278,15 @@
                 <div id="descendants">
                      <div class="form-group" id="div-descendants">
                         <label for="descendants" class="col-lg-2 control-label form-label">
-                            Descendant:
+                            Child:
                         </label>
                         <div class="col-lg-4">
                             <div class="error-form">
                             <span class="indiv-error"><?php echo form_error("d_name"); ?></span>
-                                <input type="text" name="d_name[]" class="form-control" placeholder="Full Name">
+                                <input type="text" name="d_name[]" class="form-control" placeholder="Child's Name">
                             </div>
                         </div>
-                        <div class="col-lg-2">
+                        <!-- <div class="col-lg-2">
                             <div class="error-form">
                                 <select class="form-control" name="d_gender[]">
                                     <option selected disabled>Gender</option>
@@ -324,23 +294,23 @@
                                     <option value="2">Female</option>
                                 </select>
                             </div>
-                        </div>
+                        </div> -->
                         <div class="col-lg-2">
                             <div class="error-form">
                                 <input type="date" name="d_date[]" class="form-control">
                             </div>
-                            <span class="help-block">Descendant's birthdate</span>
+                            <span class="help-block">Child's birthdate</span>
                         </div>
                         <div class="col-lg-2">
                             <button class="btn btn-primary" type="button" id="add_descendant"><span class="glyphicon glyphicon-plus"></span></button>
-                            <span class="help-block" id="des_help">Add a descendant</span>
+                            <span class="help-block" id="des_help">Add a child</span>
                         </div>
                     </div>
                 </div>
                
                 <div class="form-group">
                     <label for="emergency_contact" class="col-lg-2 control-label form-label">
-                        <text class="required">*</text> Guardian:
+                        <text class="required">*</text> Emergency Contact Person:
                     </label>
                     <div class="col-lg-6">
                         <div class="error-form">
@@ -363,8 +333,8 @@
                 </div>
                 <div class="form-group">
                     <div class="pull-right">
-                        <a href="#personal_form" class="btn btn-default"><span class="glyphicon glyphicon-arrow-left"></span></a>
-                        <a href="#work_form" class="btn btn-primary"><span class="glyphicon glyphicon-arrow-right"></span></a>
+                        <button class="btn btn-default" type="button" id="appform_view_familybg" onclick="viewPersonal()"><span class="glyphicon glyphicon-arrow-left"></button>
+                        <button class="btn btn-primary" type="button" id="appform_view_familybg" onclick="viewWork()"><span class="glyphicon glyphicon-arrow-right"></button>
                     </div>
                 </div>
             </div>
@@ -456,325 +426,48 @@
                 </div>
                 <div class="form-group">
                     <div class="pull-right">
-                        <a href="#family_form" class="btn btn-default"><span class="glyphicon glyphicon-arrow-left"></span></a>
-                        <a href="#personality_form" class="btn btn-primary"><span class="glyphicon glyphicon-arrow-right"></span></a>
-                    </div>
-                </div>
-            </div>
-            <div id="personality_form">
-                <div class="form-group">
-                    <label for="employer_address" class="col-lg-2 control-label required form-label">
-                        Read:
-                    </label>
-                    <div class="col-lg-10">
-                        <p>Please answer the following question as honest as possible. Remember, there is no right or wrong answer for these.<br>Choose your answer from the choice below each question.</p><br>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="col-lg-2 control-label form-label">PART I:</label>
-                    <div class="col-lg-10">
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="col-lg-2 control-label"></label>
-                    <div class="col-lg-10">
-                        <text class="question">1.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;People often expect too much of me.</text>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="col-lg-2 control-label"></label>
-                    <div class="col-lg-7">
-                        <span class="indiv-error"><?php echo form_error("answer_1"); ?></span>
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        <input type="radio" name="answer_1" value="0"><span class="small"> True</span><br>
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        <input type="radio" name="answer_1" value="1"><span class="small"> False</span>
-                    </div>
-                </div>
-                <br>
-                <div class="form-group">
-                    <label class="col-lg-2 control-label"></label>
-                    <div class="col-lg-10">
-                        <text class="question">2.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;I like parties and socials.</text>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="col-lg-2 control-label"></label>
-                    <div class="col-lg-7">
-                        <span class="indiv-error"><?php echo form_error("answer_2"); ?></span>
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        <input type="radio" name="answer_2" value="0"><span class="small"> True</span><br>
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        <input type="radio" name="answer_2" value="1"><span class="small"> False</span>
-                    </div>
-                </div>
-                <br>
-                <div class="form-group">
-                    <label class="col-lg-2 control-label"></label>
-                    <div class="col-lg-10">
-                        <text class="question">3.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;I do many things better than almost everyone I know.</text>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="col-lg-2 control-label"></label>
-                    <div class="col-lg-7">
-                        <span class="indiv-error"><?php echo form_error("answer_3"); ?></span>
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        <input type="radio" name="answer_3" value="0"><span class="small"> True</span><br>
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        <input type="radio" name="answer_3" value="1"><span class="small"> False</span>
-                    </div>
-                </div>
-                <br>
-                <div class="form-group">
-                    <label class="col-lg-2 control-label"></label>
-                    <div class="col-lg-10">
-                        <text class="question">4.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;I don't mind being told what to do.</text>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="col-lg-2 control-label"></label>
-                    <div class="col-lg-7">
-                        <span class="indiv-error"><?php echo form_error("answer_4"); ?></span>
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        <input type="radio" name="answer_4" value="0"><span class="small"> True</span><br>
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        <input type="radio" name="answer_4" value="1"><span class="small"> False</span>
-                    </div>
-                </div>
-                <br>
-                <div class="form-group">
-                    <label class="col-lg-2 control-label"></label>
-                    <div class="col-lg-10">
-                        <text class="question">5.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;I feel uneasy when receiving praise.</text>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="col-lg-2 control-label"></label>
-                    <div class="col-lg-7">
-                        <span class="indiv-error"><?php echo form_error("answer_5"); ?></span>
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        <input type="radio" name="answer_5" value="0"><span class="small"> True</span><br>
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        <input type="radio" name="answer_5" value="1"><span class="small"> False</span>
-                    </div>
-                </div>
-                <hr>
-                <div class="form-group">
-                    <label class="col-lg-2 control-label form-label">PART II:</label>
-                    <div class="col-lg-10">
-                        <br>
-                        <text>A - Strongly Disagree</text><br>
-                        <text>B - Disagree</text><br>
-                        <text>C - Unsure</text><br>
-                        <text>D - Agree</text><br>
-                        <text>E - Strongly Agree</text><br>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="col-lg-2 control-label"></label>
-                    <div class="col-lg-3">
-                    </div>
-                    <div class="col-lg-1">
-                        <text>A</text>
-                    </div>
-                    <div class="col-lg-1">
-                        <text>B</text>
-                    </div>
-                    <div class="col-lg-1">
-                        <text>C</text>
-                    </div>
-                    <div class="col-lg-1">
-                        <text>D</text>
-                    </div>
-                    <div class="col-lg-1">
-                        <text>E</text>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="col-lg-2 control-label"></label>
-                    <div class="col-lg-3">
-                        <text class="question">I enjoy meeting new people.</text>
-                        <span class="indiv-error"><?php echo form_error("IIanswer_1"); ?></span>
-                    </div>
-                    <div class="col-lg-1">
-                        <input type="radio" name="IIanswer_1" value="3">
-                    </div>
-                    <div class="col-lg-1">
-                        <input type="radio" name="IIanswer_1" value="4">
-                    </div>
-                    <div class="col-lg-1">
-                        <input type="radio" name="IIanswer_1" value="5">
-                    </div>
-                    <div class="col-lg-1">
-                        <input type="radio" name="IIanswer_1" value="6">
-                    </div>
-                    <div class="col-lg-1">
-                        <input type="radio" name="IIanswer_1" value="7">
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="col-lg-2 control-label"></label>
-                    <div class="col-lg-3">
-                        <text class="question">I like helping people.</text>
-                        <span class="indiv-error"><?php echo form_error("IIanswer_2"); ?></span>
-                    </div>
-                    <div class="col-lg-1">
-                        <input type="radio" name="IIanswer_2" value="3">
-                    </div>
-                    <div class="col-lg-1">
-                        <input type="radio" name="IIanswer_2" value="4">
-                    </div>
-                    <div class="col-lg-1">
-                        <input type="radio" name="IIanswer_2" value="5">
-                    </div>
-                    <div class="col-lg-1">
-                        <input type="radio" name="IIanswer_2" value="6">
-                    </div>
-                    <div class="col-lg-1">
-                        <input type="radio" name="IIanswer_2" value="7">
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="col-lg-2 control-label"></label>
-                    <div class="col-lg-3">
-                        <text class="question">I sometimes make mistakes.</text>
-                        <span class="indiv-error"><?php echo form_error("IIanswer_3"); ?></span>
-                    </div>
-                    <div class="col-lg-1">
-                        <input type="radio" name="IIanswer_3" value="3">
-                    </div>
-                    <div class="col-lg-1">
-                        <input type="radio" name="IIanswer_3" value="4">
-                    </div>
-                    <div class="col-lg-1">
-                        <input type="radio" name="IIanswer_3" value="5">
-                    </div>
-                    <div class="col-lg-1">
-                        <input type="radio" name="IIanswer_3" value="6">
-                    </div>
-                    <div class="col-lg-1">
-                        <input type="radio" name="IIanswer_3" value="7">
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="col-lg-2 control-label"></label>
-                    <div class="col-lg-3">
-                        <text class="question">I'm easily disappointed.</text>
-                        <span class="indiv-error"><?php echo form_error("IIanswer_4"); ?></span>
-                    </div>
-                    <div class="col-lg-1">
-                        <input type="radio" name="IIanswer_4" value="3">
-                    </div>
-                    <div class="col-lg-1">
-                        <input type="radio" name="IIanswer_4" value="4">
-                    </div>
-                    <div class="col-lg-1">
-                        <input type="radio" name="IIanswer_4" value="4">
-                    </div>
-                    <div class="col-lg-1">
-                        <input type="radio" name="IIanswer_4" value="5">
-                    </div>
-                    <div class="col-lg-1">
-                        <input type="radio" name="IIanswer_4" value="7">
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="col-lg-2 control-label"></label>
-                    <div class="col-lg-3">
-                        <text class="question">I enjoy repairing things.</text>
-                        <span class="indiv-error"><?php echo form_error("IIanswer_5"); ?></span>
-                    </div>
-                    <div class="col-lg-1">
-                        <input type="radio" name="IIanswer_5" value="3">
-                    </div>
-                    <div class="col-lg-1">
-                        <input type="radio" name="IIanswer_5" value="4">
-                    </div>
-                    <div class="col-lg-1">
-                        <input type="radio" name="IIanswer_5" value="5">
-                    </div>
-                    <div class="col-lg-1">
-                        <input type="radio" name="IIanswer_5" value="6">
-                    </div>
-                    <div class="col-lg-1">
-                        <input type="radio" name="IIanswer_5" value="7">
-                    </div>
-                </div>
-                <hr>
-                <div class="form-group">
-                    <div class="pull-right">
-                        <a href="#work_form" class="btn btn-default"><span class="glyphicon glyphicon-arrow-left"></span></a>
-                        <a href="#essay_form" class="btn btn-primary"><span class="glyphicon glyphicon-arrow-right"></span></a>
+                        <button class="btn btn-default" type="button" id="appform_view_familybg" onclick="viewFamilyBackground()"><span class="glyphicon glyphicon-arrow-left"></button>
+                        <button class="btn btn-primary" type="button" id="appform_view_familybg" onclick="viewEssay()"><span class="glyphicon glyphicon-arrow-right"></button>
                     </div>
                 </div>
             </div>
             <div id="essay_form">
-                <div class="form-group remove-margin">
-                    <label class="col-lg-2 control-label">
-                    </label>
-                    <div class="col-lg-10">
-                        <p>You will be asked some questions regarding yourself. Please type your answer in the space provided.</p><br>
-                    </div>
-                </div>
                 <div class="form-group">
                     <label class="col-lg-2 control-label">
                     </label>
                     <div class="col-lg-10">
-                        <text class="questions">Tell us something about yourself.</text>
+                        <b>You will be asked some questions regarding yourself. Please type your answer in the space provided.</b><br>
                     </div>
                 </div>
-                <div class="form-group">
-                    <label class="col-lg-2 control-label">
-                    </label>
-                    <div class="col-lg-10">
-                        <span class="indiv-error"><?php echo form_error("essay_answer_1"); ?></span>
-                        <textarea class="form-control" rows="4" name="essay_answer_1" id="essay_answer_1"></textarea>
-                    </div>
-                </div>
-                <br>
-                <div class="form-group">
-                    <label class="col-lg-2 control-label">
-                    </label>
-                    <div class="col-lg-10">
-                        <text class="questions">What are your strengths and weaknesses?</text>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="col-lg-2 control-label">
-                    </label>
-                    <div class="col-lg-10">
-                        <span class="indiv-error"><?php echo form_error("essay_answer_2"); ?></span>
-                        <textarea class="form-control" rows="4" name="essay_answer_2" id="essay_answer_2"></textarea>
-                    </div>
-                </div>
-                <br>
-                <div class="form-group">
-                    <label class="col-lg-2 control-label">
-                    </label>
-                    <div class="col-lg-10">
-                        <text class="questions">How do you see yourself five years from now?</text>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="col-lg-2 control-label">
-                    </label>
-                    <div class="col-lg-10">
-                        <span class="indiv-error"><?php echo form_error("essay_answer_3"); ?></span>
-                        <textarea class="form-control" rows="4" name="essay_answer_3" id="essay_answer_3"></textarea>
-                    </div>
-                </div>
+                <?php
+                    foreach ($essayq as $eq) {
+                        echo    "<div class='form-group'>
+                                    <label class='col-lg-2 control-label'></label>
+                                    <div class='col-lg-10'>
+                                        <text class='questions'>"."$eq->essay_question"."</text>
+                                    </div>
+                                </div>
+                                <div class='form-group'>
+                                    <label class='col-lg-2 control-label'></label>
+                                    <div class='col-lg-10'>
+                                        <span class='indiv-error'><?php echo form_error('essay_answer_"."$eq->essay_question_id"."'); ?></span>
+                                        <textarea class='form-control' rows='4' name='essay_answer[]' id='essay_answer_"."$eq->essay_question_id"."' required></textarea>
+                                        <input type='hidden' name='essay_id[]' value='$eq->essay_question_id'>
+                                    </div>
+                                </div>";
+                    }
+                ?>
                 <div class="form-group">
                     <div class="pull-right col-lg-10">
                         <span class="help-block">
                             <br>
-                            <i><strong>IMPORTANT: </strong>Please check your application before submitting. Make sure all the data you entered are correct and all the required fields have been filled up. Some data you have already entered may be lost if you submitted your form and errors were found.</i>
+                            <i><strong>IMPORTANT: </strong>Please double check your application before submitting. Make sure all the data you entered are correct and all the required fields have been filled out. Some data you have already entered may be lost if you submitted your form and errors were found.</i>
                         </span>
                     </div>
                 </div>
                 <div class="form-group">
                     <div class="pull-right">
-                        <a href="#personality_form" class="btn btn-default"><span class="glyphicon glyphicon-arrow-left"></span></a>
+                        <button class="btn btn-default" type="button" id="appform_view_familybg" onclick="viewWork()"><span class="glyphicon glyphicon-arrow-left"></button>
                         <button type="submit" class="btn btn-primary">Submit</button>
                     </div>
                 </div>
@@ -789,9 +482,9 @@
 
 <script type="text/javascript">
 
-$("#spoken-multip").select2({
-    placeholder: "Spoken Languages"
-});
+// $("#spoken-multip").select2({
+//     placeholder: "Spoken Languages"
+// });
 
 $("#skill-multi").select2({
     placeholder: "Select Skills"

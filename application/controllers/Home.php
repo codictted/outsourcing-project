@@ -12,7 +12,6 @@
     	}
 
         public function index() {
-
             $this->load->model("Dropdown_model");
             $business_nature["business_nature"] = $this->Dropdown_model->get_business_nature();
             $data['title'] = "Your best Outsourcing Management";
@@ -41,6 +40,10 @@
                         "comp_name",
                         "Company Name",
                         "required");
+                    $this->form_validation->set_rules(
+                        "job_position",
+                        "Job Position",
+                        "required");
                 }
             	$this->form_validation->set_rules(
             		"comp_name", 
@@ -53,6 +56,11 @@
             		"Full Name",
             		"required|strip_tags|xss_clean"
             	);
+                $this->form_validation->set_rules(
+                    "job_position",
+                    "Job Position",
+                    "strip_tags|xss_clean"
+                );
             	$this->form_validation->set_rules(
             		"contact_email",
             		"Email Address",
@@ -100,6 +108,7 @@
                     $nature = $type == 1 ? $this->input->post("business_nature") : 1;
                     $comp_name = $this->input->post("comp_name");
                     $contact_name = $this->input->post("contact_name");
+                    $cont_job_pos = $this->input->post("job_position");
                     $email = $this->input->post("contact_email");
                     $cnumber = $this->input->post("contact_contact_number");
                     $tnumber = $this->input->post("contact_tel_number");
@@ -114,6 +123,7 @@
                         "business_nature" => $nature,
                         "comp_name" => $comp_name,
                         "full_name" => $contact_name,
+                        "job_position" => $cont_job_pos,
                         "email" => $email,
                         "mobile_no" => $cnumber,
                         "tel_no" => $tnumber,
@@ -127,29 +137,33 @@
 
                     $this->Client_model->add_client($data);
 
+                    $data = $this->Admin_model->get_agency_email_details();
+
                     //send email to the agency
-                    // $this->load->library('email');
+                    $this->load->library('email');
 
-                    // $config['protocol']    = 'smtp';
-                    // $config['smtp_host']    = 'smtp.gmail.com';
-                    // $config['smtp_port']    = '465';
-                    // $config['smtp_timeout'] = '7';
-                    // $config['smtp_crypto'] = 'ssl';
-                    // $config['smtp_user']    = '';
-                    // $config['smtp_pass']    = '';
-                    // $config['charset']    = 'utf-8';
-                    // $config['newline']    = "\r\n";
-                    // $config['mailtype'] = 'text';
+                    $config['protocol']     = 'smtp';
+                    $config['smtp_host']    = 'smtp.gmail.com';
+                    $config['smtp_port']    = '465';
+                    $config['smtp_timeout'] = '7';
+                    $config['smtp_crypto']  = 'ssl';
+                    $config['smtp_user']    = $data[0]->agency_email_text;
+                    $config['smtp_pass']    = $data[0]->agency_email_pword;
+                    $config['charset']      = 'utf-8';
+                    $config['newline']      = "\r\n";
+                    $config['mailtype']     = 'text';
 
-                    // $this->email->initialize($config);
-                    // $this->email->from($email, $contact_name);
-                    // $this->email->to('outsourcing.inquire@gmail.com');
+                    $final_message = "Company Name: ".$comp_name."\n"."Nature of Business: ".$nature."\n"."Contact Person: ".$contact_name."\n"."Job Position".$cont_job_pos."\n"."E-mail: ".$email."\n"."Contact Number: ".$cnumber."\n"."Telephone Number: ".$tnumber."\n"."Address: ".$street." ".$city." ".$province." ".$zip."\n"."Inquiry: ".$inquiry;
 
-                    // $this->email->subject('Inquiry');
-                    // $this->email->message($inquiry);
+                    $this->email->initialize($config);
+                    $this->email->from($email, $contact_name);
+                    $this->email->to($data[0]->agency_email_text);
 
-                    // $this->email->send();
-                    // echo $this->email->print_debugger();
+                    $this->email->subject('Inquiry');
+                    $this->email->message($final_message);
+
+                    $this->email->send();
+                    echo $this->email->print_debugger();
 
                     $this->session->set_flashdata("success_notification_contact_us", "Congratulations! You have successfully sent your request to us! Please check your email frequently. Thank you very much for choosing us");
 

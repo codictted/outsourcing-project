@@ -25,27 +25,6 @@
                         </div>
                     </div>
                 <?php endif; ?>
-                <div class="form-group col-lg-12">
-                    <label class="form-label col-lg-1">Filter:</label>
-                    <div class="col-lg-3">
-                        <select class="form-control">
-                            <option selected disabled>--Choose--</option>
-                            <option value="0">Status</option>
-                            <option value="0">Client</option>
-                            <option value="0">Job Position</option>
-                            <option value="0">Date</option>
-                        </select>
-                    </div>
-                    <div class="col-lg-3">
-                        <select class="form-control">
-                            <option selected disabled>--Choose--</option>
-                            <option value="0">Status</option>
-                            <option value="0">Client</option>
-                            <option value="0">Job Position</option>
-                            <option value="0">Date</option>
-                        </select>
-                    </div>
-                </div>
             </fieldset>
         </form>
         <hr>

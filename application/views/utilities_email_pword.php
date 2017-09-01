@@ -42,7 +42,7 @@
                         <div class="col-lg-12">
                             <div class="error-form">
                                 <!-- <span class="indiv-error"><?php //echo form_error("contact_name"); ?></span> -->
-                                <input type="email" id="agency_email" value="<?php echo $agem[0]->agency_email; ?>" name="a_email" class="form-control">
+                                <input type="email" id="agency_email" value="<?php echo $agem[0]->agency_email_text; ?>" name="a_email" class="form-control">
                             </div>
                         </div>
                     </div>
@@ -55,7 +55,7 @@
                         <div class="col-lg-12">
                             <div class="error-form">
                                 <!-- <span class="indiv-error"><?php //echo form_error("contact_name"); ?></span> -->
-                                <input type="text" id="agency_pword" value="<?php echo $agem[0]->agency_pword; ?>" name="a_pword" class="form-control">
+                                <input type="text" id="agency_pword" value="<?php echo $agem[0]->agency_email_pword; ?>" name="a_pword" class="form-control">
                             </div>
                         </div>
                     </div>

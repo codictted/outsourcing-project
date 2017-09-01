@@ -268,7 +268,6 @@
                             name: value.first_name + " " + value.last_name,
                             match: percentage
                         }
-
                         left.push(temp_obj);
                         string_tr = "<tr>";
                         string_tr += "<td class='sub-label'>";

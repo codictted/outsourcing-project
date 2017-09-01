@@ -7,8 +7,8 @@
                     <select class="form-control" name="status" id="status">
                         <option selected disabled>--Status--</option>
                         <option value="0">New</option>
-                        <option value="1">Pending</option>
-                        <option value="2">Active</option>
+                        <option value="1">Active</option>
+                        <option value="2">Contract Expired</option>
                         <option value="3">Terminated</option>
                     </select>
                 </div>
@@ -51,7 +51,7 @@
                     <th>Company Name/ Contact Person</th>
                     <th>Nature of Business</th>
                     <th>Date Activated</th>
-                    <th>Action</th>
+                    
                 </thead>
                 <tbody>
                     <?php foreach($client as $c) { ?>
@@ -62,10 +62,10 @@
                                 $status = "New";
                             }
                             else if ($c->status == 1){
-                                $status = "Pending";
+                                $status = "Active";
                             }
                             else if ($c->status == 2){
-                                $status = "Active";
+                                $status = "Contract Expired";
                             }
                             else if ($c->status == 3){
                                 $status = "Terminated";
@@ -80,7 +80,7 @@
                         <td><?php echo $name; ?></td>
                         <td><?php echo $c->name; ?></td>
                         <td><?php echo $c->acc_creation_date; ?></td>
-                        <td><button class="btn btn-default btn-sm table-btn" onclick="window.location.href='applist_new'"><span class="glyphicon glyphicon-list"></span></button></td>
+                        
                     </tr>
                     <?php } ?>
                 </tbody>
@@ -112,10 +112,10 @@
                         stat_name = "New";
                     }
                     else if (element.status == 1){
-                        stat_name = "Pending";
+                        stat_name = "Active";
                     }
                      else if (element.status == 2){
-                        stat_name = "Active";
+                        stat_name = "Contract Expired";
                     }
                      else if (element.status == 3){
                         stat_name = "Terminated";
@@ -145,10 +145,10 @@
                         stat_name = "New";
                     }
                     else if (element.status == 1){
-                        stat_name = "Pending";
+                        stat_name = "Active";
                     }
                      else if (element.status == 2){
-                        stat_name = "Active";
+                        stat_name = "Contract Expired";
                     }
                      else if (element.status == 3){
                         stat_name = "Terminated";
@@ -178,10 +178,10 @@
                         stat_name = "New";
                     }
                     else if (element.status == 1){
-                        stat_name = "Pending";
+                        stat_name = "Active";
                     }
                      else if (element.status == 2){
-                        stat_name = "Active";
+                        stat_name = "Contract Expired";
                     }
                      else if (element.status == 3){
                         stat_name = "Terminated";
@@ -211,15 +211,15 @@
                         stat_name = "New";
                     }
                     else if (element.status == 1){
-                        stat_name = "Pending";
+                        stat_name = "Active";
                     }
                      else if (element.status == 2){
-                        stat_name = "Active";
+                        stat_name = "Contract Expired";
                     }
                      else if (element.status == 3){
                         stat_name = "Terminated";
                     }
-                 
+
                     type = element.type == 1 ? "Company/Institution/Organization" : "Personal/Individual"; 
                     name = element.type == 1 ? element.comp_name + "/ " + element.full_name : element.full_name;
                    $("tbody").append("<tr><td>"+ stat_name + "</td><td>" + type + "</td><td>" + name + "</td><td>" + element.name +  "</td><td>" + element.acc_creation_date + "</td><td><button class='btn btn-default btn-sm table-btn' id=" + element.app_id + "onclick='window.location.href='<?php echo base_url()?>admin/applist_new/'+this.id'><span class='glyphicon glyphicon-list'></span></button></td></tr>");

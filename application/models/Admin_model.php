@@ -101,15 +101,6 @@
 			return $query->result();
 		}
 
-		public function get_sms_message(){
-
-			$this->db->select("interview_message1, interview_message2, interview_message3");
-			$this->db->from("utilities");
-			$query = $this->db->get();
-
-			return $query->result();
-		}
-
 		public function insert_interview($data) {
 
 			$this->db->insert("applicant_intervew", $data);
@@ -275,9 +266,21 @@
 			return $query->result();
 		}
 
-		public function update_applicant_stat($id, $stat) {
 
-			$this->db->where("applicant_id", $id);
+		//email
+		public function get_agency_email_details() {
+			$this->db->select("*");
+			$this->db->from("agency_default_email");
+			$query = $this->db->get();
+			return $query->result();
+		}
+
+		//insert essay answers
+		public function insert_essayq($data) {//insert
+			$this->db->insert("essay_question", $data);
+		}
+		public function update_applicant_stat($id, $stat) {
+			$this->db->where("id", $id);
 			$this->db->set("status", $stat);
 			$this->db->update("applicant");
 		}
@@ -293,6 +296,7 @@
 
 			$this->db->where("staff_id", $id);
 			$this->db->set("status", $stat);
+			$this->db->set("date_replaced", date('Y/m/d H:i:s'));
 			$this->db->update("staff_history");
 		}
 
@@ -347,6 +351,31 @@
 
 			}
 			return $order_list;
+
 		}
+
+		public function staff_per_order($id) {
+
+			$query = $this->db->query("SELECT staff.*, shortlist.*, applicant.* FROM staff JOIN applicant ON staff.applicant_id = applicant.id JOIN shortlist ON applicant.id = shortlist.applicant_id WHERE shortlist.order_id = $id AND shortlist.status = 1");
+			return $query->result();
+		}
+
+		public function get_job_category() {
+
+			$this->db->select("*");
+			$this->db->from("job_category");
+			$this->db->where("status", 0);
+			$query = $this->db->get();
+			return $query->result();
+		}
+/*
+		public function get_job_category() {
+
+			$this->db->select("*");
+			$this->db->from("job_category");
+			$this->db->where("status", 0);
+			$query = $this->db->get();
+			return $query->result();
+		}*/
 	}
 ?>

@@ -112,7 +112,7 @@
                         <hr>
                         <div class="form-group">
                             <div class="col-lg-6">
-                                <button type="submit" class="btn btn-default pull-right">Add</button>
+                                <button type="submit" class="btn btn-success pull-right">Add</button>
                             </div>
                             <div class="col-lg-6">
                                 <button type="reset" class="btn btn-warning pull-left">Clear</button>
@@ -125,7 +125,7 @@
     </div><!--col-lg-4-->
 
     <div class="col-lg-4" id="edit_ea_panel">
-        <div class="panel panel-success">
+        <div class="panel panel-info">
             <div class="panel-heading">
                 <h4 class="panel-title" id="panel-title">EDIT EDUCATIONAL ATTAINMENT</h4>
             </div>
@@ -142,7 +142,7 @@
                         <hr>
                         <div class="form-group">
                             <div class="col-lg-6">
-                                <button type="submit" class="btn btn-default pull-right">Save</button>
+                                <button type="submit" class="btn btn-info pull-right">Save</button>
                             </div>
                             <div class="col-lg-6">
                                 <button type="reset" class="btn btn-warning pull-left" onclick="returnAdd()">Cancel</button>

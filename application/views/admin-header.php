@@ -8,7 +8,13 @@
         <script src="<?php echo base_url(); ?>assets/ckeditor/ckeditor.js"></script>
         <script src="<?php echo base_url(); ?>assets/js/jquery-ui.min.js"></script>
         <script src="<?php echo base_url(); ?>assets/js/dataTables.min.js"></script>
+<<<<<<< HEAD
         <script src="<?php echo base_url(); ?>assets/js/jquery-function.js"></script> 
+=======
+
+        <script src="<?php echo base_url(); ?>assets/js/jquery-function.js"></script>   
+
+>>>>>>> b47aaed18eda97e08afbfe5d1ed0780819a9475e
         <script src="<?php echo base_url(); ?>assets/morrisjs/morris.js"></script>
         <script src="<?php echo base_url(); ?>assets/raphael/raphael.js"></script> 
         <script src="<?php echo base_url(); ?>assets/datepicker/moment-with-locales.js"></script>
@@ -17,8 +23,11 @@
         <script src="<?php echo base_url(); ?>assets/js/jquery-utilities.js"></script>
         <script src="<?php echo base_url(); ?>assets/js/bootbox.min.js"></script>
 
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> b47aaed18eda97e08afbfe5d1ed0780819a9475e
         <link rel="stylesheet" href="<?php echo base_url(); ?>assets/datepicker/bootstrap-datetimepicker.css">
         <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/select2/dist/css/select2.min.css">  
         <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/sb-admin.css">
@@ -26,9 +35,13 @@
         <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/bootswatch.css">
         <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/style.css">  
         <link href="<?php echo base_url(); ?>assets/morrisjs/morris.css" rel="stylesheet">
+<<<<<<< HEAD
 
         
 
+=======
+      
+>>>>>>> b47aaed18eda97e08afbfe5d1ed0780819a9475e
     </head>
     <body>
         <div class="navbar navbar-default navbar-fixed-top">

@@ -5,9 +5,8 @@
                 <div class="col-lg-12">
                     <div class="alert alert-info alert-dismissable small">
                         <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-                        <i class="glyphicon glyphicon-info-sign"></i><b>REMINDER:</b> <p class="alert-p">You can always filter the list by your own specifications.</p>
+                        <i class="glyphicon glyphicon-info-sign"></i><b>REMINDER:</b> <p class="alert-p">You can always filter the list by your own specifications.<br>You can view the applicant's full application details by clicking the applicants' row.</p>
                         <br>
-                        <p class="alert-p">You can view the applicant's full application details by clicking the row.</p>
                         <br>
                         <b>STATUS LEGEND:</b>
                         <div id="legend">
@@ -87,24 +86,10 @@
                     </div>
                 <?php endif; ?>
                 <div class="form-group col-lg-12">
-                    <label class="form-label col-lg-1">Filter:</label>
+                    <label class="form-label col-lg-1"></label>
                     <div class="col-lg-3">
-                        <select class="form-control">
-                            <option selected disabled>--Choose--</option>
-                            <option value="0">Status</option>
-                            <option value="0">Client</option>
-                            <option value="0">Job Position</option>
-                            <option value="0">Date</option>
-                        </select>
                     </div>
                     <div class="col-lg-3">
-                        <select class="form-control">
-                            <option selected disabled>--Choose--</option>
-                            <option value="0">Status</option>
-                            <option value="0">Client</option>
-                            <option value="0">Job Position</option>
-                            <option value="0">Date</option>
-                        </select>
                     </div>
                     <div class="col-lg-3 pull-right">                    
                         <button type="button" class="btn btn-primary col-lg-12" onclick="window.location.href='create_shortlist'"><span class="glyphicon glyphicon-plus"></span>

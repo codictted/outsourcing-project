@@ -29,8 +29,8 @@ $(function () {
   $("#contact_client_type").change(function () {
       var op = $(this).val();
       op == "1" ? 
-      $("#comp_name, #client_nature").prop("required", true).prop("disabled", false) : 
-      $("#comp_name, #client_nature").prop("required", false).prop("disabled", true);
+      $("#comp_name, #client_nature, #job_position").prop("required", true).prop("disabled", false) : 
+      $("#comp_name, #client_nature, #job_position").prop("required", false).prop("disabled", true);
   });
 });
 
@@ -56,6 +56,11 @@ $(function () {
   $('#contact_us_form').validate({
     rules: {
       contact_name: {
+        required: true,
+        nowhitespace: true,
+        regex: /^[a-zA-Z\s'-\.]+$/
+      },
+      job_position: {
         required: true,
         nowhitespace: true,
         regex: /^[a-zA-Z\s'-\.]+$/
@@ -115,6 +120,9 @@ $(function () {
       },
       contact_name: {
         required: "Please enter full name"
+      },
+      job_position: {
+        required: "Please enter job position"
       },
       contact_email: {
         required: "Please enter email address",
@@ -554,11 +562,13 @@ $(".modal-btn-staff").click(function(event) {
     var c_name = id.split("/")[2];
     var j_name = id.split("/")[3];
     var date_request = id.split("/")[4];
-    var reason = id.split("/")[5];
+    var date_replaced = id.split("/")[5];
+    var reason = id.split("/")[6];
     $("#staff_id").val(s_id);
     $("[name='client-name']").html(c_name);
     $("[name='job_position']").html(j_name);
     $("[name='date_request']").html(date_request);
+    $("[name='date_replaced']").html(date_replaced);
     $("[name='reason']").html(reason);
     $("#" + mod).modal("show");
 

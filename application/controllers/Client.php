@@ -15,6 +15,7 @@
 
             if($this->session->userdata("usertype") == "2") {
             $data['title'] = "Home";
+            $data['shortlist'] = $this->Client_model->count_new_shortlist($this->session->userdata("id"));
             $this->load->view("client-header", $data);
             $this->load->view("client_home");  
             }
@@ -73,7 +74,7 @@
 
             if($this->session->userdata("usertype") == "2") {
                 $data['title'] = "New Job Order";
-                $data['education'] = $this->Dropdown_model->get_education();
+                $data['edat']    = $this->Dropdown_model->get_educ_attain();
                 $data['course'] = $this->Dropdown_model->get_course_list();
                 $data['job_cat'] = $this->Dropdown_model->get_job_category();
                 $data['set'] = $this->Dropdown_model->get_skill_set();
@@ -146,15 +147,7 @@
                     "required"
             );
 
-            $smale = $this->input->post("slot_male") == "" ? NULL : $this->input->post("slot_male");
-            $sfemale = $this->input->post("slot_female") == "" ? NULL : $this->input->post("slot_female");
-
-            if(is_null($smale) && is_null($sfemale))
-                $this->form_validation->set_rules(
-                    "slot",
-                    "No of Slot",
-                    "required"
-            );
+            $gender = $this->input->post("gender_pref");
             
             if($this->form_validation->run() !== FALSE) {
 
@@ -168,8 +161,7 @@
                 $requirements = array_unique($this->input->post("requirements[]"));
                 $course = $this->input->post("course");
                 $height = $this->input->post("height") == "" ? NULL : $this->input->post("height");
-                $weight = $this->input->post("weight") == "" ? NULL : $this->input->post("weight");
-                $mix_slot = $this->input->post("slot");
+                $slot = $this->input->post("slot");
 
                 $single = is_null($this->input->post("age")) ? 0 : 1 ;
                 $urgent = is_null($this->input->post("urgent")) ? 1 : 0 ;
@@ -195,12 +187,10 @@
                     "course" => $course,
                     "min_age" => $min_age,
                     "max_age" => $max_age,
-                    "total_openings" => $mix_slot,
-                    "num_male" => $smale,
-                    "num_female" => $sfemale,
+                    "total_openings" => $slot,
                     "single" => $single,
+                    "gender" => $gender,
                     "height" => $height,
-                    "weight" => $weight,
                     "description" => $desc,
                     "urgent" => $urgent,
                     "order_date" => $now->format("Y:m:d H:i:s"),
@@ -263,6 +253,20 @@
                 $data['shortlist'] = $this->Client_model->get_shortlist($this->session->userdata("id"));
                 $this->load->view("client-header", $data);
                 $this->load->view("client_shortlist");
+            }
+            else {
+                $this->session->set_flashdata("invalid", "Sorry, you are unauthorized to view this page.");
+                redirect(base_url("login"));
+            } 
+        }
+
+        public function shortlisted_applicant() {
+
+            if($this->session->userdata("usertype") == "2") {
+                $data['title'] = "Shortlist";
+                $data['app_list'] = $this->Client_model->get_shortlisted_applicants($this->session->userdata("id"));
+                $this->load->view("client-header", $data);
+                $this->load->view("client_shortlisted");
             }
             else {
                 $this->session->set_flashdata("invalid", "Sorry, you are unauthorized to view this page.");
@@ -335,19 +339,6 @@
             $match_result['match_skill'] = $match_skill;
             $match_result['nonmatch_skill'] = $nonmatch_skill;
 
-            if(!(is_null($order_det[0]->weight)) OR !($order_det[0]->weight == 0.00) OR !($order_det[0]->weight == "")) {
-
-                $no_items++;
-                if($order_det[0]->weight == $applicant->weight) {
-
-                    $no_matched++;
-                    // array_push($match_quali, array("weight" => $order_det[0]->weight));
-                    $match_quali['weight'] = $order_det[0]->weight;
-                }
-                else
-                    // array_push($nonmatch_quali, array("weight" => $order_det[0]->weight));
-                    $nonmatch_quali['weight'] = $order_det[0]->weight;
-            }
 
             if(!(is_null($order_det[0]->height)) OR !($order_det[0]->height == 0.00) OR !($order_det[0]->height == "")) {
 

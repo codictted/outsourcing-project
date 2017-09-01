@@ -9,35 +9,41 @@
         public function index() {
 
             if($this->session->userdata("usertype") == "1") {
-                $data['title'] = "Job Match Passing Rate";
-                $data['rate'] = $this->Utilities_model->get_rate();
+                $data["title"] = "Educational Attainment";
+                $data['edat'] = $this->Utilities_model->get_educ_attain();
                 $this->load->view("admin-header", $data);
+                $this->load->view("admin-header-switch");
                 $this->load->view("nav-utilities");
-                $this->load->view("utilities");
+                $this->load->view("utilities_educ_attain");
+                // $data['title'] = "Job Match Passing Rate";
+                // $data['rate'] = $this->Utilities_model->get_rate();
+                // $this->load->view("admin-header", $data);
+                // $this->load->view("nav-utilities");
+                // $this->load->view("utilities");
             }
             else {
                 $this->session->set_flashdata("invalid", "Sorry, you are unauthorized to view this page.");
                 redirect(base_url("login"));
             }
         }
-        //JOB MATCH PASS RATE
-        public function update_rate() {
-            $newrate = $this->input->post("jobmatch_passrate");
-            $this->Utilities_model->update_rate($newrate);
-            $this->session->set_flashdata("success_notification", "Congratulations! You have successfully updated the Job Match Passing Rate.");
-            redirect(base_url("utilities"));
-        }
+        // //JOB MATCH PASS RATE
+        // public function update_rate() {
+        //     $newrate = $this->input->post("jobmatch_passrate");
+        //     $this->Utilities_model->update_rate($newrate);
+        //     $this->session->set_flashdata("success_notification", "Congratulations! You have successfully updated the Job Match Passing Rate.");
+        //     redirect(base_url("utilities"));
+        // }
 
         //EDUC ATTAIN
-        public function utilities_educ_attain() {
-            $data["title"] = "Educational Attainment";
-            $data['edat'] = $this->Utilities_model->get_educ_attain();
-            $this->load->view("admin-header", $data);
-            $this->load->view("admin-header-switch");
-            $this->load->view("nav-utilities");
-            $this->load->view("utilities_educ_attain");
+        // public function utilities_educ_attain() {
+        //     $data["title"] = "Educational Attainment";
+        //     $data['edat'] = $this->Utilities_model->get_educ_attain();
+        //     $this->load->view("admin-header", $data);
+        //     $this->load->view("admin-header-switch");
+        //     $this->load->view("nav-utilities");
+        //     $this->load->view("utilities_educ_attain");
 
-        }
+        // }
 
         public function status_educ_attain() {
 
@@ -67,7 +73,7 @@
                 $this->session->set_flashdata("success_notification", "Congratulations! You have successfully added a new record.");
                 echo json_encode(array("success" => TRUE));
 
-                redirect(base_url("utilities/utilities_educ_attain"));
+                redirect(base_url("utilities/"));
             }
             else {
                 $this->session->set_flashdata("fail_notification", "Sorry, the record you are trying to add already exist.");
@@ -93,11 +99,11 @@
                 $this->session->set_flashdata("success_notification", "Congratulations! You have successfully updated a record.");
                 echo json_encode(array("success" => TRUE));
 
-                redirect(base_url("utilities/utilities_educ_attain"));
+                redirect(base_url("utilities/"));
             }
             else {
                 $this->session->set_flashdata("fail_notification", "Sorry, the record you are trying to edit already exist.");
-                redirect(base_url("utilities/utilities_educ_attain"));
+                redirect(base_url("utilities/"));
                 // $this->utilities_educ_attain();
             }
 
@@ -128,23 +134,23 @@
         }
 
 
-        //TEXT MESSAGES
-        public function utilities_text_message() {
-            $data["title"] = "Text Messages";
-            $data['teme'] = $this->Utilities_model->get_text_message();
-            $this->load->view("admin-header", $data);
-            $this->load->view("admin-header-switch");
-            $this->load->view("nav-utilities");
-            $this->load->view("utilities_text_message", $data);
-        }
+        // //TEXT MESSAGES
+        // public function utilities_text_message() {
+        //     $data["title"] = "Text Messages";
+        //     $data['teme'] = $this->Utilities_model->get_text_message();
+        //     $this->load->view("admin-header", $data);
+        //     $this->load->view("admin-header-switch");
+        //     $this->load->view("nav-utilities");
+        //     $this->load->view("utilities_text_message", $data);
+        // }
 
-        public function update_text_message() {
-            $ji_text_mess = $this->input->post("ji_text_mess");
-            $jo_text_mess = $this->input->post("jo_text_mess");
-            $this->Utilities_model->update_text_message($ji_text_mess, $jo_text_mess);
-            $this->session->set_flashdata("success_notification", "Congratulations! You have successfully updated the text messages.");
-            redirect(base_url("utilities/utilities_text_message/"));
-        }
+        // public function update_text_message() {
+        //     $ji_text_mess = $this->input->post("ji_text_mess");
+        //     $jo_text_mess = $this->input->post("jo_text_mess");
+        //     $this->Utilities_model->update_text_message($ji_text_mess, $jo_text_mess);
+        //     $this->session->set_flashdata("success_notification", "Congratulations! You have successfully updated the text messages.");
+        //     redirect(base_url("utilities/utilities_text_message/"));
+        // }
 
         //ESSAY QUESTION
         public function utilities_essay_questions() {

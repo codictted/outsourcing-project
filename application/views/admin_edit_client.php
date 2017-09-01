@@ -36,11 +36,21 @@
                 </div>
                 <div class="form-group">
                     <label for="name" class="col-lg-2 control-label form-label">
-                        <text class="required">*</text> Full Name:
+                        <text class="required">*</text> Contact Person:
                     </label>
                     <div class="col-lg-10">
                         <div class="error-form">
-                            <input type="text" class="form-control" placeholder="Client's Full Name" id="contact_name" name="contact_name" value="<?php echo $client->full_name; ?>">
+                            <input type="text" class="form-control" placeholder="Contact Person's Full Name" id="contact_name" name="contact_name" value="<?php echo $client->full_name; ?>">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="name" class="col-lg-2 control-label form-label">
+                        <text class="required">*</text> Job Position:
+                    </label>
+                    <div class="col-lg-10">
+                        <div class="error-form">
+                            <input type="text" class="form-control" placeholder="Contact Person's Job Position" id="job_position" name="job_position" value="<?php echo $client->job_position; ?>">
                         </div>
                     </div>
                 </div>
@@ -100,12 +110,12 @@
                     </label>
                     <div class="col-lg-5">
                         <div class="error-form">
-                            <input type="text" class="form-control" placeholder="Username" id="client_username" name="client_username" value="<?php echo $client->acc_username; ?>">
+                            <input type="text" class="form-control" placeholder="Username" id="client_username" name="client_username" value="<?php echo $client->acc_username; ?>" maxlength="10">
                         </div>
                     </div>
                     <div class="col-lg-5">
                         <div class="error-form">
-                            <input type="text" class="form-control" placeholder="Password" id="client_password" name="client_password" value="<?php echo $client->acc_password; ?>">
+                            <input type="text" class="form-control" placeholder="Password" id="client_password" name="client_password" value="<?php echo $client->acc_password; ?>" maxlength="10">
                         </div>
                     </div>
                 </div>
@@ -134,7 +144,7 @@
 <script type="text/javascript">
     $(function() {
 
-        $("#comp_name").val() == "N/A" ? $("#comp_name").prop("disabled", true) : $("#comp_name").prop("disabled", false);
+        $("#comp_name").val() == "N/A" ? $("#comp_name, #job_position").prop("disabled", true) : $("#comp_name, #job_position").prop("disabled", false);
 
         $("#activate").val() == 0 ? $("#activate").prop("checked", true) : $("#activate").prop("checked", false);
 
@@ -152,6 +162,8 @@
                 type: "POST",
                 data: $("#contact_us_form").serialize(),
                 success: function(data) {
+
+                    console.log(data);
                     data.success ? 
                     window.location.href="<?php echo base_url()?>admin/admin_client_list/" :
                     window.location.href="<?php echo base_url()?>admin/edit_client/" + id;

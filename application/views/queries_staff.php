@@ -6,8 +6,10 @@
                 <div class="col-lg-3">
                     <select class="form-control" id="status" name="status">
                         <option selected disabled>--Status--</option>
-                        <option value="0">Ongoing</option>
-                        <option value="1">Terminated</option>
+                        <option value="0">Active</option>
+                        <option value="1">For Replacement</option>
+                        <option value="2">Reshortlist</option>
+                        <option value="3">Terminated</option>
                     </select>
                 </div>
                 <div class="col-lg-3">
@@ -69,8 +71,14 @@
             <tbody>
              <?php
                         foreach ($staff as $st) { 
-                        if ($st->status == 0){
-                            $stat = "Ongoing";
+                        if ($st->staff_stat == 0){
+                            $stat = "Active";
+                        }
+                        else if ($st->staff_stat == 1){
+                            $stat = "For Replacement";
+                        }
+                        else if ($st->staff_stat == 2){
+                            $stat = "Reshortlist";
                         }
                         else{
                             $stat = "Terminated";
@@ -78,7 +86,7 @@
                         
                         $gen = $st->gender == 1 ? "Male" : "Female"; ?>
                     <tr id="<?php echo $st->id; ?>" onclick="get_app(this.id)">
-                        <td><?php echo $st->staff_stat; ?></td>
+                        <td><?php echo $stat; ?></td>
                         <td><?php echo $st->first_name.' '.$st->last_name; ?></td>
                         <td><?php echo $st->jname; ?></td>
                         <td><?php echo $gen; ?></td>
@@ -113,20 +121,18 @@
                 $.each(data, function(index, element) {
                     
                     if (element.status == 0){
-                        stat_name = "New";
+                        stat_name = "Active";
                     }
                     else if (element.status == 1){
-                        stat_name = "Job Matched";
+                        stat_name = "For Replacement";
                     }
                      else if (element.status == 2){
-                        stat_name = "For Interview";
+                        stat_name = "Reshortlist";
                     }
-                    else if (element.status == 3){
-                        stat_name = "Third";
+                    else{
+                        stat_name = "Terminated";
                     }
-                    else {
-                        stat_name = "Secret";
-                    }
+                   
                     gender = element.gender == 1 ? "Male" : "Female";
                     nationality = "Filipino/Visayan";
 

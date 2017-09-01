@@ -52,10 +52,10 @@
 			return $query->result();
 		}
 
-		public function get_education() {
-
-			$this->db->from("education");
-			$this->db->where("status", 0);
+		public function get_educ_attain() {
+			$this->db->select("*");
+			$this->db->from("educ_attainment");
+			$this->db->where("flag = 0");
 			$query = $this->db->get();
 			return $query->result();
 		}
@@ -101,14 +101,17 @@
 			return $query->result();
 		}
 
-		public function get_religion() {
 
-			$this->db->from("religion");
-			$this->db->where("status", 0);
+		//essay questions
+		public function get_essayq() {
+			$this->db->select("*");
+			$this->db->from("essay_question");
+			$this->db->where("flag = 0");
 			$query = $this->db->get();
 			return $query->result();
 		}
 
+<<<<<<< HEAD
 		public function check_select_religion($religion_val) {
 			
 	        $query = $this->db->get_where('religion', array('name' => $religion_val));
@@ -188,7 +191,15 @@
 				}
 		        
 	        }
+=======
+		public function get_religion() {
+>>>>>>> b47aaed18eda97e08afbfe5d1ed0780819a9475e
 
+			$this->db->select("*");
+			$this->db->from("religion");
+			$this->db->where("flag = 0");
+			$query = $this->db->get();
+			return $query->result();
 		}
 
 	}

@@ -21,19 +21,7 @@
                         <option value="12">Deployed</option>
                     </select>
                 </div>
-                <div class="col-lg-3">
-                    <select class="form-control" id="client" name="client">
-                    <option selected disabled>--Client--</option>
-                        <?php
-                        if(count($client) > 0) {
-                                foreach($client as $cl) { 
-                                    $name = is_null($cl->comp_name) || $cl->comp_name == "" ? $cl->full_name : $cl->comp_name;?>
-                                    <option value="<?php echo $cl->id; ?>"><?php echo $name; ?></option>
-                                <?php }} else { ?>
-                                <option selected disabled>No pending clients</option>
-                            <?php } ?>
-                    </select>
-                </div>
+                
                 <div class="col-lg-3">
                     <select class="form-control" id="job_position" name="job_position">
                         <option selected disabled>--Position--</option>
@@ -91,11 +79,39 @@
                         $stat = "For Interview";
                     }
                     else if ($app->status == 3){
-                        $stat = "Third";
+                        $stat = "For Interview(Default)";
                     }
-                    else {
-                        $stat = "Secret";
+                    else if ($app->status == 3){
+                        $stat = "Failed Interview";
                     }
+                    else if ($app->status == 3){
+                        $stat = "Ready to Shortlist";
+                    }
+                    else if ($app->status == 3){
+                        $stat = "Shortlisted";
+                    }
+                    else if ($app->status == 3){
+                        $stat = "Rejected";
+                    }
+                    else if ($app->status == 3){
+                        $stat = "Selected";
+                    }
+                    else if ($app->status == 3){
+                        $stat = "Job Offered";
+                    }
+                    else if ($app->status == 3){
+                        $stat = "Job Offered(Rejected)";
+                    }
+                    else if ($app->status == 3){
+                        $stat = "Passing of Requirements";
+                    }
+                    else if ($app->status == 3){
+                        $stat = "For Endorsement";
+                    }
+                    else{
+                        $stat = "Deployed";
+                    }
+
                         $gen = $app->gender == 1 ? "Male" : "Female"; ?>
                     <tr id="<?php echo $app->id; ?>" onclick="get_app(this.id)">
                         <td><?php echo $stat; ?></td>
@@ -139,17 +155,45 @@
                         stat_name = "New";
                     }
                     else if (element.status == 1){
-                        stat_name = "Job Matched";
+                        $stat_name = "Job Matched";
                     }
                      else if (element.status == 2){
-                        stat_name = "For Interview";
+                        $stat_name = "For Interview";
                     }
                     else if (element.status == 3){
-                        stat_name = "Third";
+                        $stat_name = "For Interview(Default)";
                     }
-                    else {
-                        stat_name = "Secret";
+                    else if (element.status == 3){
+                        $stat_name = "Failed Interview";
                     }
+                    else if (element.status == 3){
+                        $stat_name = "Ready to Shortlist";
+                    }
+                    else if (element.status == 3){
+                        $stat_name = "Shortlisted";
+                    }
+                    else if (element.status == 3){
+                        $stat_name = "Rejected";
+                    }
+                    else if (element.status == 3){
+                        $stat_name = "Selected";
+                    }
+                    else if (element.status == 3){
+                        $stat_name = "Job Offered";
+                    }
+                    else if (element.status == 3){
+                        $stat_name = "Job Offered(Rejected)";
+                    }
+                    else if (element.status == 3){
+                        $stat_name = "Passing of Requirements";
+                    }
+                    else if (element.status == 3){
+                        $stat_name = "For Endorsement";
+                    }
+                    else{
+                        $stat_name = "Deployed";
+                    }
+
                     gender = element.gender == 1 ? "Male" : "Female";
                     nationality = "Filipino/Visayan";
 
@@ -180,16 +224,43 @@
                         stat_name = "New";
                     }
                     else if (element.status == 1){
-                        stat_name = "Job Matched";
+                        $stat_name = "Job Matched";
                     }
                      else if (element.status == 2){
-                        stat_name = "For Interview";
+                        $stat_name = "For Interview";
                     }
                     else if (element.status == 3){
-                        stat_name = "Third";
+                        $stat_name = "For Interview(Default)";
                     }
-                    else {
-                        stat_name = "Secret";
+                    else if (element.status == 3){
+                        $stat_name = "Failed Interview";
+                    }
+                    else if (element.status == 3){
+                        $stat_name = "Ready to Shortlist";
+                    }
+                    else if (element.status == 3){
+                        $stat_name = "Shortlisted";
+                    }
+                    else if (element.status == 3){
+                        $stat_name = "Rejected";
+                    }
+                    else if (element.status == 3){
+                        $stat_name = "Selected";
+                    }
+                    else if (element.status == 3){
+                        $stat_name = "Job Offered";
+                    }
+                    else if (element.status == 3){
+                        $stat_name = "Job Offered(Rejected)";
+                    }
+                    else if (element.status == 3){
+                        $stat_name = "Passing of Requirements";
+                    }
+                    else if (element.status == 3){
+                        $stat_name = "For Endorsement";
+                    }
+                    else{
+                        $stat_name = "Deployed";
                     }
                     
                     gender = element.gender == 1 ? "Male" : "Female";
@@ -220,16 +291,43 @@
                         stat_name = "New";
                     }
                     else if (element.status == 1){
-                        stat_name = "Job Matched";
+                        $stat_name = "Job Matched";
                     }
                      else if (element.status == 2){
-                        stat_name = "For Interview";
+                        $stat_name = "For Interview";
                     }
                     else if (element.status == 3){
-                        stat_name = "Third";
+                        $stat_name = "For Interview(Default)";
                     }
-                    else {
-                        stat_name = "Secret";
+                    else if (element.status == 3){
+                        $stat_name = "Failed Interview";
+                    }
+                    else if (element.status == 3){
+                        $stat_name = "Ready to Shortlist";
+                    }
+                    else if (element.status == 3){
+                        $stat_name = "Shortlisted";
+                    }
+                    else if (element.status == 3){
+                        $stat_name = "Rejected";
+                    }
+                    else if (element.status == 3){
+                        $stat_name = "Selected";
+                    }
+                    else if (element.status == 3){
+                        $stat_name = "Job Offered";
+                    }
+                    else if (element.status == 3){
+                        $stat_name = "Job Offered(Rejected)";
+                    }
+                    else if (element.status == 3){
+                        $stat_name = "Passing of Requirements";
+                    }
+                    else if (element.status == 3){
+                        $stat_name = "For Endorsement";
+                    }
+                    else{
+                        $stat_name = "Deployed";
                     }
                     
                     gender = element.gender == 1 ? "Male" : "Female";
@@ -260,16 +358,43 @@
                         stat_name = "New";
                     }
                     else if (element.status == 1){
-                        stat_name = "Job Matched";
+                        $stat_name = "Job Matched";
                     }
                      else if (element.status == 2){
-                        stat_name = "For Interview";
+                        $stat_name = "For Interview";
                     }
                     else if (element.status == 3){
-                        stat_name = "Third";
+                        $stat_name = "For Interview(Default)";
                     }
-                    else {
-                        stat_name = "Secret";
+                    else if (element.status == 3){
+                        $stat_name = "Failed Interview";
+                    }
+                    else if (element.status == 3){
+                        $stat_name = "Ready to Shortlist";
+                    }
+                    else if (element.status == 3){
+                        $stat_name = "Shortlisted";
+                    }
+                    else if (element.status == 3){
+                        $stat_name = "Rejected";
+                    }
+                    else if (element.status == 3){
+                        $stat_name = "Selected";
+                    }
+                    else if (element.status == 3){
+                        $stat_name = "Job Offered";
+                    }
+                    else if (element.status == 3){
+                        $stat_name = "Job Offered(Rejected)";
+                    }
+                    else if (element.status == 3){
+                        $stat_name = "Passing of Requirements";
+                    }
+                    else if (element.status == 3){
+                        $stat_name = "For Endorsement";
+                    }
+                    else{
+                        $stat_name = "Deployed";
                     }
                     
                     gender = element.gender == 1 ? "Male" : "Female";

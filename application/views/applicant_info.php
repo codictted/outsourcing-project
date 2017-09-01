@@ -1,6 +1,4 @@
     <?php
-        if($applicant_det->status == 0)
-            $stat = "NEW";
         $middle = is_null($applicant_det->middle_name) || $applicant_det->middle_name == "" ?
                     "" : $applicant_det->middle_name;
         $gender = $applicant_det->gender == 1 ? "Male" : "Female";
@@ -16,7 +14,7 @@
     <div class="admin-container slide-effect">
         <form>
             <fieldset>
-                <legend>Application Information</legend>
+                <legend>Applicant Information</legend>
             </fieldset>
         </form>
         <div class="col-lg-12">
@@ -37,7 +35,6 @@
                             <li><a href="#personal_form">Personal Information</a></li>
                             <li><a href="#family_form">Family Background</a></li>
                             <li><a href="#work_form">Work Experience</a></li>
-                            <li><a href="#personality_form">Personality Test</a></li>
                             <li><a href="#essay_form">Essay Questions</a></li>
                         </ul><hr>
                     <div id="personal_form">
@@ -82,7 +79,11 @@
                                 </tr>
                             </table>
                         </div>
-                        
+                        <div class="form-group">
+                            <div class="pull-right">
+                                <a href="#family_form" class="btn btn-primary"><span class="glyphicon glyphicon-arrow-right"></span></a>
+                            </div>
+                        </div>
                     </div>
                     <div id="family_form">
                         <div class="form-group">
@@ -117,7 +118,11 @@
                                 </tr>
                             </table>
                         </div>
-                        
+                        <div class="form-group">
+                            <div class="pull-right">
+                                <a href="#family_form" class="btn btn-primary"><span class="glyphicon glyphicon-arrow-right"></span></a>
+                            </div>
+                        </div>
                     </div>
                     <div id="work_form">
                         <div class="form-group">
@@ -166,47 +171,18 @@
                                 <tr><td><b>----</b></td></tr>
                                 <tr>
                                     <td><b>Skills:</b></td>
-                                    <td><i>PHP, RDBMS, Codeigniter, Exceptional logic</i></td>
+                                    <td><i>
+                                         <?php foreach($skills as $sk) {
+                                        echo $sk->skname .", "; } ?>
+                                    </i></td>
                                 </tr>
                             </table>
                         </div>
-                       
-                    </div>
-                    <div id="personality_form">
                         <div class="form-group">
-                            <h4><center>Personality Test</center></h4>
-                            <table class="col-lg-12 custom-table">
-                                <tr>
-                                    <td></td>
-                                    <td><b>Question</b></td>
-                                    <td><b>Answer</b></td>
-                                </tr>
-                                <?php foreach($applicant_personality as $ap) {
-                                    if($ap->answer == 0)
-                                        $ans = "True";
-                                    elseif ($ap->answer == 1)
-                                        $ans = "False";
-                                    elseif ($ap->answer == 3)
-                                        $ans = "Strongly Disagree";
-                                    elseif ($ap->answer == 4)
-                                        $ans = "Disagree";
-                                    elseif ($ap->answer == 5)
-                                        $ans ="Unsure";
-                                    elseif ($ap->answer == 6)
-                                        $ans = "Agree"; 
-                                    elseif ($ap->answer == 7)
-                                        $ans = "Agree";
-                                    else
-                                        $ans = "N/A";?>
-                                <tr>
-                                    <td></td>
-                                    <td><?php echo $ap->question; ?></td>
-                                    <td><i><?php echo $ans; ?></i></td>
-                                </tr>
-                                <?php } ?>
-                            </table>
+                            <div class="pull-right">
+                                <a href="#family_form" class="btn btn-primary"><span class="glyphicon glyphicon-arrow-right"></span></a>
+                            </div>
                         </div>
-                        
                     </div>
                     <div id="essay_form">
                         <div class="form-group">
@@ -232,6 +208,63 @@
 </body>
 </html>
 
+<div class="modal fade" role="dialog" id="generate-match">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Auto Job Match</h4>
+            </div>
+            <div class="modal-body">
+                <i class="glyphicon glyphicon-info-sign"></i><b>INFORMATION:</b><br>
+                <text>Please be reminded that the applicant will be match against all on-going job orders from different client with the same job order that the applicant is applying for.</text>
+                <br><br>
+                <text>
+                    Arlene Mariano will be match to the following client's job order:<br>
+                    <ul>
+                        <?php foreach($client_list as $cl) { ?>
+                        <li><?php echo $cl; ?></li>
+                        <?php } ?>
+                    </ul>
+                </text>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" id="show_load">Proceed</button>
+            </div>
+        </div>
+    </div>
+</div>
 
+<div class="modal" role="dialog" id="loading">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Please Wait..</h4>
+            </div>
+            <div class="modal-body">
+                <div class="loader"></div>
+                <h4><center>Generating Auto Match...</center></h4>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
 
+<script type="text/javascript">
+    $(function (){
+        var id = $("#app_name").val();
+      $("#show_load").click(function () {
+        $("#generate-match").modal("hide");
+        $("#loading").modal("show");
+        setTimeout(
+        function() {
+          window.location.href='<?php echo base_url()?>admin/applist_matched/' + id;
+        }, 3000);
+      });
+    });
 
+</script>

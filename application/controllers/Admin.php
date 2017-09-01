@@ -1081,18 +1081,16 @@
             echo json_encode($data);
         }
 
-        public function get_applicant_shortlist($order_id, $id) {
+        public function get_applicant_shortlist($order_id) {
 
-            $data['app_details'] = $this->Admin_model->get_applicant_shortlist($id);
+            $data['app_details'] = $this->Admin_model->get_applicant_shortlist($order_id);
             $index = 0;
             foreach($data['app_details'] as $app) {
 
-                $data['app_details'][$index]->job_match = $this->compute_job_match($order_id, $app->id);
+                $data['app_details'][$index]->job_match = $this->compute_job_match_per_applicant($order_id, $app->id);
                 $index++;
             }
-            var_dump($data['app_details']);
-            die();
-            echo json_encode($data);
+            echo json_encode($data['app_details']);
         }
 
         public function get_applicant_det($id) {
@@ -1239,6 +1237,184 @@
         public function get_replace_det($id) {
 
             $data = $this->Admin_model->get_replace_det($id);
+            echo json_encode($data);
+        }
+
+         public function compute_job_match_per_applicant($j, $applicant) {
+
+
+            $applicant = $this->Applicant_model->get_details($applicant);
+            $app_skill = $this->Applicant_model->get_app_skills($applicant->id);
+            $birthdate = new DateTime($applicant->birthdate);
+            $today = new DateTime('today');
+            $app_age = $birthdate->diff($today)->y;
+            $askill = array();
+
+            foreach($app_skill as $sk) {
+
+                array_push($askill, $sk->id);
+            }
+
+            $match_result = array();
+            $order_det = $this->Admin_model->get_job_order_details($j);
+            $order_skills = $this->Admin_model->get_job_order_skills($j);
+
+            $no_items = 0;
+            $no_matched = 0;
+
+            $match_skill = array();
+            $nonmatch_skill = array();
+            $match_quali = array();
+            $nonmatch_quali = array();
+
+            //compare needed skills from job order to applicant's
+            foreach($order_skills as $sk) {
+
+                $name = $this->Admin_model->get_skill_name($sk->skill);
+                if(in_array($sk->skill, $askill)) {
+
+                    array_push($match_skill, $name[0]->name);
+                    $no_matched++;
+                }
+                else
+                    array_push($nonmatch_skill, $name[0]->name);
+
+                $no_items++;
+            }
+
+            $match_result['match_skill'] = $match_skill;
+            $match_result['nonmatch_skill'] = $nonmatch_skill;
+
+            if(!(is_null($order_det[0]->weight)) OR !($order_det[0]->weight == 0.00) OR !($order_det[0]->weight == "")) {
+
+                $no_items++;
+                if($order_det[0]->weight == $applicant->weight) {
+
+                    $no_matched++;
+                    // array_push($match_quali, array("weight" => $order_det[0]->weight));
+                    $match_quali['weight'] = $order_det[0]->weight;
+                }
+                else
+                    // array_push($nonmatch_quali, array("weight" => $order_det[0]->weight));
+                    $nonmatch_quali['weight'] = $order_det[0]->weight;
+            }
+
+            if(!(is_null($order_det[0]->height)) OR !($order_det[0]->height == 0.00) OR !($order_det[0]->height == "")) {
+
+                $no_items++;
+                if($order_det[0]->height == $applicant->height) {
+
+                    $no_matched++;
+                    // array_push($match_quali, array("height" => $order_det[0]->height));
+                    $match_quali['height'] = $order_det[0]->height;
+                }
+                else
+                    // array_push($nonmatch_quali, array("height" => $order_det[0]->height));
+                    $nonmatch_quali['height'] = $order_det[0]->height;
+            }
+
+            if(!(is_null($order_det[0]->education)) OR !($order_det[0]->education == "")) {
+
+                $no_items++;
+                $name = $this->Admin_model->get_education_name($order_det[0]->education);
+                if($order_det[0]->education == $applicant->education) {
+
+                    $no_matched++;
+                    // array_push($match_quali, array("education" => $name[0]->education));
+                    $match_quali['education'] = $name[0]->education;
+                }
+                else
+                    // array_push($nonmatch_quali, array("education" => $name[0]->education));
+                    $nonmatch_quali['education'] = $name[0]->education;
+            }
+
+            if(!(is_null($order_det[0]->course)) OR !($order_det[0]->course == "")) {
+
+                $no_items++;
+                $name = $this->Admin_model->get_course_name($order_det[0]->course);
+                if($order_det[0]->course == $applicant->course) {
+
+                    $no_matched++;
+                    // array_push($match_quali, array("course" => $name[0]->name));
+                    $match_quali['course'] = $name[0]->name;
+                }
+                else
+                    // array_push($nonmatch_quali, array("course" => $name[0]->name));
+                    $nonmatch_quali['course'] = $name[0]->name;
+            }
+
+            if($order_det[0]->single == 1) {
+
+                $no_items++;
+                if($applicant->civil_status == 1) {
+
+                    $no_matched++;
+                    // array_push($match_quali, array("civil_status" => "Must be single"));
+                    $match_quali['civil_status'] = "Must be single";
+                }
+                else
+                    // array_push($match_quali, array("civil_status" => "Must be single"));
+                    $nonmatch_quali['civil_status'] = "Must be single";
+            }
+
+            if((!(is_null($order_det[0]->min_age)) OR !($order_det[0]->min_age == 0) OR !($order_det[0]->min_age == "")) AND (!(is_null($order_det[0]->max_age)) OR !($order_det[0]->max_age == 0) OR !($order_det[0]->max_age == ""))) {
+
+                $no_items++;
+                $min = $order_det[0]->min_age;
+                $max = $order_det[0]->max_age;
+
+                if($app_age >= $min AND $app_age <= $max) {
+
+                    $no_matched++;
+                    // array_push($match_quali, array("age" => "From ".$min." to ".$max." years old"));
+                    $match_quali['age'] = "From ".$min." to ".$max." years old";
+                }
+                else
+                //     array_push($nonmatch_quali, array("age" => "From ".$min." to ".$max." years old"));
+                    $nonmatch_quali['age'] = "From ".$min." to ".$max." years old";
+
+            }
+            else if((!(is_null($order_det[0]->min_age)) OR !($order_det[0]->min_age == 0) OR !($order_det[0]->min_age == "")) AND ((is_null($order_det[0]->max_age)) OR ($order_det[0]->max_age == 0) OR ($order_det[0]->max_age == ""))) {
+
+                $no_items++;
+                $min = $order_det[0]->min_age;
+                if($app_age >= $min) {
+
+                    $no_matched++;
+                    // array_push($match_quali, array("age" => "From ".$min." years old"));
+                    $match_quali['age'] = "From ".$min." years old";
+                }
+                else
+                    // array_push($nonmatch_quali, array("age" => "From ".$min." years old"));
+                    $nonmatch_quali['age'] = "From ".$min." years old";
+            }
+
+            if(((is_null($order_det[0]->min_age)) OR ($order_det[0]->min_age == 0) OR ($order_det[0]->min_age == "")) AND (!(is_null($order_det[0]->max_age)) OR !($order_det[0]->max_age == 0) OR !($order_det[0]->max_age == ""))) {
+
+                $no_items++;
+                $max = $order_det[0]->max_age;
+                if($app_age <= $max) {
+
+                    $no_matched++;
+                    // array_push($match_quali, array("age" => "Up to ".$max." years old"));
+                    $match_quali['age'] = "Up to ".$max." years old";
+                }
+                else
+                    // array_push($nonmatch_quali, array("age" => "Up to ".$max." years old"));
+                    $nonmatch_quali['age'] = "Up to ".$max." years old";
+            }
+
+            $match_result['match_quali'] = $match_quali;
+            $match_result['nonmatch_quali'] = $nonmatch_quali;
+            $match_result['total'] = $no_items;
+            $match_result['matched'] = $no_matched;
+
+            return $match_result;
+        }
+
+        public function get_match_details($app_id, $order_id) {
+
+            $data = $this->compute_job_match($order_id, $app_id);
             echo json_encode($data);
         }
 	}

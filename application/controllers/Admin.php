@@ -173,32 +173,35 @@
                     "status" => 1
                 );
 
-                is_null($cid) ? 
+                is_null($cid) OR $cid == "NULL" ? 
                 $this->Client_model->add_client($data) :
-                $this->Client_model->update_client($cid, $data);
+                $this->Client_model->update_client($id, $data);
 
                 $this->load->library('email');
 
-                    $config['protocol']    = 'smtp';
-                    $config['smtp_host']    = 'smtp.gmail.com';
-                    $config['smtp_port']    = '465';
-                    $config['smtp_timeout'] = '7';
-                    $config['smtp_crypto'] = 'ssl';
-                    $config['smtp_user']    = 'outsourcing.inquire@gmail.com';
-                    $config['smtp_pass']    = 'outsourcingteam';
-                    $config['charset']    = 'utf-8';
-                    $config['newline']    = "\r\n";
-                    $config['mailtype'] = 'text';
 
-                    $this->email->initialize($config);
-                    $this->email->from($email, $contact_name);
-                    $this->email->to('outsourcing.inquire@gmail.com');
+                $config['protocol']     = 'smtp';
+                $config['smtp_host']    = 'smtp.gmail.com';
+                $config['smtp_port']    = '465';
+                $config['smtp_timeout'] = '7';
+                $config['smtp_crypto']  = 'ssl';
+                $config['smtp_user']    = $data[0]->agency_email_text;
+                $config['smtp_pass']    = $data[0]->agency_email_pword;
+                $config['charset']      = 'utf-8';
+                $config['newline']      = "\r\n";
+                $config['mailtype']     = 'text';
 
-                    $this->email->subject('Inquiry');
-                    $this->email->message($inquiry);
+                $final_message = "Good Day! Your account credentials are:"."\n"."Username: ".$user."\n"."Password: ".$pass;
 
-                    $this->email->send();
-                    echo $this->email->print_debugger();
+                $this->email->initialize($config);
+                $this->email->from($email, $contact_name);
+                $this->email->to($data[0]->agency_email_text);
+
+                $this->email->subject('Inquiry');
+                $this->email->message($final_message);
+
+                $this->email->send();
+                echo $this->email->print_debugger();
 
                 $this->session->set_flashdata("success_notification", "Congratulations! You have successfully updated the client's details and status.");
                 echo json_encode(array("success" => TRUE));

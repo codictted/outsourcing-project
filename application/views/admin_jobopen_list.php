@@ -8,6 +8,18 @@
                         <i class="glyphicon glyphicon-info-sign"></i><b>REMINDER:</b> <p class="alert-p">This shows the list of job openings to be displayed on the main page of the website.</p>
                     </div>
                 </div>
+                <div class="form-group col-lg-12">
+                    <label class="form-label col-lg-1"></label>
+                    <div class="col-lg-3">
+                    </div>
+                    <div class="col-lg-3">
+                    </div>
+                    <div class="col-lg-3 pull-right">                    
+                        <button type="button" class="btn btn-primary" onclick="window.location.href='post_job'"><span class="glyphicon glyphicon-plus"></span>
+                            Create New Job Advertisement
+                        </button>
+                    </div>
+                </div>
             </fieldset>
         </form>
         <hr>

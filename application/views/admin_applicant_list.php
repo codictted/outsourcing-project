@@ -85,6 +85,18 @@
                         </div>
                     </div>
                 <?php endif; ?>
+                <div class="form-group col-lg-12">
+                    <label class="form-label col-lg-1"></label>
+                    <div class="col-lg-3">
+                    </div>
+                    <div class="col-lg-3">
+                    </div>
+                    <div class="col-lg-3 pull-right">                    
+                        <button type="button" class="btn btn-primary col-lg-12" onclick="window.location.href='create_shortlist'"><span class="glyphicon glyphicon-plus"></span>
+                            Create a Short List
+                        </button>
+                    </div>
+                </div>
             </fieldset>
         </form>
         <hr>

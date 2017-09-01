@@ -110,12 +110,12 @@
                     </label>
                     <div class="col-lg-5">
                         <div class="error-form">
-                            <input type="text" class="form-control" placeholder="Username" id="client_username" name="client_username" value="<?php echo $client->acc_username; ?>">
+                            <input type="text" class="form-control" placeholder="Username" id="client_username" name="client_username" value="<?php echo $client->acc_username; ?>" maxlength="10">
                         </div>
                     </div>
                     <div class="col-lg-5">
                         <div class="error-form">
-                            <input type="text" class="form-control" placeholder="Password" id="client_password" name="client_password" value="<?php echo $client->acc_password; ?>">
+                            <input type="text" class="form-control" placeholder="Password" id="client_password" name="client_password" value="<?php echo $client->acc_password; ?>" maxlength="10">
                         </div>
                     </div>
                 </div>
@@ -162,6 +162,8 @@
                 type: "POST",
                 data: $("#contact_us_form").serialize(),
                 success: function(data) {
+
+                    console.log(data);
                     data.success ? 
                     window.location.href="<?php echo base_url()?>admin/admin_client_list/" :
                     window.location.href="<?php echo base_url()?>admin/edit_client/" + id;

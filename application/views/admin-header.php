@@ -16,7 +16,6 @@
         <script src="<?php echo base_url(); ?>assets/datepicker/moment-with-locales.js"></script>
         <script src="<?php echo base_url(); ?>assets/datepicker/bootstrap-datetimepicker.js"></script>
         <script src="<?php echo base_url(); ?>assets/select2/dist/js/select2.min.js"></script>
-        <script src="<?php echo base_url(); ?>assets/js/jquery-maintenance.js"></script>
         <script src="<?php echo base_url(); ?>assets/js/jquery-utilities.js"></script>
         <script src="<?php echo base_url(); ?>assets/js/bootbox.min.js"></script>
 

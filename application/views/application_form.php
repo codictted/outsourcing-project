@@ -96,22 +96,6 @@
                     </div>
                     <div class="col-lg-2">
                         <div class="error-form">
-                            <span class="indiv-error"><?php echo form_error("nationality"); ?></span>
-                            <select class="form-control" name="nationality" id="nationality" required>
-                                <option selected disabled>* Nationality</option>
-                                <option>Filipino</option>
-                                <option>Japanese</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="col-lg-2">
-                        <div class="error-form">
-                            <input type="number" name="weight" id="weight" class="form-control" placeholder="Weight">
-                        </div>
-                        <span class="small col-lg-1">in&nbsp;kg&nbsp;(optional)</span>
-                    </div>
-                    <div class="col-lg-2">
-                        <div class="error-form">
                             <input type="number" name="height" id="height" class="form-control" placeholder="Height">
                         </div>
                         <span class="small col-lg-1">in&nbsp;cm&nbsp;(optional)</span>
@@ -196,19 +180,6 @@
                             </select>
                         </div>
                     </div>
-<<<<<<< HEAD
-=======
-                    <div class="col-lg-6">
-                        <div class="error-form">
-                            <select class="form-control" id="spoken-multip" multiple name="spoken_lang[]">
-                                <?php foreach($spoken as $sp) { ?>
-                                <option value="<?php echo $sp->language; ?>"><?php echo $sp->language?></option>
-                                <?php } ?>
-                            </select>
-                        </div>
-                        <span class="small col-lg-1"><text class="required">*</text>&nbsp;Spoken&nbsp;Languages</span>
-                    </div>
->>>>>>> a0d95625ad51f5ecbfb782d7cd2192eb1437ff92
                 </div>
                 <div class="form-group">
                     <label class="col-lg-2 control-label form-label">
@@ -501,25 +472,6 @@
 
 $("#skill-multi").select2({
     placeholder: "Select Skills"
-});
-
-$("[name='spoken_lang[]']").select2({
-        tags: true,
-        placeholder: '    Select spoken language',
-        allowClear: true,
-        createTag: function (params) {
-            var term = $.trim(params.term);
-           
-            if (term.match(/^[!@#$%^&*()]+$/g)) {
-              return null;
-            }
-        
-            return {
-              id: term,
-              text: term,
-              newTag: true // add additional parameters
-            }
-        }
 });
 
 

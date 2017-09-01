@@ -72,10 +72,11 @@
                     "comp_name",
                     "Company Name",
                     "required|strip_tags|xss_clean");
+                
                 $this->form_validation->set_rules(
                     "job_position",
                     "Job Position",
-                    "required|strip_tags|xss_clean");
+                    "strip_tags|xss_clean");
             }
             $this->form_validation->set_rules(
                 "contact_name",
@@ -177,23 +178,12 @@
                 $this->Client_model->add_client($data) :
                 $this->Client_model->update_client($id, $data);
 
+                $data = $this->Admin_model->get_agency_email_details();
+
                 $this->load->library('email');
-
-
-                $config['protocol']     = 'smtp';
-                $config['smtp_host']    = 'smtp.gmail.com';
-                $config['smtp_port']    = '465';
-                $config['smtp_timeout'] = '7';
-                $config['smtp_crypto']  = 'ssl';
-                $config['smtp_user']    = $data[0]->agency_email_text;
-                $config['smtp_pass']    = $data[0]->agency_email_pword;
-                $config['charset']      = 'utf-8';
-                $config['newline']      = "\r\n";
-                $config['mailtype']     = 'text';
 
                 $final_message = "Good Day! Your account credentials are:"."\n"."Username: ".$user."\n"."Password: ".$pass;
 
-                $this->email->initialize($config);
                 $this->email->from($email, $contact_name);
                 $this->email->to($data[0]->agency_email_text);
 

@@ -20,8 +20,6 @@
                     <div id="application-details">
                         <ul class="breadcrumb">
                             <li><a href="#client_info">Client Information</a></li>
-                            <li><a href="#order_history">Job Order History</a></li>
-                            <li><a href="#staff_history">Staff History</a></li>
                         </ul><hr>
                     <div id="client_info">
                         <div class="form-group">
@@ -81,66 +79,6 @@
                             </table>
                         </div>
                         <br>
-                        <div class="form-group">
-                            <div class="pull-right">
-                                <a href="#family_form" class="btn btn-primary"><span class="glyphicon glyphicon-arrow-right"></span></a>
-                            </div>
-                        </div>
-                    </div>
-                    <div id="order_history">
-                        <div class="col-lg-12">
-                            <table id="order-table" class="custom-table-large table-hover">
-                                <thead>
-                                    <th>Status</th>
-                                    <th>Job Position</th>
-                                    <th>Date Ordered</th>
-                                </thead>
-                                <tbody>
-                                    <tr class="tr-click-client-det">
-                                        <td>New</td>
-                                        <td>Bagger</td>
-                                        <td>2017-07-03 5:45PM</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-
-                        <br>
-                        <div class="form-group">
-                            <div class="pull-right">
-                                <a href="#family_form" class="btn btn-primary"><span class="glyphicon glyphicon-arrow-right"></span></a>
-                            </div>
-                        </div>
-                    </div>
-                    <div id="staff_history">
-                        <div class="form-group">
-                            <h4><center>Staff History</center></h4>
-                            <table class="col-lg-12 custom-table">
-                                <tr>
-                                    <td><b>Employer's Name:</b></td>
-                                    <td><b>Address</b></td>
-                                    <td><b>Years Employed</b></td>
-                                </tr>
-                                <tr>
-                                    <td><i>Microsoft:</i></td>
-                                    <td><i>New York City, USA</i></td>
-                                    <td><i>5</i></td>
-                                </tr>
-                                <tr>
-                                    <td></td>
-                                    <td></td>
-                                </tr>
-                                <tr>
-                                    <td><b>Skills:</b></td>
-                                    <td><i>PHP, RDBMS, Codeigniter, Exceptional logic</i></td>
-                                </tr>
-                            </table>
-                        </div>
-                        <div class="form-group">
-                            <div class="pull-right">
-                                <a href="#family_form" class="btn btn-primary"><span class="glyphicon glyphicon-arrow-right"></span></a>
-                            </div>
-                        </div>
                     </div>
                 </fieldset>
             </form>

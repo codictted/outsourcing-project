@@ -111,5 +111,14 @@
 			return $query->result();
 		}
 
+		public function get_religion() {
+
+			$this->db->select("*");
+			$this->db->from("religion");
+			$this->db->where("flag = 0");
+			$query = $this->db->get();
+			return $query->result();
+		}
+
 	}
 ?>
